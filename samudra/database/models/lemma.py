@@ -1,4 +1,4 @@
-from peewee import AutoField, CharField, TextField
+from peewee import AutoField, CharField, TextField, IntegerField
 
 from .base import Base
 
@@ -10,4 +10,5 @@ class Lemma(Base):
     id_ = AutoField()
     nama = TextField()
     golongan = CharField(max_length=255)
-    konsep = TextField()
+    konsep = TextField(null=True)
+    nombor_semantik = IntegerField(null=True)

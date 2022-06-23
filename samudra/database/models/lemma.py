@@ -9,7 +9,7 @@ class Lemma(Base):
     """
     id = AutoField()
     tarikh_masuk = TimestampField()
-    nama = TextField()
+    nama = TextField(null=False)
     golongan = TextField(null=False)
     konsep = TextField(null=True)
     nombor_semantik = IntegerField(null=True)
@@ -23,5 +23,5 @@ class LemmaAsing(Base):
     tarikh_masuk = TimestampField()
 
     padanan_konsep = ForeignKeyField(Lemma, backref='lemma_asing')
-    nama = TextField()
+    nama = TextField(null=False)
     golongan = TextField(null=False)

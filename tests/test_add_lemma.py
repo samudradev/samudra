@@ -1,7 +1,4 @@
-from peewee import SqliteDatabase
-
-
-mock_db = SqliteDatabase(':memory:')
+from .mocks import mock_db
 
 
 class TestTransactions:
@@ -13,6 +10,8 @@ class TestTransactions:
         mock_db.create_tables([Lemma])
         add_lemma(**mock_lemma)
         q = Lemma.get_or_none(Lemma.nama == mock_lemma['nama'])
+
+        mock_db.close()
         assert q.nama == mock_lemma['nama']
         assert q.golongan == mock_lemma['golongan']
         assert q.konsep == mock_lemma['konsep']

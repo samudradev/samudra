@@ -21,6 +21,14 @@ tests = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)"
 tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "mypy", "pytest-mypy-plugins", "cloudpickle"]
 
 [[package]]
+name = "bind"
+version = "2.1.0"
+description = "A function for binding strings with a separator"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
 name = "colorama"
 version = "0.4.5"
 description = "Cross-platform colored terminal text."
@@ -126,7 +134,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "9688189631e31419d37f4148cfb76600211b9f01f20085d95e29234d2b225953"
+content-hash = "6ea7c74c01f8b479c4773bef0264bd2df3cfdacca597b87ea2d1936d8daabf37"
 
 [metadata.files]
 atomicwrites = [
@@ -136,6 +144,9 @@ atomicwrites = [
 attrs = [
     {file = "attrs-21.4.0-py2.py3-none-any.whl", hash = "sha256:2d27e3784d7a565d36ab851fe94887c5eccd6a463168875832a1be79c82828b4"},
     {file = "attrs-21.4.0.tar.gz", hash = "sha256:626ba8234211db98e869df76230a137c4c40a12d72445c45d5f5b716f076e2fd"},
+]
+bind = [
+    {file = "bind-2.1.0.tar.gz", hash = "sha256:d22beb70b35c47d57852e9ec3ebec284de7763bfe6fecb862f5325b3c2924cf4"},
 ]
 colorama = [
     {file = "colorama-0.4.5-py2.py3-none-any.whl", hash = "sha256:854bf444933e37f5824ae7bfc1e98d5bce2ebe4160d46b5edf346a89358e99da"},

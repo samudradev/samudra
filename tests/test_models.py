@@ -19,7 +19,7 @@ class TestModels:
 
         assert q.nama == mock_lemma['nama']
         assert q.golongan == mock_lemma['golongan']
-        assert q.konsep == mock_lemma['konsep']
+        assert q.keterangan == mock_lemma['konsep']
 
     def test_lemma_asing(self):
         with mock_db.bind_ctx([Lemma, KataAsing], bind_refs=False):
@@ -34,7 +34,7 @@ class TestModels:
             r = KataAsing.create(**mock_lemma_asing)
         assert q.nama == mock_lemma['nama']
         assert q.golongan == mock_lemma['golongan']
-        assert q.konsep == mock_lemma['konsep']
+        assert q.keterangan == mock_lemma['konsep']
 
         assert r.nama == mock_lemma_asing['nama']
         assert r.golongan == mock_lemma_asing['golongan']
@@ -53,7 +53,7 @@ class TestModels:
             r = Cakupan.create(**mock_cakupan)
         assert q.nama == mock_lemma['nama']
         assert q.golongan == mock_lemma['golongan']
-        assert q.konsep == mock_lemma['konsep']
+        assert q.keterangan == mock_lemma['konsep']
 
         assert r.nama == mock_cakupan['nama']
         assert r.keterangan == mock_cakupan['keterangan']
@@ -72,7 +72,7 @@ class TestModels:
             r = PerwakilanModen.create(**mock_perwakilan)
         assert q.nama == mock_lemma['nama']
         assert q.golongan == mock_lemma['golongan']
-        assert q.konsep == mock_lemma['konsep']
+        assert q.keterangan == mock_lemma['konsep']
 
         assert r.lemma == mock_perwakilan['lemma']
         assert r.jenis == mock_perwakilan['jenis']

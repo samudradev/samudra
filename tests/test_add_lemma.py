@@ -14,4 +14,4 @@ class TestTransactions:
         mock_db.close()
         assert q.nama == mock_lemma['nama']
         assert q.golongan == mock_lemma['golongan']
-        assert q.konsep == mock_lemma['konsep']
+        assert q.keterangan == mock_lemma['konsep']

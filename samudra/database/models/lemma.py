@@ -17,4 +17,5 @@ class Lemma(Base):
     nombor_semantik = IntegerField(null=True)
     tertib = IntegerField(null=True)
 
-
+    def __repr__(self):
+        return f"<model.Lemma: id={self.id} nama={self.nama} golongan={self.golongan}>"

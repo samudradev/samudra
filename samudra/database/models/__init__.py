@@ -1,2 +1,1 @@
-from .lemma import Lemma
-
+from .konsep import Konsep

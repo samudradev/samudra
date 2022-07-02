@@ -3,15 +3,15 @@ from .mocks import mock_db
 
 class TestTransactions:
     def test_add_lemma(self):
-        from samudra.database import Lemma
+        from samudra.database import Konsep
         from samudra.database.transactions.add import add_lemma
-        mock_lemma = dict(nama='lemma', golongan='nama', konsep=None)
-        mock_db.bind([Lemma], bind_refs=False, bind_backrefs=False)
-        mock_db.create_tables([Lemma])
-        add_lemma(**mock_lemma)
-        q = Lemma.get_or_none(Lemma.nama == mock_lemma['nama'])
+        mock_concept = dict(lemma='lemma', golongan='nama', konsep=None)
+        mock_db.bind([Konsep], bind_refs=False, bind_backrefs=False)
+        mock_db.create_tables([Konsep])
+        add_lemma(**mock_concept)
+        q = Konsep.get_or_none(Konsep.lemma == mock_concept['lemma'])
 
         mock_db.close()
-        assert q.nama == mock_lemma['nama']
-        assert q.golongan == mock_lemma['golongan']
-        assert q.keterangan == mock_lemma['konsep']
+        assert q.lemma == mock_concept['lemma']
+        assert q.golongan == mock_concept['golongan']
+        assert q.keterangan == mock_concept['konsep']

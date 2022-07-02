@@ -1,7 +1,7 @@
 from dataclasses import dataclass, asdict
 from typing import Optional, List
 
-from samudra.database.models import Lemma
+from samudra.database.models import Konsep
 
 
 @dataclass
@@ -27,8 +27,8 @@ class SingleWord:
 
     @property
     def concepts(self) -> List[SingleConcept]:
-        concepts = [*Lemma().select(Lemma.golongan, Lemma.keterangan, Lemma.nombor_semantik, Lemma.tertib).where(
-            Lemma.nama == self.lemma)]
+        concepts = [*Konsep().select(Konsep.golongan, Konsep.keterangan, Konsep.nombor_semantik, Konsep.tertib).where(
+            Konsep.lemma == self.lemma)]
         return [*self.yield_concepts(concepts)]
 
     @staticmethod

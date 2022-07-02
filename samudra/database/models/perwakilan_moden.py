@@ -1,7 +1,7 @@
 from peewee import AutoField, ForeignKeyField, TextField, BlobField
 
 from .base import Base
-from .. import Lemma
+from .. import Konsep
 
 
 class JenisPerwakilanModen(Base):
@@ -12,6 +12,6 @@ class JenisPerwakilanModen(Base):
 
 class PerwakilanModen(Base):
     id = AutoField()
-    lemma = ForeignKeyField(model=Lemma, backref='perwakilan_moden')
+    konsep = ForeignKeyField(model=Konsep, backref='perwakilan_moden')
     jenis = ForeignKeyField(model=JenisPerwakilanModen, backref='item')
     keterangan = TextField(null=False)

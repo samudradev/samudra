@@ -1,7 +1,7 @@
 from peewee import BlobField, AutoField, TextField, ForeignKeyField
 
 from .base import Base
-from .. import Lemma
+from .. import Konsep
 
 
 class Cakupan(Base):
@@ -15,4 +15,4 @@ class Cakupan(Base):
 
 class CakupanLemma(Base):
     cakupan = ForeignKeyField(model=Cakupan, field=Cakupan.id, backref='lemma')
-    lemma = ForeignKeyField(model=Lemma, field=Lemma.id, backref='cakupan')
+    lemma = ForeignKeyField(model=Konsep, field=Konsep.id, backref='cakupan')

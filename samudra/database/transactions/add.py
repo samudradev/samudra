@@ -1,14 +1,14 @@
 from typing import Optional
 
-from ..models import Lemma
+from ..models import Konsep
 
 
-def add_lemma(nama: str, golongan: str, konsep: Optional[str] = None) -> Lemma:
+def add_lemma(lemma: str, golongan: str, konsep: Optional[str] = None) -> Konsep:
     """
     Create a row in the lemma column
-    :param nama: the word itself
+    :param lemma: the word itself
     :param golongan: part of speech
     :param konsep: the meaning
     :return: <database.models.Lemma>
     """
-    return Lemma.create(nama=nama, golongan=golongan, konsep=konsep)
+    return Konsep.create(lemma=lemma, golongan=golongan, konsep=konsep)

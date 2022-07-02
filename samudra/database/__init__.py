@@ -1,7 +1,6 @@
-from .models import Lemma
+from .models import Konsep
 
 from samudra.conf.database import Database
-
 
 # DB = Database['connection']
 #

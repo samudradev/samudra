@@ -1,11 +1,11 @@
-from samudra.database import Lemma
+from samudra.database import Konsep
 from samudra.database.models.cakupan import Cakupan, CakupanLemma
 from samudra.database.models.kata_asing import KataAsing
 from samudra.database.models.perwakilan_moden import JenisPerwakilanModen, PerwakilanModen
 from .mocks import mock_db
 
-mock_lemma = {
-    "nama": "mock",
+mock_concept = {
+    "lemma": "mock",
     "golongan": "kata nama",
     "konsep": None,
 }
@@ -13,67 +13,67 @@ mock_lemma = {
 
 class TestModels:
     def test_lemma(self):
-        with mock_db.bind_ctx([Lemma], bind_refs=False):
-            mock_db.create_tables([Lemma])
-            q = Lemma.create(**mock_lemma)
+        with mock_db.bind_ctx([Konsep], bind_refs=False):
+            mock_db.create_tables([Konsep])
+            q = Konsep.create(**mock_concept)
 
-        assert q.nama == mock_lemma['nama']
-        assert q.golongan == mock_lemma['golongan']
-        assert q.keterangan == mock_lemma['konsep']
+        assert q.lemma == mock_concept['lemma']
+        assert q.golongan == mock_concept['golongan']
+        assert q.keterangan == mock_concept['konsep']
 
     def test_lemma_asing(self):
-        with mock_db.bind_ctx([Lemma, KataAsing], bind_refs=False):
-            mock_db.create_tables([Lemma, KataAsing])
-            q = Lemma.create(**mock_lemma)
+        with mock_db.bind_ctx([Konsep, KataAsing], bind_refs=False):
+            mock_db.create_tables([Konsep, KataAsing])
+            q = Konsep.create(**mock_concept)
 
             mock_lemma_asing = {
-                "nama": "mock_in_english",
+                "lemma": "mock_in_english",
                 "golongan": "kata nama",
-                "padanan_konsep": q
+                "konsep": q
             }
             r = KataAsing.create(**mock_lemma_asing)
-        assert q.nama == mock_lemma['nama']
-        assert q.golongan == mock_lemma['golongan']
-        assert q.keterangan == mock_lemma['konsep']
+        assert q.lemma == mock_concept['lemma']
+        assert q.golongan == mock_concept['golongan']
+        assert q.keterangan == mock_concept['konsep']
 
-        assert r.nama == mock_lemma_asing['nama']
+        assert r.lemma == mock_lemma_asing['lemma']
         assert r.golongan == mock_lemma_asing['golongan']
-        assert r.padanan_konsep == mock_lemma_asing['padanan_konsep']
+        assert r.konsep == mock_lemma_asing['konsep']
 
     def test_cakupan(self):
-        with mock_db.bind_ctx([Lemma, Cakupan, CakupanLemma], bind_refs=False):
-            mock_db.create_tables([Lemma, Cakupan, CakupanLemma])
-            q = Lemma.create(**mock_lemma)
+        with mock_db.bind_ctx([Konsep, Cakupan, CakupanLemma], bind_refs=False):
+            mock_db.create_tables([Konsep, Cakupan, CakupanLemma])
+            q = Konsep.create(**mock_concept)
 
             mock_cakupan = {
                 "nama": "cakupan_1",
                 "keterangan": "ujian",
-                'lemma': mock_lemma,
+                'lemma': mock_concept,
             }
             r = Cakupan.create(**mock_cakupan)
-        assert q.nama == mock_lemma['nama']
-        assert q.golongan == mock_lemma['golongan']
-        assert q.keterangan == mock_lemma['konsep']
+        assert q.lemma == mock_concept['lemma']
+        assert q.golongan == mock_concept['golongan']
+        assert q.keterangan == mock_concept['konsep']
 
         assert r.nama == mock_cakupan['nama']
         assert r.keterangan == mock_cakupan['keterangan']
         assert r.lemma == mock_cakupan['lemma']
 
     def test_perwakilan_moden(self):
-        with mock_db.bind_ctx([Lemma, PerwakilanModen, JenisPerwakilanModen], bind_refs=False):
-            mock_db.create_tables([Lemma, PerwakilanModen, JenisPerwakilanModen])
-            q = Lemma.create(**mock_lemma)
+        with mock_db.bind_ctx([Konsep, PerwakilanModen, JenisPerwakilanModen], bind_refs=False):
+            mock_db.create_tables([Konsep, PerwakilanModen, JenisPerwakilanModen])
+            q = Konsep.create(**mock_concept)
             s = JenisPerwakilanModen.create(**{"nama": "rumus matematik"})
             mock_perwakilan = {
-                "lemma": q,
+                "konsep": q,
                 "jenis": s,
-                "keterangan": "$F=ma$"
+                "keterangan": "$F=ma$",
             }
             r = PerwakilanModen.create(**mock_perwakilan)
-        assert q.nama == mock_lemma['nama']
-        assert q.golongan == mock_lemma['golongan']
-        assert q.keterangan == mock_lemma['konsep']
+        assert q.lemma == mock_concept['lemma']
+        assert q.golongan == mock_concept['golongan']
+        assert q.keterangan == mock_concept['konsep']
 
-        assert r.lemma == mock_perwakilan['lemma']
+        assert r.konsep == mock_perwakilan['konsep']
         assert r.jenis == mock_perwakilan['jenis']
         assert r.keterangan == mock_perwakilan['keterangan']

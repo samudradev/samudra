@@ -23,3 +23,4 @@ class KataAsingRecord(KataAsingBase):
 
     class Config:
         orm_mode = True
+        getter_dict = PeeweeGetterDict

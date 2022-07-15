@@ -4,6 +4,7 @@ from typing import Optional, List
 import pydantic as pyd
 
 from samudra import models
+from samudra.schemas._helper import PeeweeGetterDict
 from samudra.schemas.cakupan import CakupanRecord, CakupanCreation
 from samudra.schemas.kata_asing import KataAsingRecord, KataAsingCreation
 
@@ -34,3 +35,4 @@ class KonsepRecord(KonsepBase):
 
     class Config:
         orm_mode = True
+        getter_dict = PeeweeGetterDict

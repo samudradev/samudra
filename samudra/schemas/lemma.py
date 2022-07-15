@@ -26,3 +26,4 @@ class LemmaRecord(LemmaCreation):
 
     class Config:
         orm_mode = True
+        getter_dict = PeeweeGetterDict

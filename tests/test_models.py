@@ -1,8 +1,4 @@
-from samudra.database import Konsep
-from samudra.database.models.cakupan import Cakupan, CakupanLemma
-from samudra.database.models.kata_asing import KataAsing
-from samudra.database.models.perwakilan_moden import JenisPerwakilanModen, PerwakilanModen
-from .mocks import mock_db
+from .mocks import mock_db, models, Konsep
 
 mock_concept = {
     "lemma": "mock",
@@ -13,8 +9,8 @@ mock_concept = {
 
 class TestModels:
     def test_lemma(self):
-        with mock_db.bind_ctx([Konsep], bind_refs=False):
-            mock_db.create_tables([Konsep])
+        with mock_db.bind_ctx([*models], bind_refs=False):
+            mock_db.create_tables([*models])
             q = Konsep.create(**mock_concept)
 
         assert q.lemma == mock_concept['lemma']

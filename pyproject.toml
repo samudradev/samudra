@@ -9,6 +9,8 @@ python = "^3.8"
 peewee = "^3.15.0"
 pytomlpp = "^1.0.11"
 bind = "^2.1.0"
+self = "^2020.12.3"
+pydantic = "^1.9.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

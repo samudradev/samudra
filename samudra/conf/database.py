@@ -1,3 +1,4 @@
+import logging
 import os
 from dataclasses import dataclass
 
@@ -12,9 +13,9 @@ def get_database_connection(engine: str) -> pw.Database:
     Returns the connection class based on the engine.
     """
     if engine == "sqlite":
-        retrun_value = pw.SqliteDatabase(path:=os.path.join(os.getcwd(), 'data', "samudra.db"))
-        print(path)
-        return retrun_value
+        return_value = pw.SqliteDatabase(os.path.join(os.getcwd(), 'data', "samudra.db"))
+        logging.debug(f'Connection to {return_value}')
+        return return_value
     else:
         raise NotImplementedError("Invalid engine")
 
@@ -22,4 +23,3 @@ def get_database_connection(engine: str) -> pw.Database:
 Database = dict(
     connection=get_database_connection(engine=ENGINE)
 )
-

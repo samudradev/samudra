@@ -2,10 +2,14 @@ import datetime
 
 import pydantic as pyd
 
+from samudra import models
+
 
 class CakupanBase(pyd.BaseModel):
     nama: str
     keterangan: str
+
+    model: models.BaseTable = models.Cakupan
 
 
 class CakupanCreation(CakupanBase):

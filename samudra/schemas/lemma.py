@@ -3,11 +3,13 @@ from typing import List
 
 import pydantic as pyd
 
+from samudra import models
 from samudra.schemas.konsep import KonsepRecord, KonsepCreation
 
 
 class LemmaBase(pyd.BaseModel):
     nama: str
+    model: models.BaseTable = models.Lemma
 
 
 class LemmaCreation(LemmaBase):

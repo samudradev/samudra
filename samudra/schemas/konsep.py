@@ -3,9 +3,9 @@ from typing import Optional, List
 
 import pydantic as pyd
 
+from samudra import models
 from samudra.schemas.cakupan import CakupanRecord, CakupanCreation
 from samudra.schemas.kata_asing import KataAsingRecord, KataAsingCreation
-from samudra.schemas.perwakilan_moden import PerwakilanModenRecord, PerwakilanModenCreation
 
 
 class KonsepBase(pyd.BaseModel):
@@ -13,12 +13,13 @@ class KonsepBase(pyd.BaseModel):
     keterangan: str
     tertib: Optional[int]
 
+    model: models.BaseTable = models.Konsep
+
 
 class KonsepCreation(KonsepBase):
     # --- Relationships
     cakupan: Optional[List[CakupanCreation]]
     kata_asing: Optional[List[KataAsingCreation]]
-    perwakilan_moden: Optional[List[PerwakilanModenCreation]]
 
 
 class KonsepRecord(KonsepBase):
@@ -30,7 +31,6 @@ class KonsepRecord(KonsepBase):
     # --- Relationships
     cakupan: Optional[List[CakupanRecord]]
     kata_asing: Optional[List[KataAsingRecord]]
-    perwakilan_moden: Optional[List[PerwakilanModenRecord]]
 
     class Config:
         orm_mode = True

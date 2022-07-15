@@ -12,6 +12,6 @@ class Cakupan(BaseTable):
     keterangan = BlobField(null=True)
 
 
-class CakupanKeKonsep(BaseTable):
+class PadananCakupanKeKonsep(BaseTable):
     cakupan = ForeignKeyField(model=Cakupan, field=Cakupan.id, backref='konsep')
     konsep = ForeignKeyField(model=Konsep, field=Konsep.id, backref='cakupan')

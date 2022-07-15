@@ -10,6 +10,7 @@ class KataAsing(BaseTable):
     """
     lemma = TextField(null=False)
     golongan = TextField(null=False)
+    bahasa = TextField(null=False)
 
 
 class PadananKonsepKeKataAsing(BaseTable):

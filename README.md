@@ -1,14 +1,19 @@
 # Samudra
 
-A simple dictionary webb application.
+A simple dictionary web application.
 
-## Features
+## MVP Features
 
-1. Add words with the associated meaning. (DONE)
-2. Allow for attachments to extend the meaning of a word. (DONE)
-3. Allow users to search for a word. (DONE)
-4. Allow users to get a word. (DONE)
-5. Allow users to delete a word.
-6. Allow users to update a word.
-7. Allow users to view all the words.
-8. Allow users to view all the words in a particular category.
+### Models
+
+- Lemma (Lemma)
+- Konsep (Concept)
+- KataAsing (Foreign Word)
+- Cakupan (Context of Meaning)
+
+### Interactions
+
+1. Add words with meaning.
+2. Add contexts to meaning.
+3. Add foreign words to meaning.
+4. Retrieve word and related information.

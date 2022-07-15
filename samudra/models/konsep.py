@@ -1,24 +1,7 @@
 from peewee import AutoField, TextField, IntegerField, TimestampField, BlobField, ForeignKeyField
 
 from .base import BaseTable
-
-
-class Lemma(BaseTable):
-    """
-    MODEL RELATIONSHIP REPRESENTATION
-    .Lemma  <== .Konsep <== .Cakupan
-                        <== .KataAsing
-            <== .Ragam
-    """
-    nama = TextField(null=False)
-
-    def __repr__(self) -> str:
-        return f'<model.{self.__class__.__name__}: id={self.id} nama={self.nama}>'
-
-
-class Ragam(BaseTable):
-    baku = ForeignKeyField(model=Lemma, backref='ragam')
-    ragam = ForeignKeyField(model=Lemma, backref='baku')
+from .lemma import Lemma
 
 
 class Konsep(BaseTable):

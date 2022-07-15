@@ -2,10 +2,14 @@ import datetime
 
 import pydantic as pyd
 
+from samudra import models
+
 
 class KataAsingBase(pyd.BaseModel):
     lemma: str
     golongan: str
+
+    model: models.BaseTable = models.KataAsing
 
 
 class KataAsingCreation(KataAsingBase):

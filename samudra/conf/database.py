@@ -8,6 +8,9 @@ import peewee as pw
 # TODO Refactor these to depend on conf.toml
 ENGINE = 'sqlite'
 
+db_state_default = {"closed": None, "conn": None, "ctx": None, "transactions": None}
+db_state = ContextVar("db_state", default=db_state_default.copy())
+
 
 def get_database_connection(engine: str) -> pw.Database:
     """
@@ -15,9 +18,6 @@ def get_database_connection(engine: str) -> pw.Database:
     """
     if engine == "sqlite":
         # Defaults to make it async-compatible (according to FastAPI/Pydantic)
-        db_state_default = {"closed": None, "conn": None, "ctx": None, "transactions": None}
-        db_state = ContextVar("db_state", default=db_state_default.copy())
-
         class PeeweeConnectionState(pw._ConnectionState):
             def __init__(self, **kwargs):
                 super().__setattr__("_state", db_state)
@@ -39,6 +39,6 @@ def get_database_connection(engine: str) -> pw.Database:
     return return_db
 
 
-Database = dict(
-    connection=get_database_connection(engine=ENGINE)
-)
+@dataclass
+class Database:
+    connection = get_database_connection(engine=ENGINE)

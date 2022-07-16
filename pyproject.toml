@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "samudra"
-version = "0.5.0"
+version = "1.0.0"
 description = ""
 authors = ["Thaza_Kun <61819672+Thaza-Kun@users.noreply.github.com>"]
 
@@ -11,6 +11,8 @@ pytomlpp = "^1.0.11"
 bind = "^2.1.0"
 self = "^2020.12.3"
 pydantic = "^1.9.1"
+fastapi = "^0.79.0"
+uvicorn = "^0.18.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

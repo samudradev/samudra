@@ -11,3 +11,10 @@ from .kata_asing import KataAsing
 
 # Imported for type hints
 from .base import BaseTable
+
+TABLES = [
+    Lemma,
+    Konsep,
+    Cakupan,
+    KataAsing
+]

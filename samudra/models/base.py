@@ -8,5 +8,5 @@ class BaseTable(pw.Model):
     tarikh_masuk = pw.TimestampField()
 
     class Meta:
-        database = Database['connection']
+        database = Database.connection
         legacy_table_name = False

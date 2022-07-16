@@ -17,4 +17,4 @@ A simple dictionary web application.
 2. Add contexts to meaning. (DONE)
 3. Add foreign words to meaning. (DONE)
 4. Retrieve word and related information. (DONE)
-5. Expose API using FastAPI
+5. Expose API using FastAPI. (DONE)

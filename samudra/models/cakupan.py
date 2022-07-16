@@ -8,7 +8,7 @@ class Cakupan(BaseTable):
     """
     Dalam konteks apakah istilah tersebut digunakan untuk konsep yang diberikan.
     """
-    nama = TextField(null=False)
+    nama = TextField(null=False, unique=True)
     keterangan = BlobField(null=True)
 
 

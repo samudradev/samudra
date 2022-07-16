@@ -13,7 +13,8 @@ A simple dictionary web application.
 
 ### Interactions
 
-1. Add words with meaning.
-2. Add contexts to meaning.
-3. Add foreign words to meaning.
-4. Retrieve word and related information.
+1. Add words with meaning. (DONE)
+2. Add contexts to meaning. (DONE)
+3. Add foreign words to meaning. (DONE)
+4. Retrieve word and related information. (DONE)
+5. Expose API using FastAPI

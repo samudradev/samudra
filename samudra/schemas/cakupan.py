@@ -3,6 +3,7 @@ import datetime
 import pydantic as pyd
 
 from samudra import models
+from samudra.schemas._helper import PeeweeGetterDict
 
 
 class CakupanBase(pyd.BaseModel):

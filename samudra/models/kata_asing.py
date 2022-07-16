@@ -8,7 +8,7 @@ class KataAsing(BaseTable):
     """
     Lemma bahasa asing
     """
-    lemma = TextField(null=False)
+    nama = TextField(null=False)
     golongan = TextField(null=False)
     bahasa = TextField(null=False)
 

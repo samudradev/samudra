@@ -3,11 +3,13 @@ import datetime
 import pydantic as pyd
 
 from samudra import models
+from samudra.schemas._helper import PeeweeGetterDict
 
 
 class KataAsingBase(pyd.BaseModel):
-    lemma: str
+    nama: str
     golongan: str
+    bahasa: str
 
     model: models.BaseTable = models.KataAsing
 

@@ -1,3 +1,4 @@
+from typing import List
 from . import models
 from . import schemas
 
@@ -14,3 +15,7 @@ def create_lemma(lemma: schemas.LemmaCreation) -> models.Lemma:
     new_lemma: models.Lemma = models.Lemma(**lemma.dict())
     new_lemma.save()
     return new_lemma
+
+
+def get_all_lemma() -> List[models.Lemma]:
+    return [*models.Lemma.select()]

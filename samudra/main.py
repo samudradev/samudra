@@ -1,14 +1,31 @@
 import logging
+from typing import List
 
 import peewee as pw
+import uvicorn
 from fastapi import FastAPI, Depends, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 from samudra import models, schemas, crud
 from samudra.conf import Database
 from samudra.conf.database import db_state_default
+from tests import mocks
 
 app = FastAPI()
 SLEEP_TIME: int = 10
+
+origins = [
+    "http://localhost:3000",
+    "localhost:3000"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 
 async def reset_db_state() -> None:
@@ -25,12 +42,17 @@ def get_db(db_state=Depends(reset_db_state)):
             Database.connection.close()
 
 
-@app.post("/lemma/", response_model=schemas.LemmaRecord, dependencies=[Depends(get_db)])
-def create_lemma(lemma: schemas.LemmaCreation) -> models.Lemma:
-    db_lemma = crud.get_lemma(nama=lemma.nama)
-    if db_lemma:
-        pass
-    return crud.create_lemma(lemma=lemma)
+# @app.post("/lemma/", response_model=schemas.LemmaRecord, dependencies=[Depends(get_db)])
+# def create_lemma(lemma: schemas.LemmaCreation) -> models.Lemma:
+#     db_lemma = crud.get_lemma(nama=lemma.nama)
+#     if db_lemma:
+#         pass
+#     return crud.create_lemma(lemma=lemma)
+
+
+@app.get("/lemmas/", response_model=None, dependencies=[Depends(get_db)])
+def get_all_lemma() -> List[models.Lemma]:
+    return crud.get_all_lemma()
 
 
 @app.get("/lemma/{nama}", response_model=schemas.LemmaRecord, dependencies=[Depends(get_db)])
@@ -56,9 +78,8 @@ def check_tables() -> None:
     return None
 
 
-def main():
-    pass
-
-
 if __name__ == '__main__':
     check_tables()
+    mock_lemma = mocks.single_complete_test_lemma()
+    crud.create_lemma(mock_lemma)
+    uvicorn.run("main:app", port=8000, reload=True)

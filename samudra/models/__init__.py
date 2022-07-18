@@ -1,7 +1,11 @@
 """
 MODEL RELATIONSHIP REPRESENTATION
-Lemma  <== Konsep <== Cakupan
-                  <== KataAsing
+Lemma  <== Konsep <==> Cakupan
+                  <==> KataAsing
+
+--- Legend ---
+One  <==   Many
+Many <==>  Many
 """
 # Ordered by table hierarchy
 from .lemma import Lemma

@@ -1,4 +1,5 @@
 import datetime
+from typing import Optional
 
 import pydantic as pyd
 
@@ -8,7 +9,7 @@ from samudra.schemas._helper import PeeweeGetterDict
 
 class CakupanBase(pyd.BaseModel):
     nama: str
-    keterangan: str
+    keterangan: Optional[str]
 
     model: models.BaseTable = models.Cakupan
 

@@ -1,5 +1,5 @@
 import datetime
-from typing import Optional, List
+from typing import Optional, List, Any
 
 import pydantic as pyd
 
@@ -21,6 +21,7 @@ class KonsepCreation(KonsepBase):
     # --- Relationships
     cakupan: Optional[List[CakupanCreation]]
     kata_asing: Optional[List[KataAsingCreation]]
+    lemma: Any
 
 
 class KonsepRecord(KonsepBase):

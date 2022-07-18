@@ -6,13 +6,13 @@ import uvicorn
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
-from samudra import models, schemas, crud
+from samudra import models, schemas, crud, tools
 from samudra.conf import Database
 from samudra.conf.database import db_state_default
-from tests import mocks
 
 app = FastAPI()
 SLEEP_TIME: int = 10
+CSV_FILENAME: str = 'test.csv'
 
 origins = [
     "http://localhost:3000",
@@ -64,22 +64,15 @@ def read_lemma(nama: str) -> models.Lemma:
 
 
 def check_tables() -> None:
-    try:
-        Database.connection.connect()
-        new = models.Lemma(nama='test')
-        new.save()
-        new.delete()
-        logging.debug(f"{models.Lemma.__name__} existed in {Database.connection.database}")
-    except pw.OperationalError:
-        Database.connection.create_tables(models.TABLES, safe=True)
-        logging.debug(f"Created {models.TABLES} in {Database.connection.name}")
-    finally:
-        Database.connection.close()
+    for TABLE in models.TABLES:
+        if Database.connection.table_exists(TABLE):
+            logging.debug(f"{TABLE.__name__} existed in {Database.connection.database}")
+        else:
+            raise pw.DatabaseError(f"{TABLE.__name__} existed in {Database.connection.database}")
     return None
 
 
 if __name__ == '__main__':
     check_tables()
-    mock_lemma = mocks.single_complete_test_lemma()
-    crud.create_lemma(mock_lemma)
+    tools.csv_to_sql(CSV_FILENAME, preserve_csv_data=False)  # Inject data
     uvicorn.run("main:app", port=8000, reload=True)

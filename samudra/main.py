@@ -2,7 +2,6 @@ import logging
 from typing import List
 
 import peewee as pw
-import uvicorn
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -12,7 +11,7 @@ from samudra.conf.database import db_state_default
 
 app = FastAPI()
 SLEEP_TIME: int = 10
-CSV_FILENAME: str = 'test.csv'
+CSV_FILENAME: str = 'mocks.xlsx'
 
 origins = [
     "http://localhost:3000",
@@ -74,5 +73,7 @@ def check_tables() -> None:
 
 if __name__ == '__main__':
     check_tables()
-    tools.csv_to_sql(CSV_FILENAME, preserve_csv_data=False)  # Inject data
-    uvicorn.run("main:app", port=8000, reload=True)
+    tools.read_excel(CSV_FILENAME)
+
+    # tools.csv_to_sql(CSV_FILENAME, preserve_csv_data=False)  # Inject data
+    # uvicorn.run("main:app", port=8000, reload=True)

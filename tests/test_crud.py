@@ -1,10 +1,10 @@
-from samudra import schemas, crud, models
 import tests.mocks as mocks
+from samudra import crud, models
 
 
 @mocks.bind_test_database
 def test_create_lemma():
-    new_lemma = mocks.single_complete_test_lemma()
+    new_lemma = mocks.TestLemma().to_schema
     # test non-existence before creating
     assert models.Lemma.get_or_none(models.Lemma.nama == new_lemma.nama) is None
     crud.create_lemma(new_lemma)
@@ -14,7 +14,7 @@ def test_create_lemma():
 
 @mocks.bind_test_database
 def test_get_lemma():
-    new_lemma = mocks.single_complete_test_lemma()
+    new_lemma = mocks.TestLemma().to_schema
     # test non-existence before creating
     assert models.Lemma.get_or_none(models.Lemma.nama == new_lemma.nama) is None
     crud.create_lemma(new_lemma)
@@ -24,7 +24,7 @@ def test_get_lemma():
 
 @mocks.bind_test_database
 def test_get_all_lemma():
-    new_lemma = mocks.single_complete_test_lemma()
+    new_lemma = mocks.TestLemma().to_schema
     # test non-existence before creating
     assert models.Lemma.get_or_none(models.Lemma.nama == new_lemma.nama) is None
     crud.create_lemma(new_lemma)

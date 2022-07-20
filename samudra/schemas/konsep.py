@@ -27,8 +27,6 @@ class KonsepRecord(KonsepBase):
     # --- Record specific fields
     id: int
     tarikh_masuk: datetime.datetime
-    # --- Avoid circular dependencies
-    lemma: str
     # --- Relationships
     cakupan: Optional[List[CakupanRecord]]
     kata_asing: Optional[List[KataAsingRecord]]

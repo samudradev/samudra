@@ -1,5 +1,5 @@
 import datetime
-from typing import List
+from typing import List, Optional, Union
 
 import pydantic as pyd
 
@@ -23,7 +23,7 @@ class LemmaRecord(LemmaCreation):
     id: int
     tarikh_masuk: datetime.datetime
     # --- Relationships
-    konsep: List[KonsepRecord]
+    konsep: Union[List[KonsepRecord], KonsepRecord]
 
     class Config:
         orm_mode = True

@@ -2,12 +2,70 @@ import logging
 
 import peewee as pw
 import uvicorn
-from fastapi import FastAPI
 
 from samudra import models
 from samudra.conf import Database
+from typing import List
+
+from fastapi import Depends, HTTPException
+from samudra import models, schemas
+from samudra.tools import crud
+
+from fastapi import Depends, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from samudra.conf import Database
+from samudra.conf.database import db_state_default
 
 app = FastAPI()
+
+SLEEP_TIME: int = 10
+
+origins = [
+    "http://localhost:3000",
+    "localhost:3000"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
+
+
+async def reset_db_state() -> None:
+    Database.connection._state._state.set(db_state_default.copy())
+    Database.connection._state.reset()
+
+
+def get_db(db_state=Depends(reset_db_state)):
+    try:
+        Database.connection.connect()
+        yield
+    finally:
+        if not Database.connection.is_closed():
+            Database.connection.close()
+
+
+@app.get("/lemmas/", response_model=List[schemas.LemmaRecord], dependencies=[Depends(get_db)])
+def get_all_lemma(limit: int = None) -> List[models.Lemma]:
+    return crud.get_all_lemma(limit=limit)
+
+
+@app.get("/lemma/id/{_id}", response_model=List[schemas.LemmaRecord], dependencies=[Depends(get_db)])
+def get_lemma_by_id(_id: int) -> List[models.Lemma]:
+    return crud.get_lemma_by_id(lemma_id=_id)
+
+
+@app.get("/lemma/{nama}", response_model=List[schemas.LemmaRecord], dependencies=[Depends(get_db)])
+def read_lemma(nama: str) -> List[models.Lemma]:
+    db_lemma = crud.get_lemma_by_name(nama=nama)
+    print(db_lemma)
+    if db_lemma is None:
+        raise HTTPException(status_code=404, detail='Lemma not in record')
+    return db_lemma
 
 
 def check_tables(create_tables: bool = False) -> None:
@@ -23,4 +81,5 @@ def check_tables(create_tables: bool = False) -> None:
 
 
 if __name__ == '__main__':
+    Database.connection.create_tables([*models.TABLES, *models.JOIN_TABLES])
     uvicorn.run("main:app", port=8000, reload=True)

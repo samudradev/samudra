@@ -21,7 +21,6 @@ class KonsepCreation(KonsepBase):
     # --- Relationships
     cakupan: Optional[List[CakupanCreation]]
     kata_asing: Optional[List[KataAsingCreation]]
-    lemma: Any
 
 
 class KonsepRecord(KonsepBase):

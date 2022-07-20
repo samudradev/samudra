@@ -1,5 +1,6 @@
 import tests.mocks as mocks
-from samudra import crud, models
+from samudra import models
+from samudra.tools import crud
 
 
 @mocks.bind_test_database
@@ -19,7 +20,7 @@ def test_get_lemma():
     assert models.Lemma.get_or_none(models.Lemma.nama == new_lemma.nama) is None
     crud.create_lemma(new_lemma)
     # test existence after creating
-    assert crud.get_lemma(nama=new_lemma.nama)
+    assert crud.get_lemma_by_name(nama=new_lemma.nama)
 
 
 @mocks.bind_test_database

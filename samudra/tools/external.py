@@ -3,7 +3,8 @@ from typing import List
 
 import pandas as pd
 
-from samudra import models, schemas, crud
+from samudra import models, schemas
+from samudra.tools import crud
 
 
 def datapath(filename: str) -> str:

@@ -1,1 +1,0 @@
-from .konsep import Konsep

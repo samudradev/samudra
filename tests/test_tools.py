@@ -1,11 +1,11 @@
-from samudra import tools
+from samudra.tools.external import parse_dataframe
 from tests import mocks
 
 
 def test_parse_dataframe():
     data = mocks.TestLemma()
     dataframe = data.from_excel
-    new_data = tools.parse_dataframe(dataframe)
+    new_data = parse_dataframe(dataframe)
     schema = data.to_schema
     assert new_data[0].nama == schema.nama
     assert new_data[0].konsep[0].golongan == schema.konsep[0].golongan

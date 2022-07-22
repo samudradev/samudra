@@ -27,4 +27,26 @@ A simple dictionary web application.
 
 ## Running the app
 
-To run the app, either use `uvicorn samudra.main:app --reload` or `python ./samudra/main.py`
+`python ./samudra/main.py`
+
+### Lemma
+
+#### Create Lemma
+
+Example using [httpie](www.httpie.io) and annotated post body
+`http POST :8000/lemma/{nama} keterangan="sebahagian dari konsep #biasa #professional {en:name}" golongan='nama'`
+will create
+
+```
+{
+    "lemma": "{nama}",
+    "konsep": {
+        "keterangan": "sebahagian dari konsep",
+        "golongan": "nama",
+        "cakupan": ["biasa", "professional"],
+        "kata_asing": {
+            "en": "name"
+        }
+    }
+}
+```

@@ -3,19 +3,16 @@ import logging
 import peewee as pw
 import uvicorn
 
-from samudra import models
-from samudra.conf import Database
 from typing import List
 
-from fastapi import Depends, HTTPException
-from samudra import models, schemas
-from samudra.tools import crud
-
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
+from samudra import models, schemas
+from samudra.tools import crud
 from samudra.conf import Database
 from samudra.conf.database import db_state_default
+from samudra.tools.tokenizer import tokenize, parse_annotated_text
 
 app = FastAPI()
 
@@ -68,6 +65,18 @@ def read_lemma(nama: str) -> List[models.Lemma]:
     return db_lemma
 
 
+@app.post('/lemma/{nama}', response_model=schemas.KonsepRecord, dependencies=[Depends(get_db)])
+def create_lemma(nama: str, body: schemas.KonsepCreation) -> models.Lemma:
+    text = parse_annotated_text(body.keterangan)
+    konsep = models.Konsep.create(golongan=body.golongan, keterangan=text['text'][0],
+                                  lemma=models.Lemma.get_or_create(nama=nama)[0])
+    konsep.cakupan = [models.Cakupan.get_or_create(nama=tag)[0] for tag in text['tag']]
+    konsep.kata_asing = [
+        models.KataAsing.create(nama=annotation["en"], bahasa="en", golongan=body.golongan)
+        for annotation in text['annotation']]
+    return konsep
+
+
 def check_tables(create_tables: bool = False) -> None:
     for TABLE in models.TABLES:
         if Database.connection.table_exists(TABLE):
@@ -81,5 +90,5 @@ def check_tables(create_tables: bool = False) -> None:
 
 
 if __name__ == '__main__':
-    Database.connection.create_tables([*models.TABLES, *models.JOIN_TABLES])
+    Database.connection.create_tables([*models.TABLES, *models.JOIN_TABLES], safe=True)
     uvicorn.run("main:app", port=8000, reload=True)

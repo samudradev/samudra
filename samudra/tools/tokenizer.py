@@ -25,6 +25,35 @@ def tokenize(text: str) -> Dict[str, list]:
             "Parsed\t\t:{}\n"
             "Received\t:{}"
             .format(len(to_return['text']), '<?> '.join(to_return['text']), text))
-    print(to_return)
     to_return['text'][0] = to_return['text'][0].strip()
+    return to_return
+
+
+def process_annotation(text: str) -> dict:
+    key, value = text.strip("{").strip("}").split(":")
+    return {key: value}
+
+
+def process_tag(text: str) -> str:
+    tag = text.strip('#').replace('_', ' ')
+    return tag
+
+
+def process_text(text: str) -> str:
+    return text
+
+
+process = {
+    "text": process_text,
+    "tag": process_tag,
+    "annotation": process_annotation,
+}
+
+
+def parse_annotated_text(text: str) -> Dict[str, list]:
+    annotation = tokenize(text)
+    to_return = defaultdict(list)
+    for key in annotation:
+        for value in annotation[key]:
+            to_return[key].append(process[key](value))
     return to_return

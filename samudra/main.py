@@ -3,7 +3,7 @@ import logging
 import peewee as pw
 import uvicorn
 
-from typing import List
+from typing import List, Union
 
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -65,15 +65,21 @@ def read_lemma(nama: str) -> List[models.Lemma]:
     return db_lemma
 
 
-@app.post('/lemma/{nama}', response_model=schemas.KonsepRecord, dependencies=[Depends(get_db)])
-def create_lemma(nama: str, body: schemas.KonsepCreation) -> models.Lemma:
-    text = parse_annotated_text(body.keterangan)
-    konsep = models.Konsep.create(golongan=body.golongan, keterangan=text['text'][0],
+@app.post('/lemma/{nama}', response_model=Union[schemas.KonsepRecord, schemas.AnnotatedTextResponse],
+          dependencies=[Depends(get_db)])
+def create_lemma(nama: str, post: schemas.AnnotatedText) -> Union[models.Konsep, schemas.AnnotatedText]:
+    # try:
+    #     tokenize(post.body)
+    # except SyntaxError as e:
+    #     return schemas.AnnotatedTextResponse(**post.dict(), message=e)
+    konsep = models.Konsep.create(golongan=post.annotations.get('meta').get('gol'), keterangan=post.content,
                                   lemma=models.Lemma.get_or_create(nama=nama)[0])
-    konsep.cakupan = [models.Cakupan.get_or_create(nama=tag)[0] for tag in text['tag']]
+    # TODO: Get cakupan to work properly
+    konsep.cakupan = [models.Cakupan.get_or_create(nama=tag)[0] for tag in post.tags]
     konsep.kata_asing = [
-        models.KataAsing.create(nama=annotation["en"], bahasa="en", golongan=body.golongan)
-        for annotation in text['annotation']]
+        models.KataAsing.create(nama=post.annotations.get("lang")[lang], bahasa=lang,
+                                golongan=post.annotations.get('meta').get('gol'))
+        for lang in post.annotations.get('lang')]
     return konsep
 
 
@@ -90,5 +96,6 @@ def check_tables(create_tables: bool = False) -> None:
 
 
 if __name__ == '__main__':
+    check_tables(create_tables=False)
     Database.connection.create_tables([*models.TABLES, *models.JOIN_TABLES], safe=True)
     uvicorn.run("main:app", port=8000, reload=True)

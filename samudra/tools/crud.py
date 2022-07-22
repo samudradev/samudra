@@ -1,10 +1,15 @@
 from typing import List, Optional, Any, Union
+
+from peewee import prefetch
+
 from samudra import models
 from samudra import schemas
 
 
 def get_minimum_lemma_info(where: Any, limit: Optional[int] = None) -> List[models.Lemma]:
-    return list(models.Lemma.select(models.Lemma, models.Konsep).where(where).join(models.Konsep).limit(limit))
+    stmt = models.Lemma.select(models.Lemma).where(where).limit(limit)
+    to_return = prefetch(stmt, models.Konsep)
+    return to_return
 
 
 def get_lemma_by_name(nama: str, limit: int = 1) -> List[models.Lemma]:

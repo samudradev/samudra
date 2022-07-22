@@ -8,3 +8,5 @@ from .lemma import LemmaCreation, LemmaRecord
 from .konsep import KonsepCreation, KonsepRecord
 from .cakupan import CakupanCreation, CakupanRecord
 from .kata_asing import KataAsingCreation, KataAsingRecord
+
+from .annotated_text import AnnotatedText, AnnotatedTextResponse

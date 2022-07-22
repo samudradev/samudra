@@ -36,7 +36,7 @@ A simple dictionary web application.
 Example using [httpie](www.httpie.io) and annotated post body
 
 ```
-http POST :8000/lemma/{nama} keterangan="sebahagian dari konsep #biasa #professional {en:name}" golongan='nama'
+http POST :8000/lemma/{nama} keterangan="sebahagian dari konsep #biasa #professional {lang.en:name} {meta.gol:nama}"
 ```
 
 will create
@@ -48,9 +48,11 @@ will create
         "keterangan": "sebahagian dari konsep",
         "golongan": "nama",
         "cakupan": ["biasa", "professional"],
-        "kata_asing": {
-            "en": "name"
-        }
+        "kata_asing": [
+            "bahasa"    : "en"
+            "nama"      : "name"
+            "golongan"  : "nama"
+        ]
     }
 }
 ```

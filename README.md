@@ -34,7 +34,11 @@ A simple dictionary web application.
 #### Create Lemma
 
 Example using [httpie](www.httpie.io) and annotated post body
-`http POST :8000/lemma/{nama} keterangan="sebahagian dari konsep #biasa #professional {en:name}" golongan='nama'`
+
+```
+http POST :8000/lemma/{nama} keterangan="sebahagian dari konsep #biasa #professional {en:name}" golongan='nama'
+```
+
 will create
 
 ```

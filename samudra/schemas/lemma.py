@@ -1,11 +1,11 @@
 import datetime
-from typing import List, Optional, Union
+from typing import List
 
 import pydantic as pyd
 
 from samudra import models
 from samudra.schemas._helper import PeeweeGetterDict
-from samudra.schemas.konsep import KonsepRecord, KonsepCreation
+from samudra.schemas.konsep import KonsepResponse
 
 
 class LemmaBase(pyd.BaseModel):
@@ -13,17 +13,10 @@ class LemmaBase(pyd.BaseModel):
     model: models.BaseTable = models.Lemma
 
 
-class LemmaCreation(LemmaBase):
-    # --- Relationships
-    konsep: List[KonsepCreation]
-
-
-class LemmaRecord(LemmaCreation):
-    # --- Record specific fields
+class LemmaResponse(LemmaBase):
     id: int
-    tarikh_masuk: datetime.datetime
     # --- Relationships
-    konsep: Union[List[KonsepRecord], KonsepRecord]
+    konsep: List[KonsepResponse]
 
     class Config:
         orm_mode = True

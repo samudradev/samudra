@@ -4,9 +4,9 @@ Lemma  <== Konsep <== Cakupan
                   <== KataAsing
 """
 # Ordered by table hierarchy
-from .lemma import LemmaCreation, LemmaRecord
-from .konsep import KonsepCreation, KonsepRecord
-from .cakupan import CakupanCreation, CakupanRecord
-from .kata_asing import KataAsingCreation, KataAsingRecord
+from .lemma import LemmaResponse
+from .konsep import KonsepResponse
+from .cakupan import CakupanResponse
+from .kata_asing import KataAsingResponse
 
-from .annotated_text import AnnotatedText, AnnotatedTextResponse
+from .annotated_text import AnnotatedText

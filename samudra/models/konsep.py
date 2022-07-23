@@ -8,7 +8,7 @@ class Konsep(BaseTable):
     """
     Konsep model
     """
-    lemma = ForeignKeyField(model=Lemma, field=Lemma.id, backref='konsep')
+    lemma = ForeignKeyField(model=Lemma, field=Lemma.id, backref='konsep', on_delete='cascade')
     golongan = TextField(null=False)
     keterangan = BlobField(null=True)
     # ---

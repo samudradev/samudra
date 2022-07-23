@@ -5,8 +5,8 @@ import pydantic as pyd
 
 from samudra import models
 from samudra.schemas._helper import PeeweeGetterDict
-from samudra.schemas.cakupan import CakupanRecord, CakupanCreation
-from samudra.schemas.kata_asing import KataAsingRecord, KataAsingCreation
+from samudra.schemas.cakupan import CakupanResponse
+from samudra.schemas.kata_asing import KataAsingResponse
 
 
 class KonsepBase(pyd.BaseModel):
@@ -17,19 +17,12 @@ class KonsepBase(pyd.BaseModel):
     model: models.BaseTable = models.Konsep
 
 
-class KonsepCreation(KonsepBase):
-    # --- Relationships
-    cakupan: Optional[List[CakupanCreation]]
-    kata_asing: Optional[List[KataAsingCreation]]
-
-
-class KonsepRecord(KonsepBase):
+class KonsepResponse(KonsepBase):
     # --- Record specific fields
     id: int
-    tarikh_masuk: datetime.datetime
     # --- Relationships
-    cakupan: Optional[List[CakupanRecord]]
-    kata_asing: Optional[List[KataAsingRecord]]
+    cakupan: Optional[List[CakupanResponse]]
+    kata_asing: Optional[List[KataAsingResponse]]
 
     class Config:
         orm_mode = True

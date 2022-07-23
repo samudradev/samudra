@@ -13,5 +13,5 @@ class Cakupan(BaseTable):
 
 
 class PadananCakupanKeKonsep(BaseTable):
-    cakupan = ForeignKeyField(model=Cakupan, field=Cakupan.id, backref='konsep')
-    konsep = ForeignKeyField(model=Konsep, field=Konsep.id, backref='cakupan')
+    cakupan = ForeignKeyField(model=Cakupan, field=Cakupan.id, backref='konsep', on_delete='cascade')
+    konsep = ForeignKeyField(model=Konsep, field=Konsep.id, backref='cakupan', on_delete='cascade')

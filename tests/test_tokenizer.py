@@ -1,11 +1,18 @@
-from samudra.tools.tokenizer import tokenize
+import pytest
+
+from samudra.schemas import AnnotatedText
 
 
-def test_tokenize():
-    TEXT = """
-    Ini adalah konsep. #tag-1 #tag_2 {en:house}
-    """
-    response = tokenize(TEXT)
-    assert response['text'] == ['Ini adalah konsep.']
-    assert response['tag'] == ['#tag-1', '#tag_2']
-    assert response['annotation'] == ['{en:house}']
+def test_annotated_text():
+    text = "Ini adalah konsep cubaan #tag_1 #tag-2 {lang.en:concept} {lang.en:test} {meta.gol:NAMA}"
+    post = AnnotatedText(body=text)
+    assert post.content == "Ini adalah konsep cubaan"
+    assert post.tags == ['tag 1', 'tag-2']
+    assert post.fields['meta'] == {'gol': 'NAMA'}
+    assert post.fields['lang'] == {'en': ['concept', 'test']}
+
+
+def test_annotated_text_w_failure():
+    text = "Ini adalah # konsep cubaan #tag_1 #tag-2 {lang.en:concept} {lang.en:test} {meta.gol:NAMA}"
+    with pytest.raises(SyntaxError):
+        AnnotatedText(body=text).tokenized

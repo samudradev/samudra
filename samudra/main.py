@@ -1,4 +1,5 @@
 import logging
+from collections import defaultdict
 
 import peewee as pw
 import uvicorn
@@ -12,7 +13,7 @@ from samudra import models, schemas
 from samudra.tools import crud
 from samudra.conf import Database
 from samudra.conf.database import db_state_default
-from samudra.tools.tokenizer import tokenize, parse_annotated_text
+from samudra.tools.tokenizer import tokenize
 
 app = FastAPI()
 
@@ -46,17 +47,17 @@ def get_db(db_state=Depends(reset_db_state)):
             Database.connection.close()
 
 
-@app.get("/lemmas/", response_model=List[schemas.LemmaRecord], dependencies=[Depends(get_db)])
+@app.get("/lemmas/", response_model=List[schemas.LemmaResponse], dependencies=[Depends(get_db)])
 def get_all_lemma(limit: int = None) -> List[models.Lemma]:
     return crud.get_all_lemma(limit=limit)
 
 
-@app.get("/lemma/id/{_id}", response_model=List[schemas.LemmaRecord], dependencies=[Depends(get_db)])
+@app.get("/lemma/id/{_id}", response_model=List[schemas.LemmaResponse], dependencies=[Depends(get_db)])
 def get_lemma_by_id(_id: int) -> List[models.Lemma]:
     return crud.get_lemma_by_id(lemma_id=_id)
 
 
-@app.get("/lemma/{nama}", response_model=List[schemas.LemmaRecord], dependencies=[Depends(get_db)])
+@app.get("/lemma/{nama}", response_model=List[schemas.LemmaResponse], dependencies=[Depends(get_db)])
 def read_lemma(nama: str) -> List[models.Lemma]:
     db_lemma = crud.get_lemma_by_name(nama=nama)
     print(db_lemma)
@@ -65,22 +66,13 @@ def read_lemma(nama: str) -> List[models.Lemma]:
     return db_lemma
 
 
-@app.post('/lemma/{nama}', response_model=Union[schemas.KonsepRecord, schemas.AnnotatedTextResponse],
-          dependencies=[Depends(get_db)])
+@app.post('/lemma/{nama}', response_model=schemas.KonsepResponse, dependencies=[Depends(get_db)])
 def create_lemma(nama: str, post: schemas.AnnotatedText) -> Union[models.Konsep, schemas.AnnotatedText]:
-    # try:
-    #     tokenize(post.body)
-    # except SyntaxError as e:
-    #     return schemas.AnnotatedTextResponse(**post.dict(), message=e)
-    konsep = models.Konsep.create(golongan=post.annotations.get('meta').get('gol'), keterangan=post.content,
-                                  lemma=models.Lemma.get_or_create(nama=nama)[0])
-    # TODO: Get cakupan to work properly
-    konsep.cakupan = [models.Cakupan.get_or_create(nama=tag)[0] for tag in post.tags]
-    konsep.kata_asing = [
-        models.KataAsing.create(nama=post.annotations.get("lang")[lang], bahasa=lang,
-                                golongan=post.annotations.get('meta').get('gol'))
-        for lang in post.annotations.get('lang')]
-    return konsep
+    try:
+        to_return = crud.create_konsep(post, lemma_name=nama)
+    except SyntaxError as e:
+        raise HTTPException(status_code=400, detail=e.msg)
+    return to_return
 
 
 def check_tables(create_tables: bool = False) -> None:

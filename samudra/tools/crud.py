@@ -24,5 +24,16 @@ def get_all_lemma(limit: int = 10) -> List[models.Lemma]:
     return get_minimum_lemma_info(where=None, limit=limit)
 
 
-def create_lemma(*args):
-    pass
+def create_konsep(annotated_text: schemas.AnnotatedText, lemma_name: str) -> models.Konsep:
+    konsep = models.Konsep.create(golongan=annotated_text.fields.get('meta').get('gol'),
+                                  keterangan=annotated_text.content,
+                                  lemma=models.Lemma.get_or_create(nama=lemma_name)[0])
+    if annotated_text.tags:
+        konsep.cakupan = [models.Cakupan.get_or_create(nama=tag)[0] for tag in annotated_text.tags]
+    if annotated_text.fields.get('lang'):
+        kata_asing = list()
+        for lang in annotated_text.fields.get('lang'):
+            kata_asing.append([models.KataAsing.get_or_create(nama=nama, bahasa=lang)[0] for nama in
+                               annotated_text.fields.get("lang")[lang]])
+        konsep.kata_asing = kata_asing
+    return konsep

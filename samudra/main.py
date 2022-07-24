@@ -17,7 +17,7 @@ from samudra.tools.tokenizer import tokenize
 
 app = FastAPI()
 
-SLEEP_TIME: int = 10
+SLEEP_TIME: int = 500_000
 
 origins = [
     "http://localhost:3000",
@@ -83,11 +83,10 @@ def check_tables(create_tables: bool = False) -> None:
             if not create_tables:
                 raise pw.DatabaseError(f"{TABLE.__name__} not existed in {Database.connection.database}")
     if create_tables:
-        Database.connection.create_tables(models.TABLES)
+        Database.connection.create_tables([*models.TABLES, *models.JOIN_TABLES], safe=True)
     return None
 
 
 if __name__ == '__main__':
-    check_tables(create_tables=False)
-    Database.connection.create_tables([*models.TABLES, *models.JOIN_TABLES], safe=True)
+    check_tables(create_tables=True)
     uvicorn.run("main:app", port=8000, reload=True)

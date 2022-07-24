@@ -4,9 +4,17 @@ import os
 from dataclasses import dataclass
 
 import peewee as pw
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # TODO Refactor these to depend on conf.toml
-ENGINE = 'sqlite'
+ENGINE = os.getenv('ENGINE')
+DATABASE_NAME = os.getenv('DATABASE_NAME')
+DATABASE_HOST = os.getenv('DATABASE_HOST')
+DATABASE_PORT = os.getenv('DATABASE_PORT')
+USERNAME = os.getenv('USERNAME')
+PASSWORD = os.getenv('PASSWORD')
 
 db_state_default = {"closed": None, "conn": None, "ctx": None, "transactions": None}
 db_state = ContextVar("db_state", default=db_state_default.copy())
@@ -30,10 +38,13 @@ def get_database_connection(engine: str) -> pw.Database:
                 return self._state.get()[name]
 
         # The DB connection object
-        return_db = pw.SqliteDatabase(os.path.join(os.getcwd(), 'data', "samudra.db"))
+        return_db = pw.SqliteDatabase(os.path.join(os.getcwd(), 'data', f"{DATABASE_NAME}.db"))
         return_db._state = PeeweeConnectionState()
 
-        logging.debug(f'Connection to {return_db}')
+        logging.debug(f'Connecting to to {return_db.database}')
+    elif engine == 'mysql':
+        return_db = pw.MySQLDatabase(DATABASE_NAME, host=DATABASE_HOST, port=DATABASE_PORT, user=USERNAME,
+                                     password=PASSWORD)
     else:
         raise NotImplementedError("Invalid engine")
     return return_db

@@ -36,7 +36,7 @@ A simple dictionary web application.
 Example using [httpie](www.httpie.io) and annotated post body
 
 ```
-http POST :8000/lemma/{nama} keterangan="sebahagian dari konsep #biasa #professional {lang.en:name} {lang.en:new} {meta.gol:nama}"
+http POST :8000/lemma/{nama} body="sebahagian dari konsep #biasa #professional {lang.en:name} {lang.en:new} {meta.gol:nama}"
 ```
 
 will create

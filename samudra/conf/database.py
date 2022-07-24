@@ -12,9 +12,10 @@ load_dotenv()
 ENGINE = os.getenv('ENGINE')
 DATABASE_NAME = os.getenv('DATABASE_NAME')
 DATABASE_HOST = os.getenv('DATABASE_HOST')
-DATABASE_PORT = os.getenv('DATABASE_PORT')
+DATABASE_PORT = int(os.getenv('DATABASE_PORT'))
 USERNAME = os.getenv('USERNAME')
 PASSWORD = os.getenv('PASSWORD')
+SSL_MODE = os.getenv('SSLMODE')
 
 db_state_default = {"closed": None, "conn": None, "ctx": None, "transactions": None}
 db_state = ContextVar("db_state", default=db_state_default.copy())

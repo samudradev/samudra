@@ -15,4 +15,10 @@ def test_annotated_text():
 def test_annotated_text_w_failure():
     text = "Ini adalah # konsep cubaan #tag_1 #tag-2 {lang.en:concept} {lang.en:test} {meta.gol:NAMA}"
     with pytest.raises(SyntaxError):
-        AnnotatedText(body=text).tokenized
+        AnnotatedText(body=text)._tokens
+
+
+def test_annotated_text_w_unaacceptable_fields():
+    text = "Ini adalah konsep cubaan #tag_1 #tag-2 {lang.xyx:concept}"
+    with pytest.raises(SyntaxError):
+        AnnotatedText(body=text).fields

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "samudra"
-version = "0.3.4"
+version = "0.3.5"
 description = ""
 authors = ["Thaza_Kun <61819672+Thaza-Kun@users.noreply.github.com>"]
 
@@ -14,8 +14,9 @@ pydantic = "^1.9.1"
 pandas = "^1.4.3"
 openpyxl = "^3.0.10"
 python-dotenv = "^0.20.0"
-PyMySQL = "^1.0.2"
-cryptography = "^37.0.4"
+psycopg2 = {version = "^2.9.3", optional = true, extras = ["cockroach_db"]}
+cryptography = {version = "^37.0.4", optional = true, extras = ["cockroach_db", "mysql"]}
+PyMySQL = {version = "^1.0.2", optional = true, extras = ["mysql"]}
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

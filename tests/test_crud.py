@@ -1,5 +1,5 @@
 from samudra.schemas import AnnotatedText
-from samudra.tools import crud
+from samudra.core import crud
 from tests import mocks
 
 DATA_1 = "Ini adalah konsep cubaan #tag_1 #tag-2 {lang.en:concept} {lang.en:test} {meta.gol:NAMA}"

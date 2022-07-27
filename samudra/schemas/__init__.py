@@ -4,9 +4,7 @@ Lemma  <== Konsep <== Cakupan
                   <== KataAsing
 """
 # Ordered by table hierarchy
-from .lemma import LemmaResponse
-from .konsep import KonsepResponse
-from .cakupan import CakupanResponse
-from .kata_asing import KataAsingResponse
+from samudra.schemas.tables.lemma import LemmaResponse
+from samudra.schemas.tables.konsep import KonsepResponse
 
-from .annotated_text import AnnotatedText
+from samudra.schemas.input.annotated_text import AnnotatedText

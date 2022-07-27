@@ -13,5 +13,5 @@ class KataAsing(BaseTable):
 
 
 class PadananKonsepKeKataAsing(BaseTable):
-    konsep = ForeignKeyField(Konsep, backref='lemma_asing', on_delete='cascade')
-    kata_asing = ForeignKeyField(KataAsing, backref='konsep', on_delete='cascade')
+    konsep = ForeignKeyField(Konsep, field=Konsep.id, backref='kata_asing', on_delete='cascade')
+    kata_asing = ForeignKeyField(KataAsing, field=KataAsing.id, backref='konsep', on_delete='cascade')

@@ -10,7 +10,7 @@ class Konsep(BaseTable):
     """
     lemma = ForeignKeyField(model=Lemma, field=Lemma.id, backref='konsep', on_delete='cascade')
     golongan = TextField(null=False)
-    keterangan = BlobField(null=True)
+    keterangan = TextField(null=True)
     # ---
     tertib = IntegerField(null=True)
 

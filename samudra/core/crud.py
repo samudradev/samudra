@@ -9,6 +9,7 @@ from samudra import schemas
 def get_minimum_lemma_info(where: Any, limit: Optional[int] = None) -> List[models.Lemma]:
     stmt = models.Lemma.select(models.Lemma).where(where).limit(limit)
     to_return = prefetch(stmt, models.Konsep)
+    # TODO: Also return cakupan and kata asing
     return to_return
 
 
@@ -31,9 +32,18 @@ def create_konsep(annotated_text: schemas.AnnotatedText, lemma_name: str) -> mod
     if annotated_text.tags:
         konsep.cakupan = [models.Cakupan.get_or_create(nama=tag)[0] for tag in annotated_text.tags]
     if annotated_text.fields.get('lang'):
-        kata_asing = list()
+        kata_asing_full = list()
         for lang in annotated_text.fields.get('lang'):
-            kata_asing.append([models.KataAsing.get_or_create(nama=nama, bahasa=lang)[0] for nama in
-                               annotated_text.fields.get("lang")[lang]])
-        konsep.kata_asing = kata_asing
+            kata_asing = [models.KataAsing.get_or_create(nama=nama, bahasa=lang)[0] for nama in
+                          annotated_text.fields.get("lang")[lang]]
+            kata_asing_full.extend(kata_asing)
+        konsep.kata_asing = kata_asing_full
     return konsep
+
+
+def delete_lemma(lemma: models.Lemma) -> int:
+    return lemma.delete_instance()
+
+
+def get_all_konsep(limit: int = None) -> List[models.Konsep]:
+    return models.Konsep.select(models.Konsep).limit(limit)

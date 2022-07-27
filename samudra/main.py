@@ -1,19 +1,20 @@
 import logging
-from collections import defaultdict
 
 import peewee as pw
+import pydantic
 import uvicorn
 
-from typing import List, Union
+from typing import List, Union, Optional
 
 from fastapi import Depends, FastAPI, HTTPException
+from fastapi.exception_handlers import request_validation_exception_handler
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 
 from samudra import models, schemas
-from samudra.tools import crud
+from samudra.core import crud
 from samudra.conf import Database
-from samudra.conf.database import db_state_default
-from samudra.tools.tokenizer import tokenize
+from samudra.conf.database.core import db_state_default
 
 app = FastAPI()
 
@@ -34,8 +35,11 @@ app.add_middleware(
 
 
 async def reset_db_state() -> None:
-    Database.connection._state._state.set(db_state_default.copy())
-    Database.connection._state.reset()
+    try:
+        Database.connection._state._state.set(db_state_default.copy())
+        Database.connection._state.reset()
+    except AttributeError:
+        pass
 
 
 def get_db(db_state=Depends(reset_db_state)):
@@ -45,6 +49,12 @@ def get_db(db_state=Depends(reset_db_state)):
     finally:
         if not Database.connection.is_closed():
             Database.connection.close()
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request, exc):
+    print(f"OMG! The client sent invalid data!: {exc}")
+    return await request_validation_exception_handler(request, exc)
 
 
 @app.get("/lemmas/", response_model=List[schemas.LemmaResponse], dependencies=[Depends(get_db)])
@@ -60,10 +70,14 @@ def get_lemma_by_id(_id: int) -> List[models.Lemma]:
 @app.get("/lemma/{nama}", response_model=List[schemas.LemmaResponse], dependencies=[Depends(get_db)])
 def read_lemma(nama: str) -> List[models.Lemma]:
     db_lemma = crud.get_lemma_by_name(nama=nama)
-    print(db_lemma)
     if db_lemma is None:
         raise HTTPException(status_code=404, detail='Lemma not in record')
     return db_lemma
+
+
+@app.get('/konseps/', response_model=List[schemas.KonsepResponse], dependencies=[Depends(get_db)])
+def get_all_konsep(limit: Optional[int] = None) -> List[models.Konsep]:
+    return crud.get_all_konsep(limit=limit)
 
 
 @app.post('/lemma/{nama}', response_model=schemas.KonsepResponse, dependencies=[Depends(get_db)])
@@ -72,7 +86,16 @@ def create_lemma(nama: str, post: schemas.AnnotatedText) -> Union[models.Konsep,
         to_return = crud.create_konsep(post, lemma_name=nama)
     except SyntaxError as e:
         raise HTTPException(status_code=400, detail=e.msg)
-    return to_return
+    try:
+        return to_return
+    except pydantic.ValidationError:
+        raise HTTPException(status_code=400, detail=post.dict())
+
+
+@app.delete('/lemma/{id}', response_model=int, dependencies=[Depends(get_db)])
+def delete_lemma(id: int) -> int:
+    lemma = crud.get_lemma_by_id(id)[0]
+    return crud.delete_lemma(lemma)
 
 
 def check_tables(create_tables: bool = False) -> None:
@@ -87,6 +110,12 @@ def check_tables(create_tables: bool = False) -> None:
     return None
 
 
+def drop_tables() -> None:
+    Database.connection.drop_tables([*models.TABLES, *models.JOIN_TABLES])
+    logging.debug("TABLES DROPPED")
+
+
 if __name__ == '__main__':
+    # drop_tables()
     check_tables(create_tables=True)
     uvicorn.run("main:app", port=8000, reload=True)

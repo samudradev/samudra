@@ -42,7 +42,7 @@ def create_konsep(annotated_text: schemas.AnnotatedText, lemma_name: str) -> mod
 
 
 def delete_lemma(lemma: models.Lemma) -> int:
-    return lemma.delete_instance()
+    return lemma.delete_instance(recursive=True)
 
 
 def get_all_konsep(limit: int = None) -> List[models.Konsep]:

@@ -4,16 +4,21 @@ import os
 from dataclasses import dataclass
 
 import peewee as pw
-from dotenv import load_dotenv
 
 from samudra.conf.database.options import DatabaseEngine
+from samudra.conf.setup import settings
 
-load_dotenv()
+# TODO: Enforce requirements per database engine
 
-# TODO Refactor these to depend on conf.toml
-ENGINE = os.getenv('ENGINE')
+# As settings
+ENGINE = settings.get('database.engine', None)
+DATABASE_NAME = settings.get('database.name', 'samudra')
+if ENGINE is None or ENGINE not in DatabaseEngine.__members__:
+    raise ValueError('Please specify database engine in conf.toml. Valid values are: \n - {}'
+                     .format('\n - '.join(DatabaseEngine.__members__)))
+
+# Environment variables
 DATABASE_HOST = os.getenv('DATABASE_HOST')
-DATABASE_NAME = os.getenv('DATABASE_NAME')
 DATABASE_PORT = int(os.getenv('DATABASE_PORT'))
 DATABASE_OPTIONS = os.getenv('DATABASE_OPTIONS')
 USERNAME = os.getenv('DATABASE_USERNAME')
@@ -24,6 +29,8 @@ db_state_default = {"closed": None, "conn": None, "ctx": None, "transactions": N
 db_state = ContextVar("db_state", default=db_state_default.copy())
 
 
+# ! Cannot set this func as a @property of class Database
+# ! so we separate as its own function and call it as an attribute of the class
 def get_database(engine: DatabaseEngine) -> pw.Database:
     """
     Returns the connection class based on the engine.

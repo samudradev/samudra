@@ -1,1 +1,3 @@
-from samudra.conf.database.core import Database
+from dotenv import load_dotenv
+
+load_dotenv()

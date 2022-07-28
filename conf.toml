@@ -1,0 +1,9 @@
+[database]
+engine = "SQLitea"
+name = "samudra"
+
+[cors_policy]
+allowed_origins = [
+    "http://localhost:3000",
+    "localhost:3000",
+]

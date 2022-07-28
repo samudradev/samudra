@@ -27,7 +27,7 @@ A simple dictionary web application.
 
 ## Running the app
 
-`python ./samudra/main.py`
+`python ./samudra/serve.py`
 
 ### Lemma
 
@@ -35,29 +35,41 @@ A simple dictionary web application.
 
 Example using [httpie](www.httpie.io) and annotated post body
 
-```
+```shell
 http POST :8000/lemma/{nama} body="sebahagian dari konsep #biasa #professional {lang.en:name} {lang.en:new} {meta.gol:nama}"
 ```
 
 will create
 
-```
+```json
 {
-    "lemma": "{nama}",
-    "konsep": {
-        "keterangan": "sebahagian dari konsep",
-        "golongan": "nama",
-        "cakupan": ["biasa", "professional"],
-        "kata_asing": [
-            {
-                "bahasa"    : "en"
-                "nama"      : "name"
-            },
-            {
-                "bahasa"    : "en"
-                "nama"      : "new"
-            }
-        ]
-    }
+  "lemma": "{nama}",
+  "konsep": {
+    "keterangan": "sebahagian dari konsep",
+    "golongan": "nama",
+    "cakupan": [
+      "biasa",
+      "professional"
+    ],
+    "kata_asing": [
+      {
+        "bahasa": "en"
+        "nama": "name"
+      },
+      {
+        "bahasa": "en"
+        "nama": "new"
+      }
+    ]
+  }
 }
 ```
+
+## Ingin Menyumbang?
+
+- Buat masa ini kami perlukan seseorang untuk membuat bahagian frontend.
+  Sebolehnya, nak guna [Next.js](https://nextjs.org/).
+- Boleh tambahbaik aplikasi dari segi pull request atau sekadar cadangan
+
+Boleh hubungi saya melalui emel [makmal.thaza+samudra@gmail.com](mailto:makmal.thaza+samudra@gmail.com) atau di
+Twitter [@Thaza_Kun](www.twitter.com/Thaza_Kun)

@@ -60,7 +60,7 @@ akan menghasilkan
 ## Ingin Menyumbang?
 
 - Buat masa ini kami perlukan seseorang untuk membuat bahagian frontend.
-  Sebolehnya, nak guna [Next.js](https://nextjs.org/).
+  Sebolehnya, nak guna [Next.js](https://nextjs.org/) (sebab saya sedang belajar guna Next.JS)
 - Boleh tambahbaik aplikasi dari segi pull request atau sekadar cadangan
 - Boleh sumbangkan secangkir kopi di [Ko-fi](https://ko-fi.com/thaza_kun)
 

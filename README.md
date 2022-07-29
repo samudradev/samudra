@@ -45,11 +45,11 @@ akan menghasilkan
     ],
     "kata_asing": [
       {
-        "bahasa": "en"
+        "bahasa": "en",
         "nama": "name"
       },
       {
-        "bahasa": "en"
+        "bahasa": "en",
         "nama": "new"
       }
     ]

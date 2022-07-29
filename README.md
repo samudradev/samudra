@@ -1,55 +1,47 @@
 # Samudra
 
-A simple dictionary web application.
+Sebuah aplikasi untuk memudahkan pencatatan istilah serta pengongsiannya sesama rakan sekerja atau orang awam.
+Dengan memudahkan proses ini, kita dapat menambah jumlah rujukan bahasa Melayu dalam talian sekali gus mempercepatkan
+perkembangannya dari segi penggunaan, penyelidikan serta pembelajarannya.
 
-## MVP Features
+## Model
 
-### Models
+Model kamus direka supaya selari dengan padanan satu kata boleh mendukung banyak konsep
+serta satu perkataan boleh dipadankan ke banyak kata asing yang bergantung pada konsep dan konteks yang digunakan.
 
-- Lemma (Lemma)
-- Konsep (Concept)
-- KataAsing (Foreign Word)
-- Cakupan (Context of Meaning)
+![](./docs/img/model-samudra.png)
 
-### Interactions
+## Tentang Aplikasi
 
-1. Add words with meaning. (DONE)
-2. Add contexts to meaning. (DONE)
-3. Add foreign words to meaning. (DONE)
-4. Retrieve word and related information. (DONE)
-5. Expose API using FastAPI. (DONE)
+### Pemasangan
 
-## Installation
+1. Python 3.8 atau lebih
+2. Guna [poetry](https://python-poetry.org/docs/) (digalakkan)
+3. `poetry install`
 
-1. Python 3.8 or later
-2. Install [poetry](https://python-poetry.org/docs/)
-3. `poetry install` (creating a virtual environment is recommended)
-
-## Running the app
+### Mulakan pelayan
 
 `python ./samudra/serve.py`
 
-### Lemma
+### Penciptaan lemma
 
-#### Create Lemma
-
-Example using [httpie](www.httpie.io) and annotated post body
+Ini adalah contoh menggunakan [httpie](www.httpie.io).
 
 ```shell
-http POST :8000/lemma/{nama} body="sebahagian dari konsep #biasa #professional {lang.en:name} {lang.en:new} {meta.gol:nama}"
+http POST :8000/lemma/nama body="keterangan konsep #pasar #percakapan {lang.en:name} {lang.en:new} {meta.gol:NAMA}"
 ```
 
-will create
+akan menghasilkan
 
 ```json
 {
-  "lemma": "{nama}",
+  "lemma": "nama",
   "konsep": {
-    "keterangan": "sebahagian dari konsep",
-    "golongan": "nama",
+    "keterangan": "keterangan konsep",
+    "golongan": "NAMA",
     "cakupan": [
-      "biasa",
-      "professional"
+      "pasar",
+      "percakapan"
     ],
     "kata_asing": [
       {
@@ -70,6 +62,7 @@ will create
 - Buat masa ini kami perlukan seseorang untuk membuat bahagian frontend.
   Sebolehnya, nak guna [Next.js](https://nextjs.org/).
 - Boleh tambahbaik aplikasi dari segi pull request atau sekadar cadangan
+- Boleh sumbangkan secangkir kopi di [Ko-fi](https://ko-fi.com/thaza_kun)
 
 Boleh hubungi saya melalui emel [makmal.thaza+samudra@gmail.com](mailto:makmal.thaza+samudra@gmail.com) atau di
-Twitter [@Thaza_Kun](www.twitter.com/Thaza_Kun)
+Twitter [@Thaza_Kun](www.twitter.com/Thaza_Kun).

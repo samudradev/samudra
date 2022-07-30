@@ -11,19 +11,20 @@ from samudra.conf.setup import settings
 # TODO: Enforce requirements per database engine
 
 # As settings
-ENGINE = settings.get('database.engine', None)
+ENGINE = settings.get('database').get('engine', None)
 DATABASE_NAME = settings.get('database.name', 'samudra')
 if ENGINE is None or ENGINE not in DatabaseEngine.__members__:
-    raise ValueError('Please specify database engine in conf.toml. Valid values are: \n - {}'
-                     .format('\n - '.join(DatabaseEngine.__members__)))
+    raise ValueError('Please specify database engine in conf.toml. You entered {}. Valid values are: \n - {}'
+                     .format(ENGINE, '\n - '.join(DatabaseEngine.__members__)))
 
 # Environment variables
-DATABASE_HOST = os.getenv('DATABASE_HOST')
-DATABASE_PORT = int(os.getenv('DATABASE_PORT'))
-DATABASE_OPTIONS = os.getenv('DATABASE_OPTIONS')
-USERNAME = os.getenv('DATABASE_USERNAME')
-PASSWORD = os.getenv('DATABASE_PASSWORD')
-SSL_MODE = os.getenv('SSL_MODE')
+if DatabaseEngine[ENGINE] is not DatabaseEngine.SQLite:
+    DATABASE_HOST = os.getenv('DATABASE_HOST')
+    DATABASE_PORT = int(os.getenv('DATABASE_PORT'))
+    DATABASE_OPTIONS = os.getenv('DATABASE_OPTIONS')
+    USERNAME = os.getenv('DATABASE_USERNAME')
+    PASSWORD = os.getenv('DATABASE_PASSWORD')
+    SSL_MODE = os.getenv('SSL_MODE')
 
 db_state_default = {"closed": None, "conn": None, "ctx": None, "transactions": None}
 db_state = ContextVar("db_state", default=db_state_default.copy())

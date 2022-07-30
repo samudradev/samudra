@@ -10,7 +10,6 @@ def get_minimum_lemma_info(where: Any, limit: Optional[int] = None) -> List[mode
     stmt = models.Lemma.select(models.Lemma).where(where).limit(limit)
     to_return = prefetch(stmt, models.Konsep, models.PadananCakupanKeKonsep, models.Cakupan,
                          models.PadananKonsepKeKataAsing, models.KataAsing)
-    # TODO: Also return cakupan and kata asing
     return to_return
 
 

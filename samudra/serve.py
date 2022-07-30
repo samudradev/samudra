@@ -33,3 +33,6 @@ def root() -> Dict[str, str]:
 if __name__ == '__main__':
     check_tables(create_tables=True)
     uvicorn.run("serve:app", port=8000, reload=True)
+
+# TODO: CLI
+# TODO: Share lemma via picture

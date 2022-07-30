@@ -8,7 +8,8 @@ from samudra import schemas
 
 def get_minimum_lemma_info(where: Any, limit: Optional[int] = None) -> List[models.Lemma]:
     stmt = models.Lemma.select(models.Lemma).where(where).limit(limit)
-    to_return = prefetch(stmt, models.Konsep)
+    to_return = prefetch(stmt, models.Konsep, models.PadananCakupanKeKonsep, models.Cakupan,
+                         models.PadananKonsepKeKataAsing, models.KataAsing)
     # TODO: Also return cakupan and kata asing
     return to_return
 
@@ -31,6 +32,8 @@ def create_konsep(annotated_text: schemas.AnnotatedText, lemma_name: str) -> mod
                                   lemma=models.Lemma.get_or_create(nama=lemma_name)[0])
     if annotated_text.tags:
         konsep.cakupan = [models.Cakupan.get_or_create(nama=tag)[0] for tag in annotated_text.tags]
+        for cakupan in konsep.cakupan:
+            models.PadananCakupanKeKonsep.get_or_create(cakupan=cakupan.id, konsep=konsep.id)
     if annotated_text.fields.get('lang'):
         kata_asing_full = list()
         for lang in annotated_text.fields.get('lang'):
@@ -38,6 +41,8 @@ def create_konsep(annotated_text: schemas.AnnotatedText, lemma_name: str) -> mod
                           annotated_text.fields.get("lang")[lang]]
             kata_asing_full.extend(kata_asing)
         konsep.kata_asing = kata_asing_full
+        for kata_asing in konsep.kata_asing:
+            models.PadananKonsepKeKataAsing.get_or_create(konsep=konsep.id, kata_asing=kata_asing.id)
     return konsep
 
 
@@ -45,5 +50,10 @@ def delete_lemma(lemma: models.Lemma) -> int:
     return lemma.delete_instance(recursive=True)
 
 
-def get_all_konsep(limit: int = None) -> List[models.Konsep]:
-    return models.Konsep.select(models.Konsep).limit(limit)
+def get_all_konsep(where: Any) -> List[models.Konsep]:
+    stmt = models.Konsep.select(models.Konsep) \
+        .join(models.PadananCakupanKeKonsep).join(models.Cakupan) \
+        .join_from(models.Konsep, models.PadananKonsepKeKataAsing) \
+        .join(models.KataAsing) \
+        .where(where)
+    return [*stmt]

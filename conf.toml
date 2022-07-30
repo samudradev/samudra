@@ -1,5 +1,5 @@
 [database]
-engine = "SQLitea"
+engine = "SQLite"
 name = "samudra"
 
 [cors_policy]

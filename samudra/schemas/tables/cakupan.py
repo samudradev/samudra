@@ -3,18 +3,14 @@ from typing import Optional
 import pydantic as pyd
 
 from samudra import models
-from samudra.schemas.tables._helper import PeeweeGetterDict
+from samudra.schemas.tables._helper import PeeweeGetterDict, ORMSchema
 
 
-class CakupanResponseAsAttachment(pyd.BaseModel):
+class CakupanResponse(ORMSchema):
     # --- Record specific fields
     nama: str
     keterangan: Optional[str]
 
-    class Config:
-        orm_mode = True
-        getter_dict = PeeweeGetterDict
 
-
-class CakupanResponse(CakupanResponseAsAttachment):
-    id: int
+class AttachCakupanToResponse(ORMSchema):
+    cakupan: CakupanResponse

@@ -2,16 +2,12 @@ from typing import List
 
 import pydantic as pyd
 
-from samudra.schemas.tables._helper import PeeweeGetterDict
-from samudra.schemas.tables.konsep import KonsepResponse
+from samudra.schemas.tables._helper import PeeweeGetterDict, ORMSchema
+from samudra.schemas.tables.konsep import KonsepResponseFromTables
 
 
-class LemmaResponse(pyd.BaseModel):
+class LemmaResponse(ORMSchema):
     id: int
     nama: str
     # --- Relationships
-    konsep: List[KonsepResponse]
-
-    class Config:
-        orm_mode = True
-        getter_dict = PeeweeGetterDict
+    konsep: List[KonsepResponseFromTables]

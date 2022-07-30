@@ -3,14 +3,15 @@ from typing import Optional
 import pydantic as pyd
 
 from samudra import models
-from samudra.schemas.tables._helper import PeeweeGetterDict
+from samudra.models import kata_asing
+from samudra.schemas.tables._helper import PeeweeGetterDict, ORMSchema
 
 
-class KataAsingResponseAsAttachment(pyd.BaseModel):
+class KataAsingResponse(ORMSchema):
     # --- Record specific fields
     nama: Optional[str]
     bahasa: Optional[str]
 
-    class Config:
-        orm_mode = True
-        getter_dict = PeeweeGetterDict
+
+class AttachKataAsingToResponse(ORMSchema):
+    kata_asing: KataAsingResponse

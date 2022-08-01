@@ -1,3 +1,4 @@
+from samudra import models
 from samudra.schemas import AnnotatedText
 from samudra.core import crud
 from tests import mocks
@@ -20,3 +21,11 @@ def test_get_minimum_lemma_info():
     assert lemma.nama == 'ujian'
     assert lemma.id == 1
     assert len(lemma.konsep) == 2
+
+
+@mocks.bind_test_database
+def test_get_minimum_konsep_info():
+    data = AnnotatedText(body=DATA_1)
+    crud.create_konsep(annotated_text=data, lemma_name='ujian')
+    konsep = crud.get_all_konsep(where=None, limit=None)
+    assert konsep == list(models.Konsep)

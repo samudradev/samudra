@@ -49,10 +49,8 @@ def delete_lemma(lemma: models.Lemma) -> int:
     return lemma.delete_instance(recursive=True)
 
 
-def get_all_konsep(where: Any) -> List[models.Konsep]:
-    stmt = models.Konsep.select(models.Konsep) \
-        .join(models.PadananCakupanKeKonsep).join(models.Cakupan) \
-        .join_from(models.Konsep, models.PadananKonsepKeKataAsing) \
-        .join(models.KataAsing) \
-        .where(where)
-    return [*stmt]
+def get_all_konsep(where: Any, limit: int = None) -> List[models.Konsep]:
+    stmt = models.Konsep.select(models.Konsep).where(where).limit(limit)
+    to_return = prefetch(stmt, models.PadananCakupanKeKonsep.select().join(models.Cakupan),
+                         models.PadananKonsepKeKataAsing.select().join(models.KataAsing))
+    return to_return

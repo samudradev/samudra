@@ -33,7 +33,8 @@ class AnnotatedText(pyd.BaseModel):
                 to_return[match.lastgroup].append(match[0])
         if len(to_return['content']) > 1:
             raise SyntaxError({
-                "message": "Returns {} texts. Expects 1.".format(len(to_return)),
+                "message": "Returns {} texts. Expects 1. Unexpected character(s) causes the text to be parsed incorrectly.".format(
+                    len(to_return)),
                 "content": "<?> ".join(to_return['content']),
                 "body": self.body,
                 "tags": to_return.get('tag'),

@@ -23,7 +23,21 @@ serta satu perkataan boleh dipadankan ke banyak kata asing yang bergantung pada 
 
 `poetry run ./samudra/serve.py`
 
-### Penciptaan lemma
+## Penciptaan lemma / konsep
+
+Bagi memudahkan penulisan konsep, samudra menggunakan pencatatan berconteng tapis contengan tersebut menjadi struktur
+yang bermakna. Contengan perlu diletakkan di hujung keterangan kalau tidak, akan dihantar `SyntaxError` kerana ada lebih
+dari satu kandungan teks.
+
+- Contengan tagar `#` menandakan cakupan konsep tersebut. Misalnya, `#sains` menunjukkan konsep tersebut digunakan dalam
+  sains. Boleh ada banyak tagar untuk setiap konsep.
+- Contengan kurungan bertitik tindih `{kunci:nilai}` memadankan nilai pada kuncinya. Tanda titik `.` digunakan bagi
+  meletakkan kata kunci dalam kata kunci. Buat masa ini, hanya kunci-kunci berikut yang diterima:
+    - `{lang:en:nilai}` akan memadankan konsep ke kata asing berbahasa inggeris. Boleh padankan banyak kata asing ke
+      satu konsep. Kata asing berbahasa lain masih sedang
+      diusahakan.
+    - `{meta.gol:NAMA}` akan meletakkan penggolongan kata pada konsep tersebut. Ini adalah nilai wajib dan hanya satu
+      golongan untuk setiap konsep.
 
 Ini adalah contoh menggunakan [httpie](www.httpie.io).
 

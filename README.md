@@ -21,7 +21,7 @@ serta satu perkataan boleh dipadankan ke banyak kata asing yang bergantung pada 
 
 ### Mulakan pelayan
 
-`poetry run ./samudra/serve.py`
+`poetry run python ./samudra/serve.py`
 
 ## Penciptaan lemma / konsep
 

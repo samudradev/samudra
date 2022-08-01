@@ -21,14 +21,28 @@ serta satu perkataan boleh dipadankan ke banyak kata asing yang bergantung pada 
 
 ### Mulakan pelayan
 
-`python ./samudra/serve.py`
+`poetry run python ./samudra/serve.py`
 
-### Penciptaan lemma
+## Penciptaan lemma / konsep
+
+Bagi memudahkan penulisan konsep, samudra menggunakan pencatatan berconteng tapis contengan tersebut menjadi struktur
+yang bermakna. Contengan perlu diletakkan di hujung keterangan kalau tidak, akan dihantar `SyntaxError` kerana ada lebih
+dari satu kandungan teks.
+
+- Contengan tagar `#` menandakan cakupan konsep tersebut. Misalnya, `#sains` menunjukkan konsep tersebut digunakan dalam
+  sains. Boleh ada banyak tagar untuk setiap konsep.
+- Contengan kurungan bertitik tindih `{kunci:nilai}` memadankan nilai pada kuncinya. Tanda titik `.` digunakan bagi
+  meletakkan kata kunci dalam kata kunci. Buat masa ini, hanya kunci-kunci berikut yang diterima:
+    - `{lang:en:nilai}` akan memadankan konsep ke kata asing berbahasa inggeris. Boleh padankan banyak kata asing ke
+      satu konsep. Kata asing berbahasa lain masih sedang diusahakan.
+    - `{terj.en:nilai}` (kependekan untuk 'terjemah') akan buat benda sama dengan `{lang.en:nilai}` (boleh bercampur).
+    - `{meta.gol:NAMA}` akan meletakkan penggolongan kata pada konsep tersebut. Ini adalah nilai wajib dan hanya satu
+      golongan untuk setiap konsep.
 
 Ini adalah contoh menggunakan [httpie](www.httpie.io).
 
 ```shell
-http POST :8000/lemma/nama body="keterangan konsep #pasar #percakapan {lang.en:name} {lang.en:new} {meta.gol:NAMA}"
+http POST :8000/lemma/nama body="keterangan konsep #pasar #percakapan {terj.en:name} {lang.en:new} {meta.gol:NAMA}"
 ```
 
 akan menghasilkan
@@ -59,8 +73,8 @@ akan menghasilkan
 
 ## Ingin Menyumbang?
 
-- Buat masa ini kami perlukan seseorang untuk membuat bahagian frontend.
-  Sebolehnya, nak guna [Next.js](https://nextjs.org/) (sebab saya sedang belajar guna Next.JS)
+- Bahagian frontent boleh ke repo [alserembani94/laman-samudra](https://github.com/alserembani94/laman-samudra/).
+  Terima kasih @alserembani94 kerana sudi menggerakkan bahagian laman!
 - Boleh tambahbaik aplikasi dari segi pull request atau sekadar cadangan
 - Boleh sumbangkan secangkir kopi di [Ko-fi](https://ko-fi.com/thaza_kun)
 

@@ -12,7 +12,7 @@ from samudra.conf.setup import settings
 
 # As settings
 ENGINE = settings.get('database').get('engine', None)
-DATABASE_NAME = settings.get('database.name', 'samudra')
+DATABASE_NAME = settings.get('database').get('name', 'samudra')
 if ENGINE is None or ENGINE not in DatabaseEngine.__members__:
     raise ValueError('Please specify database engine in conf.toml. You entered {}. Valid values are: \n - {}'
                      .format(ENGINE, '\n - '.join(DatabaseEngine.__members__)))
@@ -50,6 +50,10 @@ def get_database(engine: DatabaseEngine) -> pw.Database:
                 return self._state.get()[name]
 
         # The DB connection object
+        try:
+            os.mkdir(os.path.join(os.getcwd(), 'data'))
+        except FileExistsError:
+            pass
         return_db = pw.SqliteDatabase(os.path.join(os.getcwd(), 'data', f"{DATABASE_NAME}.db"))
         return_db._state = PeeweeConnectionState()
 

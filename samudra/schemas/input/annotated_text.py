@@ -33,7 +33,8 @@ class AnnotatedText(pyd.BaseModel):
                 to_return[match.lastgroup].append(match[0])
         if len(to_return['content']) > 1:
             raise SyntaxError({
-                "message": "Returns {} texts. Expects 1.".format(len(to_return)),
+                "message": "Returns {} texts. Expects 1. Unexpected character(s) causes the text to be parsed incorrectly.".format(
+                    len(to_return)),
                 "content": "<?> ".join(to_return['content']),
                 "body": self.body,
                 "tags": to_return.get('tag'),
@@ -53,11 +54,11 @@ class AnnotatedText(pyd.BaseModel):
                 raise SyntaxError(f"Field '{key_1}' not expected. Only {AcceptedFields.__members__} are expected.")
             elif key_2 not in AcceptedFields[key_1].value:
                 raise SyntaxError(f"Field '{key_2}' not expected. Only {AcceptedFields[key_1].value} are expected.")
-            if key_1 == 'lang':
-                if to_return[key_1].get(key_2):
-                    to_return[key_1][key_2].append(value)
+            if AcceptedFields[key_1] is AcceptedFields.lang:
+                if to_return[AcceptedFields.lang.name].get(key_2):
+                    to_return[AcceptedFields.lang.name][key_2].append(value)
                 else:
-                    to_return[key_1] = {key_2: [value]}
+                    to_return[AcceptedFields.lang.name] = {key_2: [value]}
             elif key_2 == 'gol':
                 to_return[key_1] = {key_2: value}
             else:

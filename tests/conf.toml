@@ -1,0 +1,12 @@
+# !Benda ini kena ada sebab ./conf.toml dalam setup tak merujuk ke ./conf.toml di root.
+# TODO: Nak kena resolve relative paths kat ./samudra/conf/setup.py dulu
+
+[database]
+engine = "SQLite"
+name = ":memory:"
+
+[cors_policy]
+allowed_origins = [
+    "http://localhost:3000",
+    "localhost:3000",
+]

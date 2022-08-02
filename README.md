@@ -33,7 +33,7 @@ dari satu kandungan teks.
   sains. Boleh ada banyak tagar untuk setiap konsep.
 - Contengan kurungan bertitik tindih `{kunci:nilai}` memadankan nilai pada kuncinya. Tanda titik `.` digunakan bagi
   meletakkan kata kunci dalam kata kunci. Buat masa ini, hanya kunci-kunci berikut yang diterima:
-    - `{lang:en:nilai}` akan memadankan konsep ke kata asing berbahasa inggeris. Boleh padankan banyak kata asing ke
+    - `{lang.en:nilai}` akan memadankan konsep ke kata asing berbahasa inggeris. Boleh padankan banyak kata asing ke
       satu konsep. Kata asing berbahasa lain masih sedang diusahakan.
     - `{terj.en:nilai}` (kependekan untuk 'terjemah') akan buat benda sama dengan `{lang.en:nilai}` (boleh bercampur).
     - `{meta.gol:NAMA}` akan meletakkan penggolongan kata pada konsep tersebut. Ini adalah nilai wajib dan hanya satu

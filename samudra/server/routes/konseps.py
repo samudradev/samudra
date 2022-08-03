@@ -15,4 +15,4 @@ router = APIRouter(
 
 @router.get('/', response_model=List[schemas.KonsepResponseFromTables])
 def get_all_konsep(limit: Optional[int] = None) -> List[models.Konsep]:
-    return crud.get_all_konsep(where=None, limit=limit)
+    return crud.get_konsep_minimum_info(where=None, limit=limit)

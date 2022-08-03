@@ -10,4 +10,7 @@ RUN poetry config virtualenvs.create false && poetry install --no-dev --no-inter
 
 COPY . /code/
 
-CMD ["uvicorn", "samudra.serve:app"]
+ARG PORT=$PORT
+
+# Listen to server specified PORT
+CMD ["uvicorn", "samudra.serve:app", "--port", PORT]

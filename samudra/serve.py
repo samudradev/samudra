@@ -5,8 +5,8 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from samudra.conf.server.cors_policy import ALLOWED_ORIGINS
-from samudra.server.setup import check_tables
+from conf.server.cors_policy import ALLOWED_ORIGINS
+from server.setup import check_tables
 from server import lemmas, konseps
 
 SLEEP_TIME: int = 10

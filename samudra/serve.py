@@ -13,6 +13,7 @@ SLEEP_TIME: int = 10
 
 app = FastAPI()
 
+# TODO: Add more server endpoints
 app.include_router(lemmas.router)
 app.include_router(konseps.router)
 

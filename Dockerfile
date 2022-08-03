@@ -12,4 +12,4 @@ RUN poetry config virtualenvs.create false && poetry install --no-dev --no-inter
 
 COPY . /code/
 
-CMD uvicorn samudra.serve:app --port $PORT
+CMD uvicorn samudra.serve:app  --host 0.0.0.0 --port $PORT

@@ -17,7 +17,7 @@ router = APIRouter(
 
 @router.get("/", response_model=List[schemas.LemmaResponse])
 def get_all_lemma(limit: int = None) -> List[models.Lemma]:
-    return crud.get_all_lemma(limit=limit)
+    return crud.get_lemma(limit=limit)
 
 
 @router.get("/{nama}", response_model=List[schemas.LemmaResponse])

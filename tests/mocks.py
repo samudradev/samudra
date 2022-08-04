@@ -3,12 +3,12 @@ from dataclasses import dataclass
 import peewee as pw
 
 from samudra import schemas
-from samudra.models import Lemma, Konsep, Cakupan, KataAsing, PadananCakupanKeKonsep, PadananKonsepKeKataAsing
+from samudra.models import Lemma, Konsep, Cakupan, KataAsing, CakupanXKonsep, KataAsingXKonsep
 
 mock_db = pw.SqliteDatabase(':memory:')
 
 models = [Lemma, Konsep, Cakupan, KataAsing]
-relational_models = [PadananCakupanKeKonsep, PadananKonsepKeKataAsing]
+relational_models = [CakupanXKonsep, KataAsingXKonsep]
 
 
 def bind_test_database(function: callable, *args, **kwargs) -> callable:

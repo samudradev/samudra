@@ -7,12 +7,13 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from samudra.conf.server.cors_policy import ALLOWED_ORIGINS
 from samudra.server.setup import check_tables
-from server import lemmas, konseps
+from samudra.server import lemmas, konseps
 
 SLEEP_TIME: int = 10
 
 app = FastAPI()
 
+# TODO: Add more server endpoints!
 app.include_router(lemmas.router)
 app.include_router(konseps.router)
 

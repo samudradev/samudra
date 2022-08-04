@@ -10,8 +10,8 @@ Many <==>  Many
 # Ordered by table hierarchy
 from .lemma import Lemma
 from .konsep import Konsep
-from .cakupan import Cakupan, PadananCakupanKeKonsep
-from .kata_asing import KataAsing, PadananKonsepKeKataAsing
+from .cakupan import Cakupan, CakupanXKonsep
+from .kata_asing import KataAsing, KataAsingXKonsep
 
 # Imported for type hints
 from .base import BaseTable
@@ -24,6 +24,6 @@ TABLES = [
 ]
 
 JOIN_TABLES = [
-    PadananCakupanKeKonsep,
-    PadananKonsepKeKataAsing
+    CakupanXKonsep,
+    KataAsingXKonsep
 ]

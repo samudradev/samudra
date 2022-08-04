@@ -51,7 +51,7 @@ $ poetry run python ./samudra/serve.py
     ```shell
    $ git checkout -b nama_cabang
    ```
-2. Buat perubahan yang diinginkan.
+2. Buat perubahan yang diinginkan. Pastikan `git commit -m "ringkaskan perubahan di sini"` untuk simpan perubahan.
 3. Hantar cabang perubahan ke repo github. Gunakan `nama_cabang` yang sama dengan langkah pertama.
     ```shell
    $ git push --set-upstream origin nama_cabang

@@ -13,15 +13,50 @@ serta satu perkataan boleh dipadankan ke banyak kata asing yang bergantung pada 
 
 ## Tentang Aplikasi
 
+### Prasyarat
+
+1. [Python 3.8](https://www.python.org/) atau lebih tinggi
+2. [Poetry](https://python-poetry.org/docs/) untuk pengurusan keperluan projek
+3. [Git](https://git-scm.com/) untuk kawalan perubahan kod
+
 ### Pemasangan
 
-1. Python 3.8 atau lebih
-2. Guna [poetry](https://python-poetry.org/docs/) (digalakkan)
-3. `poetry install`
+1. Salin repositori ini guna git ke dalam folder bernama 'samudra'
+    ```shell
+   $ git clone https://github.com/Thaza-Kun/samudra.git samudra
+   ```
+2. Masuk ke dalam folder samudra
+    ```shell
+   $ cd samudra
+   ```
+3. Dapatkan semua keperluan projek menggunakan poetry
+    ```shell
+   $ poetry install
+   ```
 
 ### Mulakan pelayan
 
-`poetry run python ./samudra/serve.py`
+Setelah selesai langkah pemasangan, mulakan pelayan menggunakan poetry
+(poetry digunakan bagi memastikan arahan dalam fail python dilaksanakan
+menggunakan keperluan yang sudah dijelaskan dalam fail `pyproject.toml`)
+
+```shell
+$ poetry run python ./samudra/serve.py
+```
+
+### Menyumbang kod
+
+1. Buat cabang baharu agar setiap perubahan tersebut tidak mengganggu cabang utama. Namakan cabang secara deskriptif (
+   seperti menamakan ciri yang ingin ditambah).
+    ```shell
+   $ git checkout -b nama_cabang
+   ```
+2. Buat perubahan yang diinginkan.
+3. Hantar cabang perubahan ke repo github. Gunakan `nama_cabang` yang sama dengan langkah pertama.
+    ```shell
+   $ git push --set-upstream origin nama_cabang
+   ```
+4. Hantar _pull request_ dan jelaskan perubahan yang telah dilakukan.
 
 ## Penciptaan lemma / konsep
 
@@ -75,7 +110,8 @@ akan menghasilkan
 
 - Bahagian frontent boleh ke repo [alserembani94/laman-samudra](https://github.com/alserembani94/laman-samudra/).
   Terima kasih @alserembani94 kerana sudi menggerakkan bahagian laman!
-- Boleh tambahbaik aplikasi dari segi pull request atau sekadar cadangan
+- Boleh tambahbaik aplikasi dari segi _pull request_ (ikut arahan di bahagian [# Menyumbang Kod](#menyumbang-kod)) atau
+  sekadar cadangan
 - Boleh sumbangkan secangkir kopi di [Ko-fi](https://ko-fi.com/thaza_kun)
 
 Boleh hubungi saya melalui emel [makmal.thaza+samudra@gmail.com](mailto:makmal.thaza+samudra@gmail.com) atau di

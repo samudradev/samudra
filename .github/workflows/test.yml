@@ -1,4 +1,4 @@
-name: Python package
+name: Test
 
 on: [ push ]
 
@@ -19,4 +19,4 @@ jobs:
           poetry install
       - name: Test with pytest
         run: |
-          poetry run pytest
+          poetry run pytest --verbose

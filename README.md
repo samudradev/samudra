@@ -1,6 +1,6 @@
 # Samudra
 
-![test-badge](https://github.com/Thaza-Kun/samudra/actions/workflows/test/badge.svg)
+![test-badge](https://github.com/Thaza-Kun/samudra/actions/workflows/test.yml/badge.svg)
 
 Sebuah aplikasi untuk memudahkan pencatatan istilah serta pengongsiannya sesama rakan sekerja atau orang awam.
 Dengan memudahkan proses ini, kita dapat menambah jumlah rujukan bahasa Melayu dalam talian sekali gus mempercepatkan

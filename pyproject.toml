@@ -17,9 +17,9 @@ psycopg2 = {version = "^2.9.3", optional = true, extras = ["cockroach_db"]}
 cryptography = {version = "^37.0.4", optional = true, extras = ["cockroach_db", "mysql"]}
 PyMySQL = {version = "^1.0.2", optional = true, extras = ["mysql"]}
 mysql = "^0.0.3"
-passlib = "^1.7.4"
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 pycryptodome = "^3.15.0"
-python-jose = {version = "^3.3.0", extras = ["pycryptodome"]}
+python-jose = {extras = ["pycryptodome"], version = "^3.3.0"}
 bcrypt = "^3.2.2"
 python-multipart = "^0.0.5"
 peewee = "^3.15.1"

@@ -263,6 +263,9 @@ category = "main"
 optional = false
 python-versions = "*"
 
+[package.dependencies]
+bcrypt = {version = ">=3.1.0", optional = true, markers = "extra == \"bcrypt\""}
+
 [package.extras]
 argon2 = ["argon2-cffi (>=18.2.0)"]
 bcrypt = ["bcrypt (>=3.1.0)"]
@@ -563,7 +566,7 @@ standard = ["websockets (>=10.0)", "httptools (>=0.4.0)", "watchfiles (>=0.13)",
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "0878e336c7f7ce12015a53c0d332723ccadcc7cb9b5b5ec02a67184fd3db8dbf"
+content-hash = "39fdf6a1f7160798ca12276bb607448d1d1b92c091928670ea7304fd4fe31c63"
 
 [metadata.files]
 anyio = [

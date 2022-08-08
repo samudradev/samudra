@@ -5,7 +5,7 @@ import pydantic as pyd
 from samudra.schemas.tables._helper import PeeweeGetterDict, ORMSchema
 from samudra.schemas.tables.konsep import KonsepResponseFromTables
 
-class Token(ORMSchema):
+class Token(pyd.BaseModel):
     access_token: str
     token_type: str
 

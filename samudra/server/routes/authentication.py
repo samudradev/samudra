@@ -9,7 +9,7 @@ from pydantic import BaseModel
 
 from samudra import models, schemas
 from samudra.core import auth
-from samudra.models.user import User
+from samudra.models.pengguna import Pengguna
 from samudra.server.dependencies import get_db
 from samudra.schemas.tables._helper import PeeweeGetterDict, ORMSchema
 from datetime import datetime, timedelta
@@ -20,9 +20,9 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 ALGORITHM = os.getenv('ALGORITHM')
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES'))
 
-class UserCreateDTO(BaseModel):
-    username: str
-    password: str
+class PenggunaCreateDTO(BaseModel):
+    nama: str
+    katalaluan: str
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta]):
     to_encode = data.copy()
@@ -31,7 +31,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta]):
     else:
         expire = datetime.utcnow() + timedelta(minutes=15)
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY)
     return encoded_jwt
 
 router = APIRouter(
@@ -40,15 +40,15 @@ router = APIRouter(
 )
 
 @router.post('/daftar', response_model=schemas.DaftarResponse)
-def create_user(user: UserCreateDTO):
+def create_pengguna(pengguna: PenggunaCreateDTO):
     try:
-        user = auth.get_user_by_username(user.username)
+        pengguna = auth.get_pengguna_by_nama(pengguna.nama)
         raise HTTPException(status_code=409, detail='User already exist')
-    except models.User.DoesNotExist:
-        user = auth.create_user(username=user.username, password=user.password)
+    except models.Pengguna.DoesNotExist:
+        pengguna = auth.create_pengguna(nama=pengguna.nama, katalaluan=pengguna.katalaluan)
         return {
-            "pengguna": user.username,
-            "mesej": f'Pengguna {user.username} telah berjaya didaftarkan!'
+            "pengguna": pengguna.nama,
+            "mesej": f'Pengguna {pengguna.nama} telah berjaya didaftarkan!'
         }
     except SyntaxError as e:
         raise HTTPException(status_code=400, detail=e.msg)
@@ -57,8 +57,8 @@ def create_user(user: UserCreateDTO):
 @router.post('/logmasuk', response_model=schemas.LogMasukResponse)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
     try:
-        user = auth.authenticate_user(form_data.username, form_data.password)
-        if not user:
+        pengguna = auth.authenticate_pengguna(form_data.username, form_data.password)
+        if not pengguna:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Incorrect username or password",
@@ -66,7 +66,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
             )
         access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
         access_token = create_access_token(
-            data={"sub": user.username}, expires_delta=access_token_expires
+            data={"sub": pengguna.nama}, expires_delta=access_token_expires
         )
         return {
             "pengguna": form_data.username,

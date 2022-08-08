@@ -3,11 +3,11 @@ from dataclasses import dataclass
 import peewee as pw
 
 from samudra import schemas
-from samudra.models import Lemma, Konsep, Cakupan, KataAsing, CakupanXKonsep, KataAsingXKonsep, User
+from samudra.models import Lemma, Konsep, Cakupan, KataAsing, CakupanXKonsep, KataAsingXKonsep, Pengguna
 
 mock_db = pw.SqliteDatabase(':memory:')
 
-models = [Lemma, Konsep, Cakupan, KataAsing, User]
+models = [Lemma, Konsep, Cakupan, KataAsing, Pengguna]
 relational_models = [CakupanXKonsep, KataAsingXKonsep]
 
 

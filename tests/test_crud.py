@@ -3,7 +3,6 @@ from samudra.core.crud.cakupan import get_cakupan_by_name
 from samudra.core.crud.kata_asing import get_kata_asing_by_name
 from samudra.core.crud.konsep import create_konsep, get_konsep_minimum_info
 from samudra.core.crud.lemma import get_lemma_minimum_info
-from samudra.core.crud.user import create_user, authenticate_user, get_user_by_username
 from samudra.schemas import AnnotatedText
 from tests import mocks
 from passlib.context import CryptContext
@@ -51,24 +50,3 @@ def test_get_kata_asing_by_name():
     create_konsep(annotated_text=data, lemma_name='ujian')
     kata_asing = get_kata_asing_by_name(nama='concept')
     assert kata_asing[0].nama == 'concept'
-
-@mocks.bind_test_database
-def test_get_user_by_name():
-    username = 'pengguna'
-    password = 'katalaluan123'
-    user = create_user(username=username, password=password)
-
-    assert get_user_by_username(username).username == username
-
-@mocks.bind_test_database
-def test_create_user():
-    username = 'pengguna'
-    password = 'katalaluan123'
-
-    assert pwd_context.verify(password, create_user(username=username, password=password).password_hash)
-
-@mocks.bind_test_database
-def test_authenticate_user():
-    user = create_user(username='pengguna', password='katalaluan123')
-
-    assert authenticate_user(username='pengguna', password='katalaluan123')

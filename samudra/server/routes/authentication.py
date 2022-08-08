@@ -8,7 +8,7 @@ from passlib.context import CryptContext
 from pydantic import BaseModel
 
 from samudra import models, schemas
-from samudra.core import crud
+from samudra.core import auth
 from samudra.models.user import User
 from samudra.server.dependencies import get_db
 from samudra.schemas.tables._helper import PeeweeGetterDict, ORMSchema
@@ -42,10 +42,10 @@ router = APIRouter(
 @router.post('/daftar', response_model=schemas.DaftarResponse)
 def create_user(user: UserCreateDTO):
     try:
-        user = crud.get_user_by_username(user.username)
+        user = auth.get_user_by_username(user.username)
         raise HTTPException(status_code=409, detail='User already exist')
     except models.User.DoesNotExist:
-        user = crud.create_user(username=user.username, password=user.password)
+        user = auth.create_user(username=user.username, password=user.password)
         return {
             "pengguna": user.username,
             "mesej": f'Pengguna {user.username} telah berjaya didaftarkan!'
@@ -57,7 +57,7 @@ def create_user(user: UserCreateDTO):
 @router.post('/logmasuk', response_model=schemas.LogMasukResponse)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
     try:
-        user = crud.authenticate_user(form_data.username, form_data.password)
+        user = auth.authenticate_user(form_data.username, form_data.password)
         if not user:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,

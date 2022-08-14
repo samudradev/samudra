@@ -8,4 +8,4 @@ class Pengguna(BaseTable):
     kunci = TextField(null=False)
 
     def __repr__(self) -> str:
-        return f'<model.{self.__class__.__name__}: id={self.id} nama={self.nama} kunci={self.kunci}>'
+        return f"<model.{self.__class__.__name__}: id={self.id} nama={self.nama} kunci={self.kunci}>"

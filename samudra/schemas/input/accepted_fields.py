@@ -2,6 +2,6 @@ import enum
 
 
 class AcceptedFields(enum.Enum):
-    meta = ['gol']
-    lang = ['en']
+    meta = ["gol"]
+    lang = ["en"]
     terj = lang

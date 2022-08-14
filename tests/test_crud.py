@@ -5,9 +5,11 @@ from samudra.core.crud.konsep import create_konsep, get_konsep_minimum_info
 from samudra.core.crud.lemma import get_lemma_minimum_info
 from samudra.schemas import AnnotatedText
 from tests import mocks
+from passlib.context import CryptContext
 
 DATA_1 = "Ini adalah konsep cubaan #tag_1 #tag-2 {lang.en:concept} {lang.en:test} {meta.gol:NAMA}"
 
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 @mocks.bind_test_database
 def test_create_konsep():

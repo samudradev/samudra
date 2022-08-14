@@ -8,3 +8,5 @@ from samudra.schemas.tables.lemma import LemmaResponse
 from samudra.schemas.tables.konsep import KonsepResponseFromTables, KonsepResponseFromAnnotatedBody
 
 from samudra.schemas.input.annotated_text import AnnotatedText
+
+from samudra.schemas.tables.user import LogMasukResponse, DaftarResponse

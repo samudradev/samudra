@@ -12,7 +12,10 @@ DATA_1 = "Ini adalah konsep cubaan #tag_1 #tag-2 {lang.en:concept} {lang.en:test
 @mocks.bind_test_database
 def test_create_konsep():
     data = AnnotatedText(body=DATA_1)
-    assert create_konsep(annotated_text=data, lemma_name='ujian').keterangan == "Ini adalah konsep cubaan"
+    konsep = create_konsep(annotated_text=data, lemma_name='ujian')
+    assert konsep.keterangan == "Ini adalah konsep cubaan"
+    assert konsep.cakupan[0].cakupan.nama == 'tag 1'
+    assert konsep.cakupan[1].cakupan.nama == 'tag-2'
 
 
 @mocks.bind_test_database

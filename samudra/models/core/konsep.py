@@ -7,11 +7,17 @@ from peewee import (
     TimestampField,
     BlobField,
     ForeignKeyField,
-    ModelSelect,
+    ModelSelect, CharField,
 )
 
-from models.base import BaseTable, BaseMetadataTable, BaseConnectionTable
+from models.base import BaseTable, BaseMetadataTable, BaseConnectionTable, BaseStrictTable
 from .lemma import Lemma
+
+
+class Golongan(BaseStrictTable):
+    id = CharField(max_length=6, unique=True, null=False)
+    nama = TextField(null=False)
+    keterangan = TextField(null=False)
 
 
 class Konsep(BaseTable):
@@ -22,8 +28,10 @@ class Konsep(BaseTable):
     lemma = ForeignKeyField(
         model=Lemma, field=Lemma.id, backref="konsep", on_delete="cascade"
     )
-    golongan = TextField(null=False)
-    keterangan = TextField(null=True)
+    # TODO: Create composite key of id and tertib
+    # TODO: Point golongan to an external table with exhaustive list
+    golongan = ForeignKeyField(model=Golongan, field=Golongan.id, on_delete='set null', null=True)
+    keterangan = TextField(null=True, index=True)
     # ---
     tertib = IntegerField(null=True)
 

@@ -24,7 +24,7 @@ class BaseMetadataTable(BaseTable):
 
     @classmethod
     def __attach__(
-        cls, other: BaseTable, values: List[Dict[str, str]]
+            cls, other: BaseTable, values: List[Dict[str, str]]
     ) -> pw.ModelSelect:
         rows = [cls.get_or_create(**value)[0] for value in values]
         model_name = getattr(cls, "key", cls.__name__.lower())
@@ -36,3 +36,10 @@ class BaseMetadataTable(BaseTable):
             except AttributeError:
                 raise AttributeError(f"{cls} has no associated connection table")
         return getattr(other, model_name)
+
+
+class BaseStrictTable(BaseTable):
+    @classmethod
+    def get_or_create(cls, **kwargs):
+        raise AttributeError(
+            f"{cls} is a strict table. Rows can only be defined explicitly by the `Model.create` method.")

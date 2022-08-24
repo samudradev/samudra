@@ -1,6 +1,6 @@
 site_name: 📖 Samudra
 theme:
-  name: readthedocs
+  name: material
   highlightjs: true
   hljs_languages:
     - json

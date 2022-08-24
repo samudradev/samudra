@@ -1,0 +1,12 @@
+site_name: 📖 Samudra
+theme:
+  name: readthedocs
+  highlightjs: true
+  hljs_languages:
+    - json
+    - python
+nav:
+  - Pengenalan: index.md
+  - Model: model.md
+markdown_extensions:
+  - admonition

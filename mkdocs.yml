@@ -13,10 +13,15 @@ markdown_extensions:
       use_pygments: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
 
-# NAV
+          # NAV
 nav:
   - Pengenalan: index.md
+  - Teras: teras.md
   - Aplikasi: pemasangan.md
   - Model: model.md

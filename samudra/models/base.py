@@ -12,7 +12,7 @@ class BaseTable(pw.Model):
 
     class Meta:
         database = Database.connection
-        legacy_table_name = False
+        legacy_table_names = False
 
 
 class BaseRelationshipTable(BaseTable):

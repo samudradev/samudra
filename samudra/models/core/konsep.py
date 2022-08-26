@@ -14,7 +14,7 @@ from models.base import BaseTable, BaseAttachmentTable, BaseRelationshipTable, B
 from .lemma import Lemma
 
 
-class Golongan(BaseStrictTable):
+class GolonganKata(BaseStrictTable):
     id = CharField(max_length=6, unique=True, null=False)
     nama = TextField(null=False)
     keterangan = TextField(null=False)
@@ -30,7 +30,7 @@ class Konsep(BaseTable):
     )
     # TODO: Create composite key of id and tertib
     # TODO: Point golongan to an external table with exhaustive list
-    golongan = ForeignKeyField(model=Golongan, field=Golongan.id, on_delete='set null', null=True)
+    golongan = ForeignKeyField(model=GolonganKata, field=GolonganKata.id, on_delete='set null', null=True)
     keterangan = TextField(null=True, index=True)
     # ---
     tertib = IntegerField(null=True)

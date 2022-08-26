@@ -1,10 +1,10 @@
 from peewee import ForeignKeyField, TextField
 
-from models.base import BaseMetadataTable, BaseConnectionTable
+from models.base import BaseAttachmentTable, BaseRelationshipTable
 from .konsep import Konsep
 
 
-class KataAsing(BaseMetadataTable):
+class KataAsing(BaseAttachmentTable):
     """
     Lemma bahasa asing
     """
@@ -15,7 +15,7 @@ class KataAsing(BaseMetadataTable):
     key = "kata_asing"
 
 
-class KataAsingXKonsep(BaseConnectionTable):
+class KataAsingXKonsep(BaseRelationshipTable):
     kata_asing = ForeignKeyField(
         KataAsing, field=KataAsing.id, backref="konsep", on_delete="cascade"
     )

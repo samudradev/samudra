@@ -10,7 +10,7 @@ from peewee import (
     ModelSelect, CharField,
 )
 
-from models.base import BaseTable, BaseMetadataTable, BaseConnectionTable, BaseStrictTable
+from models.base import BaseTable, BaseAttachmentTable, BaseRelationshipTable, BaseStrictTable
 from .lemma import Lemma
 
 
@@ -38,5 +38,5 @@ class Konsep(BaseTable):
     def __repr__(self):
         return f"<model.{self.__class__.__name__}: id={self.id} lemma={self.lemma} golongan={self.golongan} keterangan='{self.keterangan}'>"
 
-    def attach(self, to_model: BaseMetadataTable, values: List[Dict[str, str]]):
+    def attach(self, to_model: BaseAttachmentTable, values: List[Dict[str, str]]):
         return to_model.__attach__(self, values=values)

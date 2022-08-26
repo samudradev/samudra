@@ -7,7 +7,7 @@ from samudra.conf.database.fields import IDField
 
 
 class BaseTable(pw.Model):
-    id = IDField[Database.engine]
+    id = pw.AutoField(primary_key=True)
     tarikh_masuk = pw.TimestampField()
 
     class Meta:
@@ -15,12 +15,12 @@ class BaseTable(pw.Model):
         legacy_table_name = False
 
 
-class BaseConnectionTable(BaseTable):
+class BaseRelationshipTable(BaseTable):
     pass
 
 
-class BaseMetadataTable(BaseTable):
-    connection_table: BaseConnectionTable
+class BaseAttachmentTable(BaseTable):
+    connection_table: BaseRelationshipTable
 
     @classmethod
     def __attach__(
@@ -42,4 +42,4 @@ class BaseStrictTable(BaseTable):
     @classmethod
     def get_or_create(cls, **kwargs):
         raise AttributeError(
-            f"{cls} is a strict table. Rows can only be defined explicitly by the `Model.create` method.")
+            f"{cls} is a strict table. Rows can only be created explicitly by the `Model.create` method.")

@@ -1,10 +1,10 @@
 from peewee import BlobField, TextField, ForeignKeyField
 
-from models.base import BaseTable, BaseMetadataTable, BaseConnectionTable
+from models.base import BaseTable, BaseAttachmentTable, BaseRelationshipTable
 from .konsep import Konsep
 
 
-class Cakupan(BaseMetadataTable):
+class Cakupan(BaseAttachmentTable):
     """
     Dalam konteks apakah istilah tersebut digunakan untuk konsep yang diberikan.
     """
@@ -13,7 +13,7 @@ class Cakupan(BaseMetadataTable):
     keterangan = TextField(null=True)
 
 
-class CakupanXKonsep(BaseConnectionTable):
+class CakupanXKonsep(BaseRelationshipTable):
     cakupan = ForeignKeyField(
         model=Cakupan, field=Cakupan.id, backref="konsep", on_delete="cascade"
     )

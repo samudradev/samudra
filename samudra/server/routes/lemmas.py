@@ -1,23 +1,19 @@
-from typing import List, Union, Optional, Dict
+from typing import List, Union, Dict
 
 import pydantic
 from fastapi import APIRouter, Depends, HTTPException
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 from samudra import models, schemas
 from samudra.core import crud
 from samudra.server.dependencies import get_db
+from server.dependencies import oauth2_scheme
 
 router = APIRouter(prefix="/lemma", dependencies=[Depends(get_db)])
 
 
-# TODO: Add security!
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-
 @router.get("/", response_model=List[schemas.LemmaResponse])
 def get_all_lemma(
-    limit: int = None, token: str = Depends(oauth2_scheme)
+        limit: int = None, token: str = Depends(oauth2_scheme)
 ) -> List[models.Lemma]:
     return crud.get_lemma(limit=limit)
 
@@ -32,21 +28,18 @@ def read_lemma(nama: str, token: str = Depends(oauth2_scheme)) -> List[models.Le
 
 @router.post("/{nama}", response_model=schemas.KonsepResponseFromAnnotatedBody)
 def create_lemma(
-    nama: str, post: schemas.AnnotatedText, token: str = Depends(oauth2_scheme)
+        nama: str, post: schemas.AnnotatedText, token: str = Depends(oauth2_scheme)
 ) -> Union[models.Konsep, schemas.AnnotatedText]:
     try:
         to_return = crud.create_konsep(post, lemma_name=nama)
     except SyntaxError as e:
         raise HTTPException(status_code=400, detail=e.msg)
-    try:
-        return to_return
-    except pydantic.ValidationError:
-        raise HTTPException(status_code=400, detail=post.dict())
+    return to_return
 
 
 @router.get("/id/{_id}", response_model=List[schemas.LemmaResponse])
 def get_lemma_by_id(
-    _id: int, token: str = Depends(oauth2_scheme)
+        _id: int, token: str = Depends(oauth2_scheme)
 ) -> List[models.Lemma]:
     return crud.get_lemma_by_id(lemma_id=_id)
 

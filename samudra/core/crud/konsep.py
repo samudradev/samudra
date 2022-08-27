@@ -7,13 +7,18 @@ from samudra.core.crud.lemma import create_lemma
 
 
 def create_konsep(
-    annotated_text: schemas.AnnotatedText, lemma_name: str
+        annotated_text: schemas.AnnotatedText, lemma_name: str
 ) -> models.Konsep:
     konsep = models.Konsep.create(
-        golongan=annotated_text.fields.get("meta").get("gol"),
         keterangan=annotated_text.content,
         lemma=create_lemma(lemma=lemma_name, safe=True),
     )
+
+    golongan_id = annotated_text.fields.get("meta").get("gol"),
+    golongan = models.GolonganKata.get_or_none(id=golongan_id)
+    if golongan is None:
+        raise ValueError(f"The value '{golongan_id[0]}' is not in models.{models.GolonganKata.__name__}")
+    konsep.golongan = golongan
     if annotated_text.tags:
         konsep.attach(
             to_model=models.Cakupan,

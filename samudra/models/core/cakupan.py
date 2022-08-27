@@ -1,6 +1,6 @@
 from peewee import BlobField, TextField, ForeignKeyField
 
-from models.base import BaseDataTable, BaseAttachmentDataTable, BaseRelationshipTable
+from ..base import BaseDataTable, BaseAttachmentDataTable, BaseRelationshipTable
 from .konsep import Konsep
 
 

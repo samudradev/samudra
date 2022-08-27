@@ -1,5 +1,4 @@
-import models
-import schemas
+from samudra import models, schemas
 
 
 def create_golongan_kata(data: schemas.CreateGolonganKata) -> models.GolonganKata:

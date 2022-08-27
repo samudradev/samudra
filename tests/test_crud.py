@@ -1,13 +1,12 @@
 import pytest
 
-from core.crud.golongan_kata import create_golongan_kata
+from samudra.core.crud.golongan_kata import create_golongan_kata
 from samudra import models
 from samudra.core.crud.cakupan import get_cakupan_by_name
 from samudra.core.crud.kata_asing import get_kata_asing_by_name
 from samudra.core.crud.konsep import create_konsep, get_konsep_minimum_info
 from samudra.core.crud.lemma import get_lemma_minimum_info
-from samudra.schemas import AnnotatedText
-from schemas import CreateGolonganKata
+from samudra.schemas import AnnotatedText, CreateGolonganKata
 from tests import mocks
 from passlib.context import CryptContext
 

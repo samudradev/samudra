@@ -10,7 +10,7 @@ from peewee import (
     ModelSelect, CharField,
 )
 
-from models.base import BaseDataTable, BaseAttachmentDataTable, BaseRelationshipTable, BaseStrictDataTable
+from ..base import BaseDataTable, BaseAttachmentDataTable, BaseRelationshipTable, BaseStrictDataTable
 from .lemma import Lemma
 
 

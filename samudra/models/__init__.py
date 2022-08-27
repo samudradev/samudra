@@ -8,11 +8,11 @@ One  <==   Many
 Many <==>  Many
 """
 # Ordered by table hierarchy
-from models.core.lemma import Lemma
-from models.core.konsep import Konsep, GolonganKata
-from models.core.cakupan import Cakupan, CakupanXKonsep
-from models.core.kata_asing import KataAsing, KataAsingXKonsep
-from models.auth.pengguna import Pengguna, Keizinan
+from .core.lemma import Lemma
+from .core.konsep import Konsep, GolonganKata
+from .core.cakupan import Cakupan, CakupanXKonsep
+from .core.kata_asing import KataAsing, KataAsingXKonsep
+from .auth.pengguna import Pengguna, Keizinan
 
 # Imported for type hints
 from .base import BaseDataTable

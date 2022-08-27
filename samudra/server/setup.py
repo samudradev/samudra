@@ -12,9 +12,13 @@ def check_tables(create_tables: bool = False) -> None:
             logging.debug(f"{TABLE.__name__} existed in {Database.connection.database}")
         else:
             if not create_tables:
-                raise pw.DatabaseError(f"{TABLE.__name__} not existed in {Database.connection.database}")
+                raise pw.DatabaseError(
+                    f"{TABLE.__name__} not existed in {Database.connection.database}"
+                )
     if create_tables:
-        Database.connection.create_tables([*models.TABLES, *models.JOIN_TABLES], safe=True)
+        Database.connection.create_tables(
+            [*models.TABLES, *models.JOIN_TABLES], safe=True
+        )
     return None
 
 

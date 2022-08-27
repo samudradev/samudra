@@ -23,7 +23,7 @@ app.add_middleware(
     allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"]
+    allow_headers=["*"],
 )
 
 
@@ -32,7 +32,7 @@ def root() -> Dict[str, str]:
     return {"details": "Successfully connected!"}
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     check_tables(create_tables=True)
     uvicorn.run("serve:app", port=8000, reload=True)
 

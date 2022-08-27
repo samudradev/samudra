@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "samudra"
-version = "0.4.1"
+version = "0.5.0"
 description = ""
 authors = ["Thaza_Kun <61819672+Thaza-Kun@users.noreply.github.com>"]
 
@@ -30,6 +30,7 @@ cockroach_db = ["psycopg2", "cryptography"]
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.2"
+black = "^22.6.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

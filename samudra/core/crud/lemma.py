@@ -11,10 +11,18 @@ def create_lemma(lemma: str, safe: bool = True) -> models.Lemma:
     return models.Lemma.create(nama=lemma)
 
 
-def get_lemma_minimum_info(where: Any, limit: Optional[int] = None) -> List[models.Lemma]:
+def get_lemma_minimum_info(
+    where: Any, limit: Optional[int] = None
+) -> List[models.Lemma]:
     stmt = models.Lemma.select(models.Lemma).where(where).limit(limit)
-    to_return = prefetch(stmt, models.Konsep, models.CakupanXKonsep, models.Cakupan, models.KataAsingXKonsep,
-                         models.KataAsing)
+    to_return = prefetch(
+        stmt,
+        models.Konsep,
+        models.CakupanXKonsep,
+        models.Cakupan,
+        models.KataAsingXKonsep,
+        models.KataAsing,
+    )
     return to_return
 
 

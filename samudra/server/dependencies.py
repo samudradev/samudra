@@ -1,4 +1,5 @@
 from fastapi import Depends
+from fastapi.security import OAuth2PasswordBearer
 
 from samudra.conf import Database
 from samudra.conf.database.core import db_state_default
@@ -19,3 +20,6 @@ def get_db(db_state=Depends(reset_db_state)):
     finally:
         if not Database.connection.is_closed():
             Database.connection.close()
+
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")

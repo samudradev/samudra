@@ -1,0 +1,27 @@
+site_name: 📖 Samudra
+site_url: https://thaza-kun.github.io/samudra/
+repo_url: https://github.com/Thaza-Kun/samudra
+repo_name: Samudra - Github
+theme:
+  name: material
+  features:
+    - navigation.sections
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight:
+      anchor_linenums: true
+      use_pygments: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+          # NAV
+nav:
+  - Pengenalan: index.md
+  - Teras: teras.md
+  - Aplikasi: pemasangan.md
+  - Model: model.md

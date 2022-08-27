@@ -1,10 +1,10 @@
 from peewee import BlobField, TextField, ForeignKeyField
 
-from models.base import BaseTable, BaseAttachmentTable, BaseRelationshipTable
+from models.base import BaseDataTable, BaseAttachmentDataTable, BaseRelationshipTable
 from .konsep import Konsep
 
 
-class Cakupan(BaseAttachmentTable):
+class Cakupan(BaseAttachmentDataTable):
     """
     Dalam konteks apakah istilah tersebut digunakan untuk konsep yang diberikan.
     """

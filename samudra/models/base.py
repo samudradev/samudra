@@ -3,10 +3,9 @@ from typing import List, Dict
 import peewee as pw
 
 from samudra.conf.database.core import Database
-from samudra.conf.database.fields import IDField
 
 
-class BaseTable(pw.Model):
+class BaseDataTable(pw.Model):
     id = pw.AutoField(primary_key=True)
     tarikh_masuk = pw.TimestampField()
 
@@ -15,16 +14,16 @@ class BaseTable(pw.Model):
         legacy_table_name = False
 
 
-class BaseRelationshipTable(BaseTable):
+class BaseRelationshipTable(BaseDataTable):
     pass
 
 
-class BaseAttachmentTable(BaseTable):
+class BaseAttachmentDataTable(BaseDataTable):
     connection_table: BaseRelationshipTable
 
     @classmethod
     def __attach__(
-            cls, other: BaseTable, values: List[Dict[str, str]]
+            cls, other: BaseDataTable, values: List[Dict[str, str]]
     ) -> pw.ModelSelect:
         rows = [cls.get_or_create(**value)[0] for value in values]
         model_name = getattr(cls, "key", cls.__name__.lower())
@@ -38,7 +37,7 @@ class BaseAttachmentTable(BaseTable):
         return getattr(other, model_name)
 
 
-class BaseStrictTable(BaseTable):
+class BaseStrictDataTable(BaseDataTable):
     @classmethod
     def get_or_create(cls, **kwargs):
         raise AttributeError(

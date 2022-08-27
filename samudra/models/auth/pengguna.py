@@ -2,14 +2,14 @@ import enum
 
 from peewee import TextField, BooleanField, ForeignKeyField
 
-from samudra.models.base import BaseTable, BaseStrictTable
+from samudra.models.base import BaseDataTable, BaseStrictDataTable
 
 
 class RoleEnum(enum.Enum):
     DEFAULT = 'BIASA'
 
 
-class Keizinan(BaseStrictTable):
+class Keizinan(BaseStrictDataTable):
     peranan = TextField(null=False, unique=True)
     baca = BooleanField(null=False)
     ubah = BooleanField(null=False)
@@ -17,7 +17,7 @@ class Keizinan(BaseStrictTable):
     buang = BooleanField(null=False)
 
 
-class Pengguna(BaseTable):
+class Pengguna(BaseDataTable):
     nama = TextField(null=False)
     kunci = TextField(null=False)
     peranan = ForeignKeyField(model=Keizinan, field=Keizinan.peranan, backref='pengguna',

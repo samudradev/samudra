@@ -1,9 +1,9 @@
 from peewee import TextField
 
-from samudra.models.base import BaseTable
+from samudra.models.base import BaseDataTable
 
 
-class Lemma(BaseTable):
+class Lemma(BaseDataTable):
     nama = TextField(null=False)
 
     def __repr__(self) -> str:

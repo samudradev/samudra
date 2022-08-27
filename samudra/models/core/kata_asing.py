@@ -1,10 +1,10 @@
 from peewee import ForeignKeyField, TextField
 
-from models.base import BaseAttachmentTable, BaseRelationshipTable
+from models.base import BaseAttachmentDataTable, BaseRelationshipTable
 from .konsep import Konsep
 
 
-class KataAsing(BaseAttachmentTable):
+class KataAsing(BaseAttachmentDataTable):
     """
     Lemma bahasa asing
     """

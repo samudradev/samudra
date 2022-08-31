@@ -28,3 +28,10 @@ menggunakan keperluan yang sudah dijelaskan dalam fail `pyproject.toml`)
 ```shell
 $ poetry run python ./samudra/serve.py
 ```
+
+Jika anda menerima ralat mengenai ACCESS\_TOKEN\_EXPIRE\_MINUTES, ia adalah kerana environment variables tidak ditetapkan dengan betul. Masalah ini boleh dibetulkan dengan menetapkan environment variables yang betul semasa memulakan pelayan, contohnya:  
+
+```shell
+$ ACCESS_TOKEN_EXPIRE_MINUTES=60 poetry run python ./samudra/serve.py
+```
+

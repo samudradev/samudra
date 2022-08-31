@@ -46,6 +46,13 @@ menggunakan keperluan yang sudah dijelaskan dalam fail `pyproject.toml`)
 $ poetry run python ./samudra/serve.py
 ```
 
+Jika anda menerima ralat mengenai ACCESS\_TOKEN\_EXPIRE\_MINUTES, ia adalah kerana environment variables tidak ditetapkan dengan betul. Masalah ini boleh dibetulkan dengan menetapkan environment variables yang betul semasa memulakan pelayan, contohnya:  
+
+```shell
+$ ACCESS_TOKEN_EXPIRE_MINUTES=60 poetry run python ./samudra/serve.py
+```
+
+
 ### Menyumbang kod
 
 1. Buat cabang baharu agar setiap perubahan tersebut tidak mengganggu cabang utama. Namakan cabang secara deskriptif (

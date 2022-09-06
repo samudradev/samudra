@@ -12,9 +12,7 @@ router = APIRouter(prefix="/lemma", dependencies=[Depends(get_db)])
 
 
 @router.get("/", response_model=List[schemas.LemmaResponse])
-def get_all_lemma(
-        limit: int = None, token: str = Depends(oauth2_scheme)
-) -> List[models.Lemma]:
+def get_all_lemma(limit: int = None) -> List[models.Lemma]:
     return crud.get_lemma(limit=limit)
 
 

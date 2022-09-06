@@ -1,1 +1,1 @@
-from .routes import lemmas, konseps, authentication
+from .routes import lemmas, authentication

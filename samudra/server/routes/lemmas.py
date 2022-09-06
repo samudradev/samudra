@@ -35,13 +35,6 @@ def create_lemma(
     return to_return
 
 
-@router.get("/id/{_id}", response_model=List[schemas.LemmaResponse])
-def get_lemma_by_id(
-        _id: int, token: str = Depends(oauth2_scheme)
-) -> List[models.Lemma]:
-    return crud.get_lemma_by_id(lemma_id=_id)
-
-
 @router.delete("/id/{_id}", response_model=Dict[str, int])
 def delete_lemma(_id: int, token: str = Depends(oauth2_scheme)) -> Dict[str, int]:
     lemma = crud.get_lemma_by_id(_id)[0]

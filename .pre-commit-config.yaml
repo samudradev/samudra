@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/psf/black
-    rev: 19.10b0
+    rev: 22.8.0
     hooks:
       - id: black
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -17,7 +17,7 @@ repos:
       #        pass_filenames: false
       - id: create requirements
         name: create requirements
-        entry: poetry export requirements.txt --extras mysql --without-hashes
+        entry: poetry export -o requirements.txt --extras mysql --without-hashes
         language: system
         always_run: true
         pass_filenames: false

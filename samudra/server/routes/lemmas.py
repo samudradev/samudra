@@ -17,7 +17,7 @@ def get_all_lemma(limit: int = None) -> List[models.Lemma]:
 
 
 @router.get("/{nama}", response_model=List[schemas.LemmaResponse])
-def read_lemma(nama: str, token: str = Depends(oauth2_scheme)) -> List[models.Lemma]:
+def read_lemma(nama: str) -> List[models.Lemma]:
     db_lemma = crud.get_lemma_by_name(nama=nama)
     if db_lemma is None:
         raise HTTPException(status_code=404, detail="Lemma not in record")

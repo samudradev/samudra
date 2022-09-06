@@ -58,11 +58,12 @@ def get_database(engine: DatabaseEngine) -> pw.Database:
         except FileExistsError:
             pass
         return_db = pw.SqliteDatabase(
-            os.path.join(os.getcwd(), "data", f"{DATABASE_NAME}.db")
+            os.path.join(os.getcwd(), "data", f"{DATABASE_NAME}.db"), check_same_thread=False
         )
         return_db._state = PeeweeConnectionState()
 
         logging.info(f"Connecting to {return_db.database}")
+
     elif engine == DatabaseEngine.MySQL:
         conn_str = f"mysql://{USERNAME}:{PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_NAME}?ssl-mode=REQUIRED"
         return_db = pw.MySQLDatabase(conn_str)

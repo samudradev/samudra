@@ -7,11 +7,13 @@ from models.base import BaseAttachmentDataTable, BaseRelationshipTable, BaseData
 class SumberPetikan(BaseDataTable):
     tajuk = TextField(null=False, index=True)
     tarikh = DateField()
-    metadata = TextField(null=True)
+    #? Aku masih tak tahu macam mana nak uruskan metadata dari pelbagai jenis sumber
+    metadata = TextField(null=True) 
 
 
 class Petikan(BaseAttachmentDataTable):
     petikan = TextField(null=False, index=True)
+    # --> Pautan ke SumberPetikan
     sumber = ForeignKeyField(model=SumberPetikan, field=SumberPetikan.id, backref='petikan', on_delete='set null',
                              null=True)
 

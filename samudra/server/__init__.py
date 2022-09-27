@@ -1,1 +1,1 @@
-from .routes import lemmas, auth
+from .routes import lemmas, auth, golongan_kata

@@ -1,1 +1,1 @@
-from .routes import lemmas, authentication
+from .routes import lemmas, auth

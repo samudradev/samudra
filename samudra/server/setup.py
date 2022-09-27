@@ -6,6 +6,9 @@ from samudra import models
 from samudra.conf import Database
 
 
+# TODO Refactor Database.connection to decouple dependency on conf
+
+
 def check_tables(create_tables: bool = False) -> None:
     for TABLE in models.TABLES:
         if Database.connection.table_exists(TABLE):

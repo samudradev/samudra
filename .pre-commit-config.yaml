@@ -7,17 +7,19 @@ repos:
     rev: v2.5.0
     hooks:
       - id: check-added-large-files
-  - repo: local
-    hooks:
-      #      - id: pylint
-      #        name: pylint
-      #        entry: poetry run pylint samudra/
-      #        language: system
-      #        always_run: true
-      #        pass_filenames: false
-      - id: create requirements
-        name: create requirements
-        entry: poetry export -o requirements.txt --extras mysql --without-hashes
-        language: system
-        always_run: true
-        pass_filenames: false
+  #  - repo: local
+  #    hooks:
+  #      - id: pylint
+  #        name: pylint
+  #        entry: poetry run pylint samudra/
+  #        language: system
+  #        always_run: true
+  #        pass_filenames: false
+#  - repo: https://github.com/python-poetry/poetry
+#    rev: 1.2.0
+#    hooks:
+#      - id: poetry-check
+#      - id: poetry-lock
+#      - id: poetry-export
+#        name: create requirements with mysql
+#        args: [ "-o", "requirements.txt", "--extras", "mysql", "--without-hashes" ]

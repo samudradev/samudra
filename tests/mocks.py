@@ -2,13 +2,15 @@ from dataclasses import dataclass
 
 import peewee as pw
 
+from conf import Database
 from samudra import schemas
 from samudra.models import TABLES, JOIN_TABLES
 
-mock_db = pw.SqliteDatabase(':memory:')
+Database.engine = pw.SqliteDatabase(":memory:")
 
 models = [*TABLES]
 relational_models = [*JOIN_TABLES]
+mock_db = Database.engine
 
 
 def bind_test_database(function: callable, *args, **kwargs) -> callable:

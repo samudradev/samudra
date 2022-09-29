@@ -1,3 +1,6 @@
+"""The entrypoint to serve the API
+"""
+
 from typing import Dict
 
 import uvicorn
@@ -28,6 +31,7 @@ app.add_middleware(
 
 @app.get("/")
 def root() -> Dict[str, str]:
+    """Test"""
     return {"details": "Successfully connected!"}
 
 

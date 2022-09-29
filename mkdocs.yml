@@ -5,7 +5,22 @@ repo_name: Samudra - Github
 theme:
   name: material
   features:
-    - navigation.sections
+    - navigation.tabs
+watch:
+  - samudra/
+plugins:
+  - search
+  - gen-files:
+      scripts:
+        - docs_from_source.py
+  - literate-nav:
+      nav_file: SUMMARY.md
+  - section-index
+  - mkdocstrings:
+      # handlers:
+      #   python:
+      #     paths: ["."]
+
 markdown_extensions:
   - admonition
   - pymdownx.highlight:
@@ -17,11 +32,13 @@ markdown_extensions:
       custom_fences:
         - name: mermaid
           class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format
+          format: !!python/name:pymdownx.superfences.fence_code_format # NAV
 
-          # NAV
+
 nav:
-  - Pengenalan: index.md
-  - Teras: teras.md
-  - Aplikasi: pemasangan.md
-  - Model: model.md
+  - Home:
+      - Pengenalan: index.md
+      - Teras: teras.md
+      - Aplikasi: pemasangan.md
+      - Model: model.md
+  - Code: reference/SUMMARY.md

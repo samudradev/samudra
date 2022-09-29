@@ -6,6 +6,8 @@ from samudra.conf.database.core import Database
 
 
 class BaseDataTable(pw.Model):
+    """Base Model"""
+
     id = pw.AutoField(primary_key=True)
     tarikh_masuk = pw.TimestampField()
 
@@ -23,7 +25,7 @@ class BaseAttachmentDataTable(BaseDataTable):
 
     @classmethod
     def __attach__(
-            cls, other: BaseDataTable, values: List[Dict[str, str]]
+        cls, other: BaseDataTable, values: List[Dict[str, str]]
     ) -> pw.ModelSelect:
         rows = [cls.get_or_create(**value)[0] for value in values]
         model_name = getattr(cls, "key", cls.__name__.lower())
@@ -41,4 +43,5 @@ class BaseStrictDataTable(BaseDataTable):
     @classmethod
     def get_or_create(cls, **kwargs):
         raise AttributeError(
-            f"{cls} is a strict table. Rows can only be created explicitly by the `Model.create` method.")
+            f"{cls} is a strict table. Rows can only be created explicitly by the `Model.create` method."
+        )

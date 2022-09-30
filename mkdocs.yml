@@ -4,6 +4,17 @@ repo_url: https://github.com/Thaza-Kun/samudra
 repo_name: Samudra - Github
 theme:
   name: material
+  palette:
+    # Palette toggle for dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    # Palette toggle for light mode
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
   features:
     - navigation.tabs
 watch:
@@ -36,9 +47,15 @@ markdown_extensions:
 
 
 nav:
-  - Home:
+  - Penerangan:
       - Pengenalan: index.md
       - Teras: teras.md
       - Aplikasi: pemasangan.md
       - Model: model.md
-  - Code: reference/SUMMARY.md
+  - Kod Sumber:
+      - Teras: reference/core/index.md
+      - Model: reference/models/index.md
+      - Schema: reference/schemas/index.md
+      - Server: reference/server/index.md
+      - Konfig: reference/conf/index.md
+      - Ringkasan: reference/SUMMARY.md

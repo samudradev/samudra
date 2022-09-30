@@ -1,21 +1,26 @@
-"""
-MODEL RELATIONSHIP REPRESENTATION
-Lemma  <== Konsep <==> Cakupan
-                  <==> KataAsing
+"""Module that contains SQL Tables known as models.
 
---- Legend ---
-One  <==   Many
-Many <==>  Many
+- [🏠 Base][samudra.models.base]
+- [💡 Core][samudra.models.core]
+- [🔐 Auth][samudra.models.auth]
+- [🧪 Experimental][samudra.models.experimental]
 """
+# MODEL RELATIONSHIP REPRESENTATION
+# ```
+# Lemma  <== Konsep <==> Cakupan
+#                   <==> KataAsing
+
+# --- Legend ---
+# One  <==   Many
+# Many <==>  Many
+# ```
+
 # Ordered by table hierarchy
 from .core.lemma import Lemma
 from .core.konsep import Konsep, GolonganKata
 from .core.cakupan import Cakupan, CakupanXKonsep
 from .core.kata_asing import KataAsing, KataAsingXKonsep
 from .auth.pengguna import Pengguna, Keizinan
-
-# Imported for type hints
-from .base import BaseDataTable
 
 TABLES = [Lemma, Konsep, Cakupan, KataAsing, Pengguna, Keizinan, GolonganKata]
 

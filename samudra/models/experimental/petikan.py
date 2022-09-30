@@ -5,7 +5,7 @@ from models.base import BaseAttachmentDataTable, BaseRelationshipTable, BaseData
 
 
 class SumberPetikan(BaseDataTable):
-    """🧪 EXPERIMENTAL Source of the sentence in [`Petikan`][samudra.models.core.petikan.Petikan]."""
+    """🧪 EXPERIMENTAL Source of the sentence in [`Petikan`][samudra.models.experimental.petikan.Petikan]."""
 
     tajuk = TextField(null=False, index=True)
     tarikh = DateField()
@@ -28,10 +28,10 @@ class Petikan(BaseAttachmentDataTable):
 
 
 class PetikanXKonsep(BaseRelationshipTable):
-    """🧪 EXPERIMENTAL A many-to-many relationship between [`Petikan`][samudra.models.core.petikan.Petikan] and [`Konsep`][samudra.models.core.konsep.Konsep].
+    """🧪 EXPERIMENTAL A many-to-many relationship between [`Petikan`][samudra.models.experimental.petikan.Petikan] and [`Konsep`][samudra.models.core.konsep.Konsep].
 
     ## Fields
-    - `Petikan` (ForeignKeyField): foreign key to [`Petikan`][samudra.models.core.petikan.Petikan].
+    - `Petikan` (ForeignKeyField): foreign key to [`Petikan`][samudra.models.experimental.petikan.Petikan].
         * field: `Petikan.id`
         * backref: `Petikan.konsep`
         * on delete: cascade

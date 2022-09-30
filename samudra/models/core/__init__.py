@@ -4,5 +4,4 @@
 - [Konsep][samudra.models.core.konsep]
 - [Kata_Asing][samudra.models.core.kata_asing]
 - [Cakupan][samudra.models.core.cakupan]
-- [Petikan][samudra.models.core.petikan]
 """

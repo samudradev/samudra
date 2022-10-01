@@ -34,6 +34,7 @@ plugins:
 
 markdown_extensions:
   - admonition
+  - pymdownx.details
   - pymdownx.highlight:
       anchor_linenums: true
       use_pygments: true
@@ -43,8 +44,7 @@ markdown_extensions:
       custom_fences:
         - name: mermaid
           class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format # NAV
-
+          format: !!python/name:pymdownx.superfences.fence_code_format
 
 nav:
   - Penerangan:
@@ -52,6 +52,10 @@ nav:
       - Teras: teras.md
       - Aplikasi: pemasangan.md
       - Model: model.md
+      - API:
+          - lemma: API/lemma.md
+          - Golongan Kata: API/golongan_kata.md
+          - Auth: API/auth.md
   - Kod Sumber:
       - Teras: reference/core/index.md
       - Model: reference/models/index.md

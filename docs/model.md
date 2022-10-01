@@ -31,3 +31,7 @@ Oleh itu, perlunya ada model pengantara yang memegang data perhubungan tersebut:
 
 1. CakupanXKonsep
 2. KataAsingXKonsep
+
+## Rujukan
+
+Maklumat lanjut boleh rujuk [`Models`][samudra.models.core]

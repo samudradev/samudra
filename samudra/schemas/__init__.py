@@ -1,8 +1,11 @@
+"""Schema to structure data within application.
+
+!!! warning
+    This schema is still a mess. 
+    I hope to reorganize it one day. 
+    As such, I put off documenting it now as I prioritize other docs.
 """
-MODEL RELATIONSHIP REPRESENTATION
-Lemma  <== Konsep <== Cakupan
-                  <== KataAsing
-"""
+
 # Ordered by table hierarchy
 from samudra.schemas.tables.lemma import LemmaResponse
 from samudra.schemas.tables.konsep import (

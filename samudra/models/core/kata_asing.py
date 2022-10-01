@@ -11,6 +11,9 @@ class KataAsing(BaseAttachmentDataTable):
     - `nama` (TextField): the word
         * null: False
     - `bahasa` (TextField): the language the word belongs to
+
+    ## Attr
+    - `connection_table` ([`BaseRelationshipTable`][samudra.models.base.BaseRelationshipTable]) = [`KataAsingXKonsep`][samudra.models.core.kata_asing.KataAsingXKonsep]
     """
 
     nama = TextField(null=False)

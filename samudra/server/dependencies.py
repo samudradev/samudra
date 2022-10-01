@@ -6,6 +6,7 @@ from samudra.conf.database.core import db_state_default
 
 
 async def reset_db_state() -> None:
+    """Resetting Database state for a fresh query"""
     try:
         Database.connection._state._state.set(db_state_default.copy())
         Database.connection._state.reset()
@@ -14,6 +15,11 @@ async def reset_db_state() -> None:
 
 
 def get_db(db_state=Depends(reset_db_state)):
+    """Gets the database for a server route.
+
+    !!! important "TODO"
+        As of now, I do not know how to override this for testing.
+    """
     try:
         Database.connection.connect()
         yield

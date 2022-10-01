@@ -20,7 +20,8 @@ class BaseDataTable(pw.Model):
     All other models derive from this model including other base models.
 
     ## Fields
-    - `id` (AutoField): the unique id of the data [_primary key_]
+    - `id` (AutoField): the unique id of the data
+        * primary_key: True
     - `tarikh_masuk` (TimestampField): the time it enters the database
 
     ## Meta

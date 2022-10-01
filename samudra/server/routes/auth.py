@@ -18,6 +18,18 @@ router = APIRouter(prefix="/auth", dependencies=[Depends(get_db)])
 
 @router.post("/daftar", response_model=schemas.DaftarResponse)
 def create_pengguna(pengguna: PenggunaCreateDTO):
+    """POST `/auth/daftar`. Register user
+
+    Args:
+        pengguna (PenggunaCreateDTO): User
+
+    Raises:
+        HTTPException: 409 Exception. User already exist
+        HTTPException: 400 Bad Request Exception.
+
+    Returns:
+        [`schemas.DaftarResponse`][samudra.schemas.tables.user.DaftarResponse]
+    """
     try:
         pengguna = auth.get_pengguna_by_nama(pengguna.nama)
         raise HTTPException(status_code=409, detail="User already exist")
@@ -34,7 +46,19 @@ def create_pengguna(pengguna: PenggunaCreateDTO):
 
 
 @router.post("/logmasuk", response_model=schemas.LogMasukResponse)
-async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+async def login_pengguna(form_data: OAuth2PasswordRequestForm = Depends()):
+    """POST `/auth/logmasuk`. Log in.
+
+    Args:
+        form_data (OAuth2PasswordRequestForm, optional): username and password. Defaults to Depends().
+
+    Raises:
+        HTTPException: 401 Unauthorized Exception. Incorrect username or password.
+        HTTPException: 400 Bad Request Exception.
+
+    Returns:
+        [`schemas.LogMasukResponse`][samudra.schemas.tables.user.LogMasukResponse]
+    """
     try:
         pengguna = auth.authenticate_pengguna(form_data.username, form_data.password)
         if not pengguna:

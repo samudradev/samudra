@@ -23,6 +23,8 @@ bcrypt = "^3.2.2"
 python-multipart = "^0.0.5"
 peewee = "^3.15.1"
 requests = "^2.28.1"
+typer = "^0.6.1"
+rich = "^12.6.0"
 
 [tool.poetry.extras]
 mysql = ["cryptography", "PyMySQL"]

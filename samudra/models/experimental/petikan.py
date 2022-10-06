@@ -1,7 +1,11 @@
 from peewee import TextField, ForeignKeyField, DateField
 
-from models import Konsep
-from models.base import BaseAttachmentDataTable, BaseRelationshipTable, BaseDataTable
+from samudra.models import Konsep
+from samudra.models.base import (
+    BaseAttachmentDataTable,
+    BaseRelationshipTable,
+    BaseDataTable,
+)
 
 
 class SumberPetikan(BaseDataTable):

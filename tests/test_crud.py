@@ -7,7 +7,7 @@ from samudra.core.crud.kata_asing import get_kata_asing_by_name
 from samudra.core.crud.konsep import create_konsep, get_konsep_minimum_info
 from samudra.core.crud.lemma import get_lemma_minimum_info
 from samudra.schemas import AnnotatedText, CreateGolonganKata
-from schemas.input.query_filter import QueryFilter
+from samudra.schemas.input.query_filter import QueryFilter
 from tests import mocks
 from passlib.context import CryptContext
 

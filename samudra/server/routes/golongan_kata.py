@@ -2,9 +2,9 @@ from typing import Union
 from fastapi import APIRouter, Depends, HTTPException
 from samudra import models
 
-import schemas
-from core import crud
-from server.dependencies import get_db, oauth2_scheme
+from samudra import schemas
+from samudra.core import crud
+from samudra.server.dependencies import get_db, oauth2_scheme
 
 router = APIRouter(prefix="/golongan", dependencies=[Depends(get_db)])
 

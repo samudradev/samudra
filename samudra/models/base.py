@@ -74,15 +74,14 @@ class BaseAttachmentDataTable(BaseDataTable):
             pw.ModelSelect: A list of rows of this table associated with `other`.
         """
         rows = [cls.get_or_create(**value)[0] for value in values]
-        model_name = getattr(cls, cls._meta.table_name, cls.__name__.lower())
         for row in rows:
             try:
                 cls.connection_table.get_or_create(
-                    **{model_name: row.id, other.__class__.__name__.lower(): other.id}
+                    **{cls._meta.table_name: row.id, other._meta.table_name: other.id}
                 )
             except AttributeError:
                 raise AttributeError(f"{cls} has no associated connection table")
-        return getattr(other, model_name)
+        return getattr(other, cls._meta.table_name)
 
 
 class BaseStrictDataTable(BaseDataTable):

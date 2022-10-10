@@ -1,13 +1,12 @@
 from typing import List, Union, Dict, Optional
 
-import pydantic
 from fastapi import APIRouter, Depends, HTTPException, Query
 
 from samudra import models, schemas
 from samudra.core import crud
 from samudra.server.dependencies import get_db
-from schemas.input.query_filter import QueryFilter
-from server.dependencies import oauth2_scheme
+from samudra.schemas.input.query_filter import QueryFilter
+from samudra.server.dependencies import oauth2_scheme
 
 router = APIRouter(prefix="/lemma", dependencies=[Depends(get_db)])
 

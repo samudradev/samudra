@@ -3,7 +3,7 @@ from typing import List, Optional, Any
 from peewee import prefetch
 
 from samudra import models
-from schemas.input.query_filter import QueryFilter
+from samudra.schemas.input.query_filter import QueryFilter
 
 
 def create_lemma(lemma: str, safe: bool = True) -> models.Lemma:

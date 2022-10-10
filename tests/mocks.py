@@ -2,8 +2,8 @@ from dataclasses import dataclass
 
 import peewee as pw
 
-from conf import Database
 from samudra import schemas
+from samudra.conf import Database
 from samudra.models import TABLES, JOIN_TABLES
 
 Database.engine = pw.SqliteDatabase(":memory:")

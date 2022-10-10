@@ -6,7 +6,7 @@ from samudra.core import auth
 from samudra.server.dependencies import get_db
 from datetime import timedelta
 
-from server.tokens import (
+from samudra.server.tokens import (
     ACCESS_TOKEN_EXPIRE_MINUTES,
     PenggunaCreateDTO,
     create_access_token,

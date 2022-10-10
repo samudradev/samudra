@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
-from serve import app
-from mocks import *
+from samudra.serve import app
+from .mocks import *
 
 client = TestClient(app)
 

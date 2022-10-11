@@ -12,7 +12,8 @@ from typing import List, Dict
 
 import peewee as pw
 
-from samudra.conf.database.core import Database
+
+# from samudra.conf.database.core import Database
 
 
 class BaseDataTable(pw.Model):
@@ -38,7 +39,7 @@ class BaseDataTable(pw.Model):
     tarikh_masuk = pw.TimestampField()
 
     class Meta:
-        database = Database.connection
+        # database = Database.connection
         legacy_table_names = False
 
 

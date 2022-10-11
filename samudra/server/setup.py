@@ -3,10 +3,12 @@ import logging
 import peewee as pw
 
 from samudra import models
-from samudra.conf import Database
+from samudra.conf import get_database
+from samudra.conf.database.core import ENGINE
+from samudra.conf.database.options import DatabaseEngine
 
-
-# TODO Refactor Database.connection to decouple dependency on conf
+# TODO Remove ENGINE config
+SERVER_DATABASE: pw.Database = get_database(engine=DatabaseEngine[ENGINE])
 
 
 def check_tables(create_tables: bool = False) -> None:
@@ -22,21 +24,19 @@ def check_tables(create_tables: bool = False) -> None:
         None: None
     """
     for TABLE in models.TABLES:
-        if Database.connection.table_exists(TABLE):
-            logging.debug(f"{TABLE.__name__} existed in {Database.connection.database}")
+        if SERVER_DATABASE.table_exists(TABLE):
+            logging.debug(f"{TABLE.__name__} existed in {SERVER_DATABASE.database}")
         else:
             if not create_tables:
                 raise pw.DatabaseError(
-                    f"{TABLE.__name__} not existed in {Database.connection.database}"
+                    f"{TABLE.__name__} not existed in {SERVER_DATABASE.database}"
                 )
     if create_tables:
-        Database.connection.create_tables(
-            [*models.TABLES, *models.JOIN_TABLES], safe=True
-        )
+        SERVER_DATABASE.create_tables([*models.TABLES, *models.JOIN_TABLES], safe=True)
     return None
 
 
 def drop_tables() -> None:
     """Drop all tables to start a new server from scratch"""
-    Database.connection.drop_tables([*models.TABLES, *models.JOIN_TABLES])
+    SERVER_DATABASE.drop_tables([*models.TABLES, *models.JOIN_TABLES])
     logging.info("TABLES DROPPED")

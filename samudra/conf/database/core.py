@@ -58,7 +58,8 @@ def get_database(engine: DatabaseEngine) -> pw.Database:
         except FileExistsError:
             pass
         return_db = pw.SqliteDatabase(
-            os.path.join(os.getcwd(), "data", f"{DATABASE_NAME}.db"), check_same_thread=False
+            os.path.join(os.getcwd(), "data", f"{DATABASE_NAME}.db"),
+            check_same_thread=False,
         )
         return_db._state = PeeweeConnectionState()
 
@@ -77,9 +78,3 @@ def get_database(engine: DatabaseEngine) -> pw.Database:
     else:
         raise NotImplementedError("Invalid engine")
     return return_db
-
-
-@dataclass
-class Database:
-    engine = DatabaseEngine[ENGINE]
-    connection = get_database(engine=DatabaseEngine[ENGINE])

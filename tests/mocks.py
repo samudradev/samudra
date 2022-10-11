@@ -1,16 +1,8 @@
-from dataclasses import dataclass
-
 import peewee as pw
 
-from samudra import schemas
-from samudra.conf import Database
-from samudra.models import TABLES, JOIN_TABLES
+from samudra.models import create_tables
 
-Database.engine = pw.SqliteDatabase(":memory:")
-
-models = [*TABLES]
-relational_models = [*JOIN_TABLES]
-mock_db = Database.engine
+mock_db = pw.SqliteDatabase(":memory:")
 
 
 def bind_test_database(function: callable, *args, **kwargs) -> callable:
@@ -18,11 +10,9 @@ def bind_test_database(function: callable, *args, **kwargs) -> callable:
 
     def wrapper():
         try:
-            mock_db.bind(models)
-            mock_db.create_tables([*models, *relational_models])
+            create_tables(mock_db, auth=True, experimental=True)
             function(*args, **kwargs)
         finally:
-            mock_db.drop_tables([*models, *relational_models])
-            mock_db.close()
+            mock_db.close()  # All data in `:memory:` database are deleted automatically once closed
 
     return wrapper

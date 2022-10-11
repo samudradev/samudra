@@ -37,7 +37,6 @@ JOIN_TABLES = [CakupanXKonsep, KataAsingXKonsep]
 def create_tables(
     database: peewee.Database,
     auth: bool = True,
-    foreign_lang: bool = True,
     experimental: bool = False,
 ) -> List[str]:
     """Create tables based on selected criteria
@@ -51,10 +50,9 @@ def create_tables(
     Returns:
         List of tables created
     """
-    tables: List[peewee.Model] = []
+    tables: List[type(peewee.Model)] = []
     tables.extend([Lemma, Konsep, GolonganKata, Cakupan, CakupanXKonsep])
-    if foreign_lang:
-        tables.extend([KataAsing, KataAsingXKonsep])
+    tables.extend([KataAsing, KataAsingXKonsep])
     if auth:
         tables.extend([Pengguna, Keizinan])
     if experimental:

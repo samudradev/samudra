@@ -1,5 +1,7 @@
+# Local envs
 .*env
 .idea
+.vscode
 
 data
 __pycache__/

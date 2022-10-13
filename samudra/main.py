@@ -4,8 +4,10 @@ import typer
 from typer import Typer
 from rich import print
 from samudra.conf.database.core import get_database
+from samudra.conf.database.core import get_database
 
 from samudra.models import create_tables
+from samudra.conf.database.options import DatabaseEngine
 from samudra.conf.database.options import DatabaseEngine
 
 app = Typer()
@@ -17,6 +19,12 @@ def new(
     path: str = typer.Option(".", rich_help_panel="Path to store database (SQLite)"),
     experimental: bool = typer.Option(
         False, rich_help_panel="Include experimental tables"
+    ),
+    engine: DatabaseEngine = typer.Option(
+        DatabaseEngine.SQLite.value,
+        "--engine",
+        "-e",
+        rich_help_panel="Engine to use for database.",
     ),
     engine: DatabaseEngine = typer.Option(
         DatabaseEngine.SQLite.value,

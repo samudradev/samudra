@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
 
-from .database.core import Database, get_database
+from .database.core import get_database
 
 load_dotenv()

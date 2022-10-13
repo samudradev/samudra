@@ -3,10 +3,10 @@ from pathlib import Path
 import typer
 from typer import Typer
 from rich import print
-from samudra.conf.database.core import get_database
 
 from samudra.models import create_tables
 from samudra.conf.database.options import DatabaseEngine
+from samudra.conf.database.core import get_database
 
 app = Typer()
 

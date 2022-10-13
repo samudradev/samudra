@@ -7,13 +7,12 @@ The four bases currently available:
 - [BaseAttachmentDataTable][samudra.models.base.BaseAttachmentDataTable]
 - [BaseStrictDataTable][samudra.models.base.BaseStrictDataTable]
 """
+from collections import defaultdict
+from dataclasses import field
+from typing import List, Dict, Tuple, Type
 
-from typing import List, Dict
-
+import peewee
 import peewee as pw
-
-
-# from samudra.conf.database.core import Database
 
 
 class BaseDataTable(pw.Model):
@@ -29,7 +28,6 @@ class BaseDataTable(pw.Model):
     Meta is subclass of [`BaseDataTable`][samudra.models.base.BaseDataTable] to hold metadata
 
     ### Attr(Meta)
-    - `database` (pw.Database): the database to bind the models.
     - `legacy_table_names` (bool): The naming scheme of models in SQL Tables.
         Set to `False`, so that `CamelCase` model classnames are converted into `camel_case` table names in the database.
         (If set to `True`,`CamelCase` ➡ `camelcase`)
@@ -39,7 +37,6 @@ class BaseDataTable(pw.Model):
     tarikh_masuk = pw.TimestampField()
 
     class Meta:
-        # database = Database.connection
         legacy_table_names = False
 
 
@@ -54,8 +51,20 @@ class BaseRelationshipTable(BaseDataTable):
 class BaseAttachmentDataTable(BaseDataTable):
     """Model to hold attachment data that has a many-to-many relationship with the primary data."""
 
-    connection_table: BaseRelationshipTable
-    "The [`BaseRelationshipTable`][samudra.models.base.BaseAttachmentDataTable] that holds the relationship with the primary data."
+    "The [`BaseRelationshipTable`] that holds the relationship with the primary data."
+
+    @classmethod
+    def connects_to(cls, other: BaseDataTable, through: BaseRelationshipTable) -> None:
+        """Create a dict that defines connection with [data][samudra.models.base.BaseDataTable] and its [relationship table][samudra.models.base.BaseAttachmentDataTable]
+
+        Args:
+            other (BaseDataTable): The data to attach the connection
+            through (BaseRelationshipTable): The bridge that holds the many-to-many connections
+        """
+        cls.connection_table: Dict[str, Type[BaseRelationshipTable]] = defaultdict(
+            BaseRelationshipTable
+        )
+        cls.connection_table[other._meta.table_name] = through
 
     @classmethod
     def __attach__(
@@ -77,12 +86,20 @@ class BaseAttachmentDataTable(BaseDataTable):
         rows = [cls.get_or_create(**value)[0] for value in values]
         for row in rows:
             try:
-                cls.connection_table.get_or_create(
+                cls.connection_table[other._meta.table_name].get_or_create(
                     **{cls._meta.table_name: row.id, other._meta.table_name: other.id}
                 )
             except AttributeError:
                 raise AttributeError(f"{cls} has no associated connection table")
+            except KeyError:
+                raise KeyError(f"{cls} has not defined a connection with {other}")
         return getattr(other, cls._meta.table_name)
+
+    @classmethod
+    def with_dependencies(cls) -> Tuple[Type[BaseDataTable], ...]:
+        """List itself and dependencies tables."""
+        # TODO Add ways to programmatically define dependencies
+        return cls, *cls.connection_table.values()
 
 
 class BaseStrictDataTable(BaseDataTable):

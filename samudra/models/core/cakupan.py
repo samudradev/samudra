@@ -44,4 +44,4 @@ class CakupanXKonsep(BaseRelationshipTable):
     )
 
 
-Cakupan.connection_table = CakupanXKonsep
+Cakupan.connects_to(other=Konsep, through=CakupanXKonsep)

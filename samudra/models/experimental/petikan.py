@@ -53,4 +53,4 @@ class PetikanXKonsep(BaseRelationshipTable):
     )
 
 
-Petikan.connection_table = PetikanXKonsep
+Petikan.connects_to(other=Konsep, through=PetikanXKonsep)

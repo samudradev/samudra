@@ -15,7 +15,7 @@
 # One  <==   Many
 # Many <==>  Many
 # ```
-from typing import List
+from typing import List, Type
 
 import peewee
 
@@ -28,10 +28,6 @@ from .core.cakupan import Cakupan, CakupanXKonsep
 from .core.kata_asing import KataAsing, KataAsingXKonsep
 from .auth.pengguna import Pengguna, Keizinan
 from .experimental.petikan import Petikan, PetikanXKonsep, SumberPetikan
-
-TABLES = [Lemma, Konsep, Cakupan, KataAsing, Pengguna, Keizinan, GolonganKata]
-
-JOIN_TABLES = [CakupanXKonsep, KataAsingXKonsep]
 
 
 def create_tables(
@@ -50,9 +46,9 @@ def create_tables(
     Returns:
         List of tables created
     """
-    tables: List[type(peewee.Model)] = []
-    tables.extend([Lemma, Konsep, GolonganKata, Cakupan, CakupanXKonsep])
-    tables.extend([KataAsing, KataAsingXKonsep])
+    tables: List[Type[peewee.Model]] = []
+    tables.extend([Lemma, Konsep, GolonganKata, *Cakupan.with_dependencies()])
+    tables.extend([*KataAsing.with_dependencies()])
     if auth:
         tables.extend([Pengguna, Keizinan])
     if experimental:

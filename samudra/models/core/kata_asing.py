@@ -45,4 +45,4 @@ class KataAsingXKonsep(BaseRelationshipTable):
     )
 
 
-KataAsing.connection_table = KataAsingXKonsep
+KataAsing.connects_to(other=Konsep, through=KataAsingXKonsep)

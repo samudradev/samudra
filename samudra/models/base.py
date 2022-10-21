@@ -8,7 +8,6 @@ The four bases currently available:
 - [BaseStrictDataTable][samudra.models.base.BaseStrictDataTable]
 """
 from collections import defaultdict
-from dataclasses import field
 from typing import List, Dict, Tuple, Type
 
 import peewee
@@ -61,7 +60,7 @@ class BaseAttachmentDataTable(BaseDataTable):
             other (BaseDataTable): The data to attach the connection
             through (BaseRelationshipTable): The bridge that holds the many-to-many connections
         """
-        cls.connection_table: Dict[str, Type[BaseRelationshipTable]] = defaultdict(
+        cls.connection_table: Dict[str, BaseRelationshipTable] = defaultdict(
             BaseRelationshipTable
         )
         cls.connection_table[other._meta.table_name] = through

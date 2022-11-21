@@ -9,7 +9,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from samudra.conf.server.cors_policy import ALLOWED_ORIGINS
-from samudra.server.setup import check_tables
 from samudra.server import lemmas, auth, golongan_kata
 
 SLEEP_TIME: int = 10
@@ -37,7 +36,7 @@ def root() -> Dict[str, str]:
 
 
 if __name__ == "__main__":
-    check_tables(create_tables=True)
+    # TODO Bind to database
     uvicorn.run("serve:app", port=8000, reload=True)
 
 # TODO: CLI

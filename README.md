@@ -15,6 +15,15 @@ serta satu perkataan boleh dipadankan ke banyak kata asing yang bergantung pada 
 
 ## Tentang Aplikasi
 
+Pembangunan aplikasi ini ada dua arah:
+
+1. [Samudra Sebagai Aplikasi Terminal](#Samudra-Sebagai-Aplikasi-Terminal)
+2. [Samudra Sebagai Aplikasi Pelayan](#Samudra-Sebagai-Aplikasi-Pelayan)
+
+> *warning*
+> Buat masa ini pembangunan sedang ditumpukan pada arah 'Samudra Sebagai Aplikasi Terminal'.
+> Maka, kefungsiannya sebagai satu pelayan dijangka rosak akibat perubahan kod teras.
+
 ### Prasyarat
 
 1. [Python 3.8](https://www.python.org/) atau lebih tinggi
@@ -36,7 +45,18 @@ serta satu perkataan boleh dipadankan ke banyak kata asing yang bergantung pada 
    $ poetry install
    ```
 
-### Sediakan fail .env
+### Samudra Sebagai Aplikasi terminal
+
+Tempat masuk aplikasi terminal diletakkan dalam `./samudra/main.py`.
+Oleh itu, arahan di bawah akan berikan senarai arahan yang tersedia.
+
+```shell
+$ poetry run python ./samudra/main.py --help
+```
+
+### Samudra Sebagai Aplikasi Pelayan
+
+#### Sediakan fail .env
 
 Sebelum boleh memulakan pelayan, fail `.env` perlu wujud untuk menyediakan nilai yang berlainan bagi setiap salinan
 aplikasi. Fail ini terletak dalam ROOT, iaitu tempat yang sama wujudnya `README.md` ini.
@@ -68,7 +88,7 @@ DATABASE_OPTIONS =
 ACCESS_TOKEN_EXPIRE_MINUTES = 
 ```
 
-### Mulakan pelayan
+#### Mulakan pelayan
 
 Setelah selesai langkah pemasangan, mulakan pelayan menggunakan poetry
 (poetry digunakan bagi memastikan arahan dalam fail python dilaksanakan
@@ -82,21 +102,7 @@ Jika anda menerima ralat mengenai nilai-nilai yang tidak tertakrif, rujuk bahagi
 Lihat sekiranya nilai-nilai yang tersenarai di situ sudah tertakrif belum.
 Sekiranya nilai ralat itu tidak disenaraikan, boleh failkan isu.
 
-### Menyumbang kod
-
-1. Buat cabang baharu agar setiap perubahan tersebut tidak mengganggu cabang utama. Namakan cabang secara deskriptif (
-   seperti menamakan ciri yang ingin ditambah).
-    ```shell
-   $ git checkout -b nama_cabang
-   ```
-2. Buat perubahan yang diinginkan. Pastikan `git commit -m "ringkaskan perubahan di sini"` untuk simpan perubahan.
-3. Hantar cabang perubahan ke repo github. Gunakan `nama_cabang` yang sama dengan langkah pertama.
-    ```shell
-   $ git push --set-upstream origin nama_cabang
-   ```
-4. Hantar _pull request_ dan jelaskan perubahan yang telah dilakukan.
-
-## Penciptaan lemma / konsep
+### Penciptaan lemma / konsep
 
 Bagi memudahkan penulisan konsep, samudra menggunakan pencatatan berconteng tapis contengan tersebut menjadi struktur
 yang bermakna. Contengan perlu diletakkan di hujung keterangan kalau tidak, akan dihantar `SyntaxError` kerana ada lebih
@@ -143,6 +149,20 @@ akan menghasilkan
   }
 }
 ```
+
+### Menyumbang kod
+
+1. Buat cabang baharu agar setiap perubahan tersebut tidak mengganggu cabang utama. Namakan cabang secara deskriptif (
+   seperti menamakan ciri yang ingin ditambah).
+    ```shell
+   $ git checkout -b nama_cabang
+   ```
+2. Buat perubahan yang diinginkan. Pastikan `git commit -m "ringkaskan perubahan di sini"` untuk simpan perubahan.
+3. Hantar cabang perubahan ke repo github. Gunakan `nama_cabang` yang sama dengan langkah pertama.
+    ```shell
+   $ git push --set-upstream origin nama_cabang
+   ```
+4. Hantar _pull request_ dan jelaskan perubahan yang telah dilakukan.
 
 ## Ingin Menyumbang?
 

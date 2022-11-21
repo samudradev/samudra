@@ -5,7 +5,7 @@ from typer import Typer
 from rich import print
 
 from samudra.models import create_tables
-from samudra.conf.local import save_db, list_db
+from samudra.conf.local import save_database, get_databases_config
 from samudra.conf.database.options import DatabaseEngine
 from samudra.conf.database.core import get_database
 
@@ -27,13 +27,13 @@ def create(
     ),
 ) -> None:
     """Creates a new database"""
-    database = get_database(db_name=name, engine=engine, path=path)
+    database = get_database(db_name=name, engine=engine, path=path, new=True)
     tables = create_tables(
         database=database,
         auth=False,
         experimental=experimental,
     )
-    save_db(db_name=name, path=Path(path))
+    save_database(db_name=name, path=Path(path))
     print(
         f"`samudra.db` has been created in {Path(path, name).resolve()} with the following tables:"
     )
@@ -44,4 +44,4 @@ def create(
 def list():
     """Lists available databases"""
     # TODO Print as tables
-    print(list_db()["databases"])
+    print(get_databases_config()["databases"])

@@ -82,7 +82,7 @@ def create_lemma(
         If successful: [`Konsep`][samudra.models.core.konsep.Konsep]. If unsuccessful: [`schemas.AnnotatedText`][samudra.schemas.input.annotated_text.AnnotatedText] for helpful error messages.
     """
     try:
-        to_return = crud.create_konsep(post, lemma_name=nama)
+        to_return = crud.create_konsep_by_annotated_text(post, lemma_name=nama)
     except SyntaxError as e:
         raise HTTPException(status_code=400, detail=e.msg)
     return to_return

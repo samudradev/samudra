@@ -6,10 +6,11 @@ from samudra import models
 from samudra.schemas.input.query_filter import QueryFilter
 
 
-def create_lemma(lemma: str, safe: bool = True) -> models.Lemma:
-    if safe:
-        return models.Lemma.get_or_create(nama=lemma)[0]
-    return models.Lemma.create(nama=lemma)
+def create_lemma(lemma: str, force: bool = False) -> models.Lemma:
+    if force:
+        return models.Lemma.create(nama=lemma)
+    value, exists = models.Lemma.get_or_create(nama=lemma)
+    return value
 
 
 def get_lemma_minimum_info(

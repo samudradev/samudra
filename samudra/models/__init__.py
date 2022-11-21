@@ -46,6 +46,15 @@ def create_tables(
     Returns:
         List of tables created
     """
+    tables = bind_to_database(database, auth, experimental)
+    database.create_tables(tables)
+    # TODO logging
+    return database.get_tables()
+
+
+def bind_to_database(
+    database: peewee.Database, auth: bool = True, experimental: bool = False
+):
     tables: List[Type[peewee.Model]] = []
     tables.extend([Lemma, Konsep, GolonganKata, *Cakupan.with_dependencies()])
     tables.extend([*KataAsing.with_dependencies()])
@@ -54,6 +63,4 @@ def create_tables(
     if experimental:
         tables.extend([Petikan, PetikanXKonsep, SumberPetikan])
     database.bind(tables)
-    database.create_tables(tables)
-    # TODO logging
-    return database.get_tables()
+    return tables

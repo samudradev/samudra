@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import Any, List, Dict
 
 from peewee import prefetch
 
@@ -7,30 +7,48 @@ from samudra.core.crud.lemma import create_lemma
 
 
 def create_konsep(
-        annotated_text: schemas.AnnotatedText, lemma_name: str
+    lemma: str,
+    concept: str,
+    golongan: str,
+    tags: List[str],
+    foreign: Dict[str, List[str]],
+    force_lemma: bool = False,
 ) -> models.Konsep:
+    golongan_ = models.GolonganKata.get_or_none(id=golongan.upper())
+    if golongan_ is None:
+        raise ValueError(
+            f"The value '{golongan}' is not in models.{models.GolonganKata.__name__}. Consider adding one manually."
+        )
     konsep = models.Konsep.create(
-        keterangan=annotated_text.content,
-        lemma=create_lemma(lemma=lemma_name, safe=True),
+        keterangan=concept,
+        lemma=create_lemma(lemma=lemma, force=force_lemma),
+        golongan=golongan_,
     )
-
-    golongan_id = annotated_text.fields.get("meta").get("gol"),
-    golongan = models.GolonganKata.get_or_none(id=golongan_id)
-    if golongan is None:
-        raise ValueError(f"The value '{golongan_id[0]}' is not in models.{models.GolonganKata.__name__}")
-    konsep.golongan = golongan
-    if annotated_text.tags:
+    if tags:
         konsep.attach(
             to_model=models.Cakupan,
-            values=[{"nama": tag} for tag in annotated_text.tags],
+            values=[{"nama": tag} for tag in tags],
         )
-    if lang_field := annotated_text.fields.get("lang"):
-        for lang in lang_field.keys():
+    if foreign:
+        for lang in foreign.keys():
             konsep.attach(
                 to_model=models.KataAsing,
-                values=[{"nama": kata, "bahasa": lang} for kata in lang_field[lang]],
+                values=[{"nama": kata, "bahasa": lang} for kata in foreign[lang]],
             )
     return konsep
+
+
+def create_konsep_by_annotated_text(
+    annotated_text: schemas.AnnotatedText, lemma_name: str, force_lemma: bool = False
+) -> models.Konsep:
+    fields = annotated_text.fields
+    return create_konsep(
+        lemma=lemma_name,
+        concept=annotated_text.content,
+        golongan=fields.get("meta").get("gol"),
+        tags=annotated_text.tags,
+        foreign=fields.get("lang"),
+    )
 
 
 def get_konsep_minimum_info(where: Any, limit: int = None) -> List[models.Konsep]:

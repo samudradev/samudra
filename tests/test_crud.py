@@ -4,7 +4,10 @@ from samudra.core.crud.golongan_kata import create_golongan_kata
 from samudra import models
 from samudra.core.crud.cakupan import get_cakupan_by_name
 from samudra.core.crud.kata_asing import get_kata_asing_by_name
-from samudra.core.crud.konsep import create_konsep, get_konsep_minimum_info
+from samudra.core.crud.konsep import (
+    create_konsep_by_annotated_text,
+    get_konsep_minimum_info,
+)
 from samudra.core.crud.lemma import get_lemma_minimum_info
 from samudra.schemas import AnnotatedText, CreateGolonganKata
 from samudra.schemas.input.query_filter import QueryFilter
@@ -50,7 +53,7 @@ def test_create_konsep():
             keterangan="kata yang digunakan untuk merujuk kepada benda.",
         )
     )
-    konsep = create_konsep(annotated_text=data, lemma_name="ujian")
+    konsep = create_konsep_by_annotated_text(annotated_text=data, lemma_name="ujian")
     assert konsep.keterangan == "Ini adalah konsep cubaan"
     assert konsep.cakupan[0].cakupan.nama == "tag 1"
     assert konsep.cakupan[1].cakupan.nama == "tag-2"
@@ -72,7 +75,7 @@ def test_create_konsep_attachment_with_error():
     try:
         delattr(Cakupan, "connection_table")
         with pytest.raises(AttributeError):
-            create_konsep(annotated_text=data, lemma_name="ujian")
+            create_konsep_by_annotated_text(annotated_text=data, lemma_name="ujian")
     finally:
         # Properly restore attr for other tests
         Cakupan.connection_table = old_attr
@@ -88,8 +91,8 @@ def test_get_minimum_lemma_info():
             keterangan="kata yang digunakan untuk merujuk kepada benda.",
         )
     )
-    create_konsep(annotated_text=data, lemma_name="ujian")
-    create_konsep(annotated_text=data, lemma_name="ujian")
+    create_konsep_by_annotated_text(annotated_text=data, lemma_name="ujian")
+    create_konsep_by_annotated_text(annotated_text=data, lemma_name="ujian")
     lemma = get_lemma_minimum_info(query=QueryFilter(limit=10))[0]
     assert lemma.nama == "ujian"
     assert lemma.id == 1
@@ -106,7 +109,7 @@ def test_get_minimum_konsep_info():
             keterangan="kata yang digunakan untuk merujuk kepada benda.",
         )
     )
-    create_konsep(annotated_text=data, lemma_name="ujian")
+    create_konsep_by_annotated_text(annotated_text=data, lemma_name="ujian")
     konsep = get_konsep_minimum_info(where=None, limit=None)
     assert konsep == list(models.Konsep)
 
@@ -121,7 +124,7 @@ def test_get_cakupan_by_name():
             keterangan="kata yang digunakan untuk merujuk kepada benda.",
         )
     )
-    create_konsep(annotated_text=data, lemma_name="ujian")
+    create_konsep_by_annotated_text(annotated_text=data, lemma_name="ujian")
     cakupan = get_cakupan_by_name(nama="tag 1")
     assert cakupan[0].nama == "tag 1"
 
@@ -136,6 +139,6 @@ def test_get_kata_asing_by_name():
             keterangan="kata yang digunakan untuk merujuk kepada benda.",
         )
     )
-    create_konsep(annotated_text=data, lemma_name="ujian")
+    create_konsep_by_annotated_text(annotated_text=data, lemma_name="ujian")
     kata_asing = get_kata_asing_by_name(nama="concept")
     assert kata_asing[0].nama == "concept"

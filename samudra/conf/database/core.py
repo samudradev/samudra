@@ -8,13 +8,16 @@ from unicodedata import name
 import peewee as pw
 
 from conf.local import get_database_info
-from conf.setup import settings
+
+# ! Importing settings will create circular import
+# from conf.setup import settings
 from samudra.conf.database.options import DatabaseEngine
 
 # TODO: Enforce requirements per database engine
 
+
 # As settings
-ENGINE = settings.get("database").get("engine", None)
+# ENGINE = settings.get("database").get("engine", None)
 # DATABASE_NAME = settings.get("database").get("name", "samudra")
 
 db_state_default = {"closed": None, "conn": None, "ctx": None, "transactions": None}

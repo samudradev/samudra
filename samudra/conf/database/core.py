@@ -77,9 +77,12 @@ def get_sqlite(folder: str, path: str, db_file: str = "samudra.db", new: bool = 
     # The DB connection object
     # ? Perlu ke test?
     # TODO Add Test
+    base_path: Path = Path(path, folder)
+    full_path: Path = Path(base_path, db_file)
     if new:
-        base_path: Path = Path(path, folder)
-        full_path: Path = Path(base_path, db_file)
+        # If a new database is to be created, check if the given path is occupied.
+        # If not occupied, create the database.
+        # If occupied, raise FileExistsError
         try:
             base_path.mkdir(parents=True)
         except FileExistsError:
@@ -91,7 +94,7 @@ def get_sqlite(folder: str, path: str, db_file: str = "samudra.db", new: bool = 
                 print(f"Populating empty folder `{base_path.resolve()}` with {db_file}")
             else:
                 raise FileExistsError(
-                    f"The path `{base_path.resolve()}` is already occupied with something else. Consider using other folder."
+                    f"The path `{base_path.resolve()}` is already occupied with something else. Try passing `new=False` to access the database or consider creating new database in another folder."
                 )
         # Set up readme
         README = Path(base_path, "README.md")
@@ -103,14 +106,18 @@ def get_sqlite(folder: str, path: str, db_file: str = "samudra.db", new: bool = 
                     "Created using [samudra](https://github.com/samudradev/samudra)",
                 ]
             )
-    else:
-        db_obj = get_database_info(name=db_file)
-        if db_obj is None:
-            return FileNotFoundError(
-                f"The database name {db_file} is not found. Perhaps it is not created yet. Pass the key `new=True` if that's the case"
-            )
-        base_path: Path = Path(db_obj["path"], folder=db_file)
-        full_path: Path = Path(base_path, db_file)
+    # else:
+    #     # Originally, this part was intended to get the path to database via its name in the local `~/.samudra/databases.toml` file when `new=False`.
+    #     # However, that would mean that the `path` parameter is rendered meaningless unless `new=True`.
+    #     # Perhaps this functionality should be outside the function with paths and folder parameters as its result
+    #     # which will be passed to `get_database/get_sqlite` with explicit `new=False`
+    #     db_obj = get_database_info(name=db_file)
+    #     if db_obj is None:
+    #         return FileNotFoundError(
+    #             f"The database name {db_file} is not found. Perhaps it is not created yet. Pass the key `new=True` if that's the case"
+    #         )
+    #     base_path: Path = Path(db_obj["path"], folder=db_file)
+    #     full_path: Path = Path(base_path, db_file)
     return_db = pw.SqliteDatabase(
         full_path.resolve(),
         check_same_thread=False,

@@ -10,7 +10,11 @@ from conf.setup import settings
 # TODO Remove ENGINE config
 ENGINE = settings.get("database").get("engine", None)
 DATABASE_NAME = settings.get("database").get("name", "samudra")
-PATH = ''
+PATH = ""
 
-SERVER_DATABASE: pw.Database = get_database(engine=DatabaseEngine[ENGINE], db_name=DATABASE_NAME, path=PATH, new=True)
+# We should find a way to only pass `new=True` upon first initialization of the server
+# But pass `new=False` when restarting the server OR when database already exists
+SERVER_DATABASE: pw.Database = get_database(
+    engine=DatabaseEngine[ENGINE], db_name=DATABASE_NAME, path=PATH, new=False
+)
 create_tables(database=SERVER_DATABASE)

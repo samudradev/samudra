@@ -1,8 +1,8 @@
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 
-from samudra.server.setup import SERVER_DATABASE
 from samudra.conf.database.core import db_state_default
+from samudra.server.setup import SERVER_DATABASE
 
 
 async def reset_db_state() -> None:

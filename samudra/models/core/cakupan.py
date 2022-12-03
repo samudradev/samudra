@@ -1,7 +1,7 @@
-from peewee import BlobField, TextField, ForeignKeyField
+from peewee import TextField, ForeignKeyField
 
-from ..base import BaseDataTable, BaseAttachmentDataTable, BaseRelationshipTable
 from .konsep import Konsep
+from ..base import BaseAttachmentDataTable, BaseRelationshipTable
 
 
 class Cakupan(BaseAttachmentDataTable):

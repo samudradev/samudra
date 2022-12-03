@@ -1,5 +1,7 @@
 from typer import Typer
 
+from conf.database.core import get_active_database
+from models.base import database_proxy
 from samudra.cli import database, lemma, golongan_kata
 
 app = Typer()
@@ -10,4 +12,9 @@ app.add_typer(
 )
 
 if __name__ == "__main__":
+    try:
+        active = get_active_database()
+        database_proxy.initialize(active)
+    except KeyError:
+        pass
     app()

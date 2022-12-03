@@ -1,7 +1,7 @@
 from peewee import ForeignKeyField, TextField
 
-from ..base import BaseAttachmentDataTable, BaseRelationshipTable
 from .konsep import Konsep
+from ..base import BaseAttachmentDataTable, BaseRelationshipTable
 
 
 class KataAsing(BaseAttachmentDataTable):

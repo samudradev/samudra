@@ -1,5 +1,3 @@
-import os
-
 import peewee
 import pytomlpp as toml
 
@@ -11,6 +9,6 @@ settings = toml.load("conf.toml")
 
 def access_database(local: bool = True, name: str = None) -> peewee.Database:
     if local:
-        return get_database(db_name=name, engine=DatabaseEngine.SQLite, new=False)
+        return get_database(name=name, engine=DatabaseEngine.SQLite, new=False)
     else:
         raise NotImplementedError("Only loca database is implemented")

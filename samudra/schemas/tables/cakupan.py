@@ -1,9 +1,6 @@
 from typing import Optional
 
-import pydantic as pyd
-
-from samudra import models
-from samudra.schemas.tables._helper import PeeweeGetterDict, ORMSchema
+from samudra.schemas.tables._helper import ORMSchema
 
 
 class CakupanResponse(ORMSchema):

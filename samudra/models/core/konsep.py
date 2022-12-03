@@ -1,23 +1,19 @@
 from typing import Dict, List
 
 from peewee import (
-    AutoField,
     TextField,
     IntegerField,
-    TimestampField,
-    BlobField,
     ForeignKeyField,
     ModelSelect,
     CharField,
 )
 
+from .lemma import Lemma
 from ..base import (
     BaseDataTable,
     BaseAttachmentDataTable,
-    BaseRelationshipTable,
     BaseStrictDataTable,
 )
-from .lemma import Lemma
 
 
 class GolonganKata(BaseStrictDataTable):

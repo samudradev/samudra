@@ -5,13 +5,13 @@ from pathlib import Path
 
 import peewee as pw
 
-from conf.local import (
+from samudra.conf.local import (
     read_database_info,
     write_config,
     read_config,
     append_database_list,
 )
-from models.base import database_proxy
+from samudra.models.base import database_proxy
 from samudra.conf.database.options import DatabaseEngine
 
 db_state_default = {"closed": None, "conn": None, "ctx": None, "transactions": None}
@@ -82,7 +82,7 @@ def get_database(name: str) -> pw.Database:
     """Returns the connection class based on the name."""
     info = read_database_info(name)
     if info.get("engine") == DatabaseEngine.SQLite:
-        return_db = pw.SqliteDatabase(info.get("path"))
+        return_db = pw.SqliteDatabase(info.get("path"), check_same_thread=False)
         return_db._state = SQLiteConnectionState()
         return return_db
     if info.get("engine") == DatabaseEngine.MySQL:

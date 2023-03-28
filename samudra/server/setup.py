@@ -1,6 +1,6 @@
 import peewee as pw
 
-from conf.setup import settings
+from samudra.conf.setup import settings
 from samudra.conf import get_database
 from samudra.conf.database.options import DatabaseEngine
 from samudra.models import create_tables

@@ -1,7 +1,7 @@
 from typer import Typer
 
-from conf.database.core import get_active_database
-from models.base import database_proxy
+from samudra.conf.database.core import get_active_database
+from samudra.models.base import database_proxy
 from samudra.cli import database, lemma, golongan_kata
 
 app = Typer()

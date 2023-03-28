@@ -102,4 +102,4 @@ def delete_lemma(_id: int, token: str = Depends(oauth2_scheme)) -> Dict[str, int
         Returns how many items are deleted.
     """
     lemma = crud.get_lemma_by_id(_id)[0]
-    return {"deleted": crud.delete_lemma(lemma)}
+    return {"deleted": crud.delete_cakupan(lemma)}

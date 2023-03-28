@@ -10,8 +10,10 @@ The four bases currently available:
 from collections import defaultdict
 from typing import List, Dict, Tuple, Type
 
-import peewee
 import peewee as pw
+
+# TODO ! Initialize database at runtime using this proxy
+database_proxy = pw.DatabaseProxy()
 
 
 class BaseDataTable(pw.Model):
@@ -37,6 +39,7 @@ class BaseDataTable(pw.Model):
 
     class Meta:
         legacy_table_names = False
+        database = database_proxy
 
 
 class BaseRelationshipTable(BaseDataTable):

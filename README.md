@@ -20,7 +20,7 @@ Pembangunan aplikasi ini ada dua arah:
 1. [Samudra Sebagai Aplikasi Terminal](#Samudra-Sebagai-Aplikasi-Terminal)
 2. [Samudra Sebagai Aplikasi Pelayan](#Samudra-Sebagai-Aplikasi-Pelayan)
 
-> **warning**
+> *warning*
 > Buat masa ini pembangunan sedang ditumpukan pada arah 'Samudra Sebagai Aplikasi Terminal'.
 > Maka, kefungsiannya sebagai satu pelayan dijangka rosak akibat perubahan kod teras.
 

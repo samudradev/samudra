@@ -1,9 +1,9 @@
-from typing import List, Dict
+from typing import List
 
 import typer
 
-from samudra.core import crud
 from samudra.conf.setup import access_database
+from samudra.core import crud
 from samudra.models import bind_to_database
 
 app = typer.Typer()
@@ -31,7 +31,6 @@ def new(
         False, rich_help_panel="Create a new lemma not caring if it already created"
     ),
 ):
-    bind_to_database(database=access_database(local=True), auth=True, experimental=True)
     if concept is None:
         crud.create_lemma(lemma=lemma, force=force)
     crud.create_konsep(

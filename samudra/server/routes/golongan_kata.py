@@ -1,7 +1,8 @@
 from typing import Union
-from fastapi import APIRouter, Depends, HTTPException
-from samudra import models
 
+from fastapi import APIRouter, Depends, HTTPException
+
+from samudra import models
 from samudra import schemas
 from samudra.core import crud
 from samudra.server.dependencies import get_db, oauth2_scheme

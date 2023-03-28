@@ -7,8 +7,8 @@
 - [golongan_kata][samudra.core.crud.golongan_kata]
 """
 
-from .lemma import *
-from .konsep import *
 from .cakupan import *
-from .kata_asing import *
 from .golongan_kata import *
+from .kata_asing import *
+from .konsep import *
+from .lemma import *

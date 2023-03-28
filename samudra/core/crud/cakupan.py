@@ -29,5 +29,5 @@ def get_cakupan_by_id(
     )
 
 
-def delete_lemma(lemma: models.Cakupan) -> int:
-    return lemma.delete_instance(recursive=False)
+def delete_cakupan(cakupan: models.Cakupan) -> int:
+    return cakupan.delete_instance(recursive=False)

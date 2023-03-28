@@ -1,11 +1,10 @@
 """Functions relating to the management of [`Pengguna`][samudra.models.auth.Pengguna]
 """
 
+from passlib.context import CryptContext
 from peewee import prefetch
 
 from samudra import models
-
-from passlib.context import CryptContext
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 

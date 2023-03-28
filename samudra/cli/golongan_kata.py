@@ -1,7 +1,7 @@
 import typer
 
-from samudra.core import crud
 from samudra.conf.setup import access_database
+from samudra.core import crud
 from samudra.models import bind_to_database
 from samudra.schemas import CreateGolonganKata
 
@@ -19,8 +19,6 @@ def new(
     ),
 ):
     """Creates a new word class."""
-    # TODO Only bind during instantiation
-    bind_to_database(database=access_database(local=True), auth=True, experimental=True)
     crud.create_golongan_kata(
         data=CreateGolonganKata(id=id, nama=nama, keterangan=keterangan)
     )

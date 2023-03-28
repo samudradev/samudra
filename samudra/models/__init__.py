@@ -19,14 +19,14 @@ from typing import List, Type
 
 import peewee
 
+from .auth.pengguna import Pengguna, Keizinan
 from .base import BaseDataTable
+from .core.cakupan import Cakupan, CakupanXKonsep
+from .core.kata_asing import KataAsing, KataAsingXKonsep
+from .core.konsep import Konsep, GolonganKata
 
 # Ordered by table hierarchy
 from .core.lemma import Lemma
-from .core.konsep import Konsep, GolonganKata
-from .core.cakupan import Cakupan, CakupanXKonsep
-from .core.kata_asing import KataAsing, KataAsingXKonsep
-from .auth.pengguna import Pengguna, Keizinan
 from .experimental.petikan import Petikan, PetikanXKonsep, SumberPetikan
 
 
@@ -52,6 +52,8 @@ def create_tables(
     return database.get_tables()
 
 
+# Binding to database at runtime is time-consuming
+# TODO ? REMOVE this in favor of db proxy init
 def bind_to_database(
     database: peewee.Database, auth: bool = True, experimental: bool = False
 ):

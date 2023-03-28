@@ -4,8 +4,8 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 
 from samudra import models, schemas
 from samudra.core import crud
-from samudra.server.dependencies import get_db
 from samudra.schemas.input.query_filter import QueryFilter
+from samudra.server.dependencies import get_db
 from samudra.server.dependencies import oauth2_scheme
 
 router = APIRouter(prefix="/lemma", dependencies=[Depends(get_db)])
@@ -102,4 +102,4 @@ def delete_lemma(_id: int, token: str = Depends(oauth2_scheme)) -> Dict[str, int
         Returns how many items are deleted.
     """
     lemma = crud.get_lemma_by_id(_id)[0]
-    return {"deleted": crud.delete_lemma(lemma)}
+    return {"deleted": crud.delete_cakupan(lemma)}

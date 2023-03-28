@@ -1,20 +1,11 @@
-from typer import Typer
+from samudra.conf.setup import bind_proxy_to_database
 
-from samudra.conf.database.core import get_active_database
-from samudra.models.base import database_proxy
-from samudra.cli import database, lemma, golongan_kata
 
-app = Typer()
-app.add_typer(database.app, name="db", rich_help_panel="Interact with the database")
-app.add_typer(lemma.app, name="lemma", rich_help_panel="Interact with lemmas")
-app.add_typer(
-    golongan_kata.app, name="class", rich_help_panel="Interact with word classes"
-)
+def start_app() -> None:
+    bind_proxy_to_active_databse()
+
 
 if __name__ == "__main__":
-    try:
-        active = get_active_database()
-        database_proxy.initialize(active)
-    except KeyError:
-        pass
-    app()
+    print(
+        "The current codebase is written as a library. Please do not run this as a script."
+    )

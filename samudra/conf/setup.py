@@ -4,7 +4,6 @@ import pytomlpp as toml
 from samudra.conf import get_database
 from samudra.conf.database.core import get_active_database
 from samudra.conf.database.options import DatabaseEngine
-from samudra.models.base import database_proxy
 
 try:
     settings = toml.load("conf.toml")
@@ -19,5 +18,6 @@ def access_database(local: bool = True, name: str = None) -> peewee.Database:
         raise NotImplementedError("Only local database is implemented")
 
 
-def bind_proxy_with_active_database() -> None:
-    database_proxy.initialize(get_active_database())
+def bind_proxy_with_active_database(proxy: peewee.Database) -> peewee.Database:
+    proxy.initialize(get_active_database())
+    return proxy

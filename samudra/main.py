@@ -1,8 +1,16 @@
 from samudra.conf.setup import bind_proxy_to_database
 
+from samudra.models.base import database_proxy
+from samudra.models import create_tables
 
-def start_app() -> None:
-    bind_proxy_to_active_databse()
+
+def on_start() -> None:
+    database = bind_proxy_to_database(proxy=database_proxy)
+    create_tables(database=database)
+
+
+def on_shutdown() -> None:
+    ...
 
 
 if __name__ == "__main__":

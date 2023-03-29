@@ -12,7 +12,6 @@ from typing import List, Dict, Tuple, Type
 
 import peewee as pw
 
-# TODO ! Initialize database at runtime using this proxy
 database_proxy = pw.DatabaseProxy()
 
 

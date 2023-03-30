@@ -15,27 +15,8 @@
 # One  <==   Many
 # Many <==>  Many
 # ```
-from typing import List
 
-import peewee
-
-
-def create_tables(
-    database: peewee.Database,
-    auth: bool = True,
-    experimental: bool = False,
-) -> List[str]:
-    """Create tables based on selected criteria
-
-    Args:
-        database (peewee.Database): The database engine to bind the models
-        auth (bool, optional): Whether to include auth tables or not. Defaults to True
-        experimental (bool, optional): Whether to include experimental tables or not. Defaults to False
-
-    Returns:
-        List of tables created
-    """
-    tables = database.get_tables()
-    database.create_tables(tables)
-    # TODO logging
-    return database.get_tables()
+from samudra.models.core.lemma import Lemma
+from samudra.models.core.konsep import Konsep, GolonganKata
+from samudra.models.core.cakupan import Cakupan
+from samudra.models.core.kata_asing import KataAsing

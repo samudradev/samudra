@@ -1,18 +1,45 @@
+import functools
 import peewee as pw
-from samudra.interfaces import KonsepBuilder
+import pytest
+from samudra.interfaces import LemmaQueryBuilder, NewLemmaBuilder, new_golongan_kata
 
 from samudra.models.base import database_proxy as proxy
-from samudra.models import Lemma, Konsep, Cakupan, KataAsing, GolonganKata
+from samudra.models import (
+    Lemma,
+    Konsep,
+    Cakupan,
+    KataAsing,
+    GolonganKata,
+    CakupanXKonsep,
+    KataAsingXKonsep,
+)
 
 proxy.initialize(pw.SqliteDatabase(":memory:"))
 
 
+@pytest.fixture
+def create_data():
+    gol = new_golongan_kata(id="NAMA", nama="nama", keterangan="...")
+    NewLemmaBuilder(konsep="keterangan", lemma="nama", golongan=gol.id).save()
+
+
 def connect_test_database(function: callable, *args, **kwargs) -> callable:
     """Decorator to open and close a test database connection"""
+    proxy.create_tables(
+        [
+            Lemma,
+            Konsep,
+            Cakupan,
+            KataAsing,
+            GolonganKata,
+            CakupanXKonsep,
+            KataAsingXKonsep,
+        ]
+    )
 
-    def wrapper():
+    @functools.wraps(function)
+    def wrapper(*args, **kwargs):
         try:
-            proxy.create_tables([Lemma, Konsep, Cakupan, KataAsing, GolonganKata])
             function(*args, **kwargs)
         finally:
             proxy.close()  # All data in `:memory:` database are deleted automatically once closed
@@ -21,14 +48,9 @@ def connect_test_database(function: callable, *args, **kwargs) -> callable:
 
 
 @connect_test_database
-def test_konsep_builder():
+def test_konsep_builder(create_data):
     """Testing query for konsep"""
-    Lemma.create(nama="nama")
-    lem = Lemma.get(nama="nama")
-    GolonganKata.create(id="NAMA", nama="nama", keterangan="...")
-    gol = GolonganKata.get(id="NAMA")
-    Konsep.create(lemma=lem, golongan=gol, keterangan="keterangan")
-    query = KonsepBuilder(konsep="keterangan").get_lemma().query()
+    query = LemmaQueryBuilder(konsep="keterangan", lemma="nama").get_cakupan().collect()
     assert query.keterangan == "keterangan"
     assert query.lemma.nama == "nama"
     assert query.golongan.nama == "nama"

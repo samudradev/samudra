@@ -18,5 +18,5 @@
 
 from samudra.models.core.lemma import Lemma
 from samudra.models.core.konsep import Konsep, GolonganKata
-from samudra.models.core.cakupan import Cakupan
-from samudra.models.core.kata_asing import KataAsing
+from samudra.models.core.cakupan import Cakupan, CakupanXKonsep
+from samudra.models.core.kata_asing import KataAsing, KataAsingXKonsep

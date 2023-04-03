@@ -2,7 +2,7 @@ from typing import List
 
 
 from samudra import models
-from samudra.interfaces import LemmaBuilder
+from samudra.interfaces import LemmaQueryBuilder
 
 
 def create_lemma(lemma: str, force: bool = False) -> models.Lemma:
@@ -13,7 +13,7 @@ def create_lemma(lemma: str, force: bool = False) -> models.Lemma:
 
 
 def get_lemma(nama: str) -> List[models.Lemma]:
-    return LemmaBuilder(nama=nama).get_cakupan().get_kata_asing().query()
+    return LemmaQueryBuilder(nama=nama).get_cakupan().get_kata_asing().query()
 
 
 def delete_lemma(lemma: models.Lemma) -> int:

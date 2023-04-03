@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "samudra"
-version = "0.9.1"
+version = "0.9.2"
 description = ""
 authors = ["Thaza_Kun <61819672+Thaza-Kun@users.noreply.github.com>"]
 

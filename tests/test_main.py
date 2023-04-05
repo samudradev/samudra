@@ -50,7 +50,33 @@ def connect_test_database(function: callable, *args, **kwargs) -> callable:
 @connect_test_database
 def test_konsep_builder(create_data):
     """Testing query for konsep"""
+    # Test query of both konsep and lemma
     query = LemmaQueryBuilder(konsep="keterangan", lemma="nama").get_cakupan().collect()
     assert query.keterangan == "keterangan"
     assert query.lemma.nama == "nama"
     assert query.golongan.nama == "nama"
+
+    # Test query of konsep
+    query = LemmaQueryBuilder(konsep="keterangan").get_cakupan().collect()
+    assert query.keterangan == "keterangan"
+    assert query.lemma.nama == "nama"
+    assert query.golongan.nama == "nama"
+
+    # Test query of lemma
+    query = LemmaQueryBuilder(lemma="nama").get_cakupan().collect()
+    assert query.keterangan == "keterangan"
+    assert query.lemma.nama == "nama"
+    assert query.golongan.nama == "nama"
+
+    # Test query with no matching instance
+    query = LemmaQueryBuilder(lemma="nm").get_cakupan().collect()
+    assert query == None
+
+    # Test assert kwargs only
+    with pytest.raises(TypeError):
+        # Ambiguity: Are you querying for lemma or konsep?
+        LemmaQueryBuilder("nm")
+
+    # Test None query raise ValueError
+    with pytest.raises(ValueError):
+        LemmaQueryBuilder(konsep=None, lemma=None)

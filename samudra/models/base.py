@@ -40,6 +40,8 @@ class BaseDataTable(pw.Model):
         legacy_table_names = False
         database = database_proxy
 
+    # TODO SET up __repr__()
+
 
 class BaseRelationshipTable(BaseDataTable):
     """Model to hold many-to-many relationships.

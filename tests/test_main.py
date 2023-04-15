@@ -20,7 +20,9 @@ proxy.initialize(pw.SqliteDatabase(":memory:"))
 @pytest.fixture
 def create_data():
     gol = new_golongan_kata(id="NAMA", nama="nama", keterangan="...")
-    NewLemmaBuilder(konsep="keterangan", lemma="nama", golongan=gol.id).save()
+    NewLemmaBuilder(konsep="keterangan", lemma="nama", golongan=gol.id).set_cakupan(
+        nama="cakupan"
+    ).save()
 
 
 def connect_test_database(function: callable, *args, **kwargs) -> callable:
@@ -52,21 +54,22 @@ def test_konsep_builder(create_data):
     """Testing query for konsep"""
     # Test query of both konsep and lemma
     query = LemmaQueryBuilder(konsep="keterangan", lemma="nama").get_cakupan().collect()
-    assert query.keterangan == "keterangan"
-    assert query.lemma.nama == "nama"
-    assert query.golongan.nama == "nama"
+    assert query.nama == "nama"
+    assert query.konsep[0].keterangan == "keterangan"
+    assert query.konsep[0].golongan.nama == "nama"
+    assert query.konsep[0].cakupan[0].cakupan.nama == "cakupan"
 
     # Test query of konsep
     query = LemmaQueryBuilder(konsep="keterangan").get_cakupan().collect()
-    assert query.keterangan == "keterangan"
-    assert query.lemma.nama == "nama"
-    assert query.golongan.nama == "nama"
+    assert query.nama == "nama"
+    assert query.konsep[0].keterangan == "keterangan"
+    assert query.konsep[0].golongan.nama == "nama"
 
     # Test query of lemma
     query = LemmaQueryBuilder(lemma="nama").get_cakupan().collect()
-    assert query.keterangan == "keterangan"
-    assert query.lemma.nama == "nama"
-    assert query.golongan.nama == "nama"
+    assert query.nama == "nama"
+    assert query.konsep[0].keterangan == "keterangan"
+    assert query.konsep[0].golongan.nama == "nama"
 
     # Test query with no matching instance
     query = LemmaQueryBuilder(lemma="nm").get_cakupan().collect()

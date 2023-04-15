@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "samudra"
-version = "0.9.3"
+version = "0.9.4"
 description = ""
 authors = ["Thaza_Kun <61819672+Thaza-Kun@users.noreply.github.com>"]
 
@@ -18,6 +18,7 @@ bcrypt = "^3.2.2"
 python-multipart = "^0.0.5"
 peewee = "^3.15.1"
 requests = "^2.28.1"
+pydantic = "^1.10.7"
 
 [tool.poetry.extras]
 mysql = ["cryptography", "PyMySQL"]

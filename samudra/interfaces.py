@@ -3,10 +3,11 @@ from peewee import JOIN
 
 import peewee as pw
 from samudra import models
+from samudra.internals import LemmaData
 
 
 class LemmaQueryBuilder:
-    _query_stmt = models.Konsep.select()
+    _query_stmt = models.Lemma.select()
 
     def __init__(
         self, *, lemma: Optional[str] = None, konsep: Optional[str] = None
@@ -25,7 +26,7 @@ class LemmaQueryBuilder:
             whereclause = models.Konsep.keterangan.contains(konsep)
 
         self._query_stmt = (
-            self._query_stmt.join_from(models.Konsep, models.Lemma, JOIN.LEFT_OUTER)
+            self._query_stmt.join_from(models.Lemma, models.Konsep, JOIN.LEFT_OUTER)
             .where(whereclause)
             .join_from(models.Konsep, models.GolonganKata, JOIN.LEFT_OUTER)
         )
@@ -42,9 +43,10 @@ class LemmaQueryBuilder:
         ).join(models.KataAsing, JOIN.LEFT_OUTER)
         return self
 
-    def collect(self) -> List[models.Konsep]:
+    def collect(self) -> Optional[LemmaData]:
+        print(self._query_stmt)
         try:
-            return pw.prefetch(self._query_stmt.get())
+            return LemmaData.from_orm(pw.prefetch(self._query_stmt.get()))
         except pw.DoesNotExist:
             return None
 
@@ -61,6 +63,18 @@ class NewLemmaBuilder:
     def save(self) -> None:
         self.lemma.save()
         self.konsep.save()
+        try:
+            self.cakupan.save()
+            self.cakupan_x_konsep.save()
+        except AttributeError:
+            pass
+
+    def set_cakupan(self, nama: str) -> "NewLemmaBuilder":
+        self.cakupan = models.Cakupan.get_or_create(nama=nama)[0]
+        self.cakupan_x_konsep = models.CakupanXKonsep.get_or_create(
+            cakupan=self.cakupan, konsep=self.konsep
+        )[0]
+        return self
 
 
 def new_golongan_kata(id: str, nama: str, keterangan: str) -> models.GolonganKata:

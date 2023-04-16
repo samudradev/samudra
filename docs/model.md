@@ -6,8 +6,7 @@ pakej [peewee](http://docs.peewee-orm.com/en/latest/index.html) dan berperanan m
 sesama data.
 
 Setiap model tersimpan dalam direktori `samudra/models` dan mewarisi `BaseModel` yang mempunyai dua medan asasi: `id`
-dan `tarikh_masuk`. Pengembangan dan perkemasan model sedang dijalankan di
-cabang [`expand-model`](https://github.com/Thaza-Kun/samudra/tree/expand-model/samudra).
+dan `tarikh_masuk`.
 
 ## Data Kamus
 

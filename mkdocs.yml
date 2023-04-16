@@ -28,9 +28,9 @@ plugins:
       nav_file: SUMMARY.md
   - section-index
   - mkdocstrings:
-      # handlers:
-      #   python:
-      #     paths: ["."]
+      handlers:
+        python:
+          paths: ["."]
 
 markdown_extensions:
   - admonition
@@ -50,16 +50,11 @@ nav:
   - Penerangan:
       - Pengenalan: index.md
       - Teras: teras.md
-      - Aplikasi: pemasangan.md
       - Model: model.md
-      - API:
-          - lemma: API/lemma.md
-          - Golongan Kata: API/golongan_kata.md
-          - Auth: API/auth.md
+
   - Kod Sumber:
-      - Teras: reference/core/index.md
       - Model: reference/models/index.md
-      - Schema: reference/schemas/index.md
-      - Server: reference/server/index.md
       - Konfig: reference/conf/index.md
+      - Interfaces: reference/interfaces.md
+      - Schemas: reference/schemas.md
       - Ringkasan: reference/SUMMARY.md

@@ -7,3 +7,5 @@ perkembangannya dari segi penggunaan, penyelidikan serta pembelajarannya.
 !!! note ""
 
     Nama 'samudra' diambil sempena perkataan 'samudera' yang bererti lautan bagi menggambarkan kosa kata seluas lautan.
+
+![](img/model-samudra.png)

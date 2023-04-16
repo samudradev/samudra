@@ -1,4 +1,4 @@
 """🧪 EXPERIMENTAL Models defined here are still experimental
 
-- [/petikan][samudra.models.experimental.petikan]
+- [💬 Petikan][samudra.models.experimental.petikan]
 """

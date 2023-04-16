@@ -10,6 +10,8 @@ DOC_PATH = ""
 
 nav = mkdocs_gen_files.Nav()
 
+ignoredfiles = ["__init__", "main", "startup"]
+
 for path in sorted(Path(SRC_PATH).rglob("*.py")):
     module_path = path.relative_to(SRC_PATH).with_suffix("")
     doc_path = path.relative_to(SRC_PATH).with_suffix(".md")
@@ -17,7 +19,13 @@ for path in sorted(Path(SRC_PATH).rglob("*.py")):
 
     parts = tuple(module_path.parts)
     if len(parts) == 1:
-        continue
+        if parts[0] not in ignoredfiles:
+            parts = parts[0]
+            doc_path = doc_path.with_name(f"{parts}.md")
+            full_doc_path = full_doc_path.with_name(f"{parts}.md")
+        else:
+            continue
+
     # print(parts)
     # print(len(parts))
 
@@ -34,7 +42,7 @@ for path in sorted(Path(SRC_PATH).rglob("*.py")):
     # FULL_DOC_DIR.mkdir(parents=True, exist_ok=True)
 
     with mkdocs_gen_files.open(full_doc_path, "w") as fd:
-        ident = ".".join(parts)
+        ident = ".".join(parts) if type(parts) in [list, tuple] else parts
         fd.write(f"::: samudra.{ident}")
 
     mkdocs_gen_files.set_edit_path(full_doc_path, path)

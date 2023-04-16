@@ -74,7 +74,7 @@ class BaseAttachmentDataTable(BaseDataTable):
         cls, other: BaseDataTable, values: List[Dict[str, str]]
     ) -> pw.ModelSelect:
         """A custom dunder method to attach a single row of attachment data to the primary data.
-        Is expected to use when a `other.attach(cls, *args, *kwargs)` method is called.
+        Is expected to be used when a `other.attach(cls, *args, *kwargs)` method is called.
 
         Args:
             other (BaseDataTable): An instance of the primary data.
@@ -114,7 +114,7 @@ class BaseStrictDataTable(BaseDataTable):
         A finitely defined data must be explicitly defined.
 
         Raises:
-            AttributeError: This method should not be used.
+            AttributeError: This method should not be used by the inheriting model.
         """
         raise AttributeError(
             f"{cls} is a strict table. Rows can only be created explicitly by the `Model.create` method."

@@ -53,7 +53,7 @@ class Pengguna(BaseDataTable):
         * field: Keizinan.peranan
         * backref: Keizinan.pengguna
         * on delete: set default
-        * default: [`RoleEnum.DEFAULT`][samudra.model.auth.pengguna.RoleEnum]
+        * default: [`RoleEnum.DEFAULT`][samudra.models.auth.pengguna.RoleEnum]
     """
 
     nama = TextField(null=False)

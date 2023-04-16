@@ -3,7 +3,15 @@ from peewee import JOIN
 
 import peewee as pw
 from samudra import models
-from samudra.internals import LemmaData
+from samudra.internals import (
+    LemmaData,
+    KonsepData,
+    CakupanData,
+    KataAsingData,
+    KonsepToKataAsingConnector,
+    GolonganKataData,
+    KonsepToCakupanConnector,
+)
 
 
 class LemmaQueryBuilder:
@@ -13,6 +21,7 @@ class LemmaQueryBuilder:
         self, *, lemma: Optional[str] = None, konsep: Optional[str] = None
     ) -> None:
         if (lemma == None) and (konsep == None):
+            whereclause = None
             raise ValueError(
                 f"Please specify query. `lemma` dan `konsep` cannot both be None."
             )
@@ -44,7 +53,6 @@ class LemmaQueryBuilder:
         return self
 
     def collect(self) -> Optional[LemmaData]:
-        print(self._query_stmt)
         try:
             return LemmaData.from_orm(pw.prefetch(self._query_stmt.get()))
         except pw.DoesNotExist:

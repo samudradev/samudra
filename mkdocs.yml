@@ -51,6 +51,7 @@ nav:
       - Pengenalan: index.md
       - Teras: teras.md
       - Model: model.md
+      - Aplikasi: gui.md
 
   - Kod Sumber:
       - Model: reference/models/index.md

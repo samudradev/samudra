@@ -18,7 +18,8 @@ The module also contains data builders for use by external application
 - [NewLemmaBuilder][samudra.interfaces.NewLemmaBuilder]
 """
 
-from typing import List, Optional
+from copy import deepcopy
+from typing import List, Optional, Set
 from peewee import JOIN
 
 import peewee as pw
@@ -104,6 +105,24 @@ class LemmaQueryBuilder:
             return None
 
 
+class LemmaEditor:
+    def __init__(self, original: LemmaData) -> None:
+        self.old = original
+        self.new = deepcopy(original)
+
+    def rename(self, new: str) -> "LemmaEditor":
+        self.new.nama = new
+
+    def rewrite_konsep(self, index: int, new: str) -> "LemmaEditor":
+        self.new.konsep[index].keterangan = new
+
+    def new_cakupan(self, index: int, cakupan: str) -> "LemmaEditor":
+        cakupan_data = models.Cakupan.get_or_create(nama=cakupan)[0]
+
+    # def add_konsep(self, konsep: KonsepData) -> "LemmaEditor":
+    #     ...
+
+
 class NewLemmaBuilder:
     """A builder to insert new lemma and its related data
 
@@ -115,26 +134,32 @@ class NewLemmaBuilder:
 
     def __init__(self, konsep: str, lemma: str, golongan: str) -> None:
         # TODO Fix dependence on first item tuple
-        self.lemma = models.Lemma.get_or_create(nama=lemma)[0]
+        self.lemma = self.get_or_new(models.Lemma, nama=lemma)
         self.golongan = models.GolonganKata.get(id=golongan)
-        self.konsep = models.Konsep.get_or_create(
-            lemma=self.lemma, golongan=self.golongan, keterangan=konsep
-        )[0]
+        self.konsep = self.get_or_new(
+            models.Konsep, lemma=self.lemma, golongan=self.golongan, keterangan=konsep
+        )
+        self.to_save: Set[pw.Model] = {self.lemma, self.golongan, self.konsep}
+
+    @staticmethod
+    def get_or_new(model: pw.Model, *args, **kwargs) -> pw.Model:
+        """Gets a record or initializes a new one without saving
+
+        Args:
+            model (pw.Model): A model
+
+        Returns:
+            pw.Model: Model instance
+        """
+        if data := model.get_or_none(*args, **kwargs) is None:
+            data = model(*args, **kwargs)
+        return data
 
     def save(self) -> None:
         """Saves the data."""
-        self.lemma.save()
-        self.konsep.save()
-        try:
-            self.cakupan.save()
-            self.cakupan_x_konsep.save()
-        except AttributeError:
-            pass
-        try:
-            self.kata_asing.save()
-            self.kata_asing_x_konsep.save()
-        except AttributeError:
-            pass
+        for record in self.to_save:
+            record.update()  # Fill previously NULL values
+            record.save()
 
     def set_cakupan(self, nama: str) -> "NewLemmaBuilder":
         """Attach the cakupan with the following nama
@@ -145,10 +170,12 @@ class NewLemmaBuilder:
         Returns:
             NewLemmaBuilder: Returns self to continue building
         """
-        self.cakupan = models.Cakupan.get_or_create(nama=nama)[0]
-        self.cakupan_x_konsep = models.CakupanXKonsep.get_or_create(
-            cakupan=self.cakupan, konsep=self.konsep
-        )[0]
+        self.cakupan = self.get_or_new(models.Cakupan, nama=nama)
+        self.cakupan_x_konsep = self.get_or_new(
+            models.CakupanXKonsep, cakupan=self.cakupan, konsep=self.konsep
+        )
+        self.to_save.add(self.cakupan)
+        self.to_save.add(self.cakupan_x_konsep)
         return self
 
     def set_kata_asing(self, nama: str, bahasa: str) -> "NewLemmaBuilder":
@@ -161,10 +188,12 @@ class NewLemmaBuilder:
         Returns:
             NewLemmaBuilder: Returns self to continue building
         """
-        self.kata_asing = models.KataAsing.get_or_create(nama=nama, bahasa=bahasa)[0]
-        self.kata_asing_x_konsep = models.KataAsingXKonsep.get_or_create(
-            kata_asing=self.cakupan, konsep=self.konsep
-        )[0]
+        self.kata_asing = self.get_or_new(models.KataAsing, nama=nama, bahasa=bahasa)
+        self.kata_asing_x_konsep = self.get_or_new(
+            models.KataAsingXKonsep, kata_asing=self.cakupan, konsep=self.konsep
+        )
+        self.to_save.add(self.kata_asing)
+        self.to_save.add(self.kata_asing_x_konsep)
         return self
 
 

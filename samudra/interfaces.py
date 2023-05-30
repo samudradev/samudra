@@ -139,7 +139,7 @@ class NewLemmaBuilder:
         self.konsep = self.get_or_new(
             models.Konsep, lemma=self.lemma, golongan=self.golongan, keterangan=konsep
         )
-        self.to_save: Set[pw.Model] = {self.lemma, self.golongan, self.konsep}
+        self.to_save: List[pw.Model] = [self.lemma, self.golongan, self.konsep]
 
     @staticmethod
     def get_or_new(model: pw.Model, *args, **kwargs) -> pw.Model:
@@ -174,8 +174,7 @@ class NewLemmaBuilder:
         self.cakupan_x_konsep = self.get_or_new(
             models.CakupanXKonsep, cakupan=self.cakupan, konsep=self.konsep
         )
-        self.to_save.add(self.cakupan)
-        self.to_save.add(self.cakupan_x_konsep)
+        self.to_save.extend([self.cakupan, self.cakupan_x_konsep])
         return self
 
     def set_kata_asing(self, nama: str, bahasa: str) -> "NewLemmaBuilder":
@@ -192,8 +191,7 @@ class NewLemmaBuilder:
         self.kata_asing_x_konsep = self.get_or_new(
             models.KataAsingXKonsep, kata_asing=self.cakupan, konsep=self.konsep
         )
-        self.to_save.add(self.kata_asing)
-        self.to_save.add(self.kata_asing_x_konsep)
+        self.to_save.extend([self.kata_asing, self.kata_asing_x_konsep])
         return self
 
 

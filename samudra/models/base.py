@@ -12,7 +12,7 @@ from typing import List, Dict, Tuple, Type
 
 import peewee as pw
 
-database_proxy = pw.DatabaseProxy()
+database_proxy: pw.Database = pw.DatabaseProxy()
 
 
 class BaseDataTable(pw.Model):

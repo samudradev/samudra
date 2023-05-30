@@ -106,21 +106,27 @@ class LemmaQueryBuilder:
 
 
 class LemmaEditor:
-    def __init__(self, original: LemmaData) -> None:
-        self.old = original
-        self.new = deepcopy(original)
+    def __init__(self, data: LemmaData) -> None:
+        self.data = data
+        self.to_save: List[pw.Model] = []
 
     def rename(self, new: str) -> "LemmaEditor":
-        self.new.nama = new
+        _lemma: models.Lemma = models.Lemma.get_by_id(self.data.id)
+        _lemma.nama = new
+        self.to_save.append(_lemma)
+        return self
 
-    def rewrite_konsep(self, index: int, new: str) -> "LemmaEditor":
-        self.new.konsep[index].keterangan = new
+    def rewrite_konsep(self, index: int, keterangan: str) -> "LemmaEditor":
+        _konsep: models.Konsep = models.Konsep.get_by_id(self.data.konsep[index].id)
+        _konsep.keterangan = keterangan
+        self.to_save.append(_konsep)
+        return self
 
-    def new_cakupan(self, index: int, cakupan: str) -> "LemmaEditor":
-        cakupan_data = models.Cakupan.get_or_create(nama=cakupan)[0]
-
-    # def add_konsep(self, konsep: KonsepData) -> "LemmaEditor":
-    #     ...
+    def save(self) -> None:
+        while len(self.to_save) != 0:
+            record = self.to_save.pop(0)
+            record.update()
+            record.save()
 
 
 class NewLemmaBuilder:
@@ -133,7 +139,6 @@ class NewLemmaBuilder:
     """
 
     def __init__(self, konsep: str, lemma: str, golongan: str) -> None:
-        # TODO Fix dependence on first item tuple
         self.lemma = self.get_or_new(models.Lemma, nama=lemma)
         self.golongan = models.GolonganKata.get(id=golongan)
         self.konsep = self.get_or_new(
@@ -156,8 +161,9 @@ class NewLemmaBuilder:
         return data
 
     def save(self) -> None:
-        """Saves the data."""
-        for record in self.to_save:
+        """Saves the built record."""
+        while len(self.to_save) != 0:
+            record = self.to_save.pop(0)
             record.update()  # Fill previously NULL values
             record.save()
 

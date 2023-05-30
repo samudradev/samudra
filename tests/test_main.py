@@ -97,13 +97,25 @@ def test_lemma_editor(create_data):
     assert query.nama == "nama"
 
     # Test edit lemma
-    newlemma = LemmaEditor(query)
-    newlemma.rename("baharu").save()
+    edit = LemmaEditor(query)
+    edit.rename("baharu").save()
     assert LemmaQueryBuilder(lemma="nama").collect() is None
 
     # Test edit konsep
     query = LemmaQueryBuilder(konsep="keterangan", lemma="baharu").collect()
     assert query.nama == "baharu"
     edit = LemmaEditor(query)
-    edit.rewrite_konsep(0, "ujian suntingan").save()
+    edit.replace_konsep(0, "ujian suntingan").save()
     assert LemmaQueryBuilder(konsep="keterangan").collect() is None
+
+    # Test edit cakupan
+    edit.attach_cakupans(0, ["XX", "XY"])
+    query = LemmaQueryBuilder(konsep="keterangan", lemma="baharu").collect()
+    assert query.konsep[0].cakupan[0].cakupan.nama == "cakupan"
+    assert query.konsep[0].cakupan[1].cakupan.nama == "XX"
+    assert query.konsep[0].cakupan[2].cakupan.nama == "XY"
+    edit = LemmaEditor(query)
+    edit.detach_cakupans(0, ["XX"])
+    query = LemmaQueryBuilder(konsep="keterangan", lemma="baharu").collect()
+    assert query.konsep[0].cakupan[0].cakupan.nama == "cakupan"
+    assert query.konsep[0].cakupan[1].cakupan.nama == "XY"

@@ -116,17 +116,54 @@ class LemmaEditor:
         self.to_save.append(_lemma)
         return self
 
-    def rewrite_konsep(self, index: int, keterangan: str) -> "LemmaEditor":
+    def replace_konsep(self, index: int, keterangan: str) -> "LemmaEditor":
         _konsep: models.Konsep = models.Konsep.get_by_id(self.data.konsep[index].id)
         _konsep.keterangan = keterangan
         self.to_save.append(_konsep)
         return self
+
+    def attach_cakupans(self, index: int, cakupans: List[str]) -> "LemmaEditor":
+        _konsep: models.Konsep = models.Konsep.get_by_id(self.data.konsep[index].id)
+        _cakupans: List[models.Cakupan] = _konsep.attach(
+            # TODO USE get_or_init_record for lazy edit
+            models.Cakupan,
+            [{"nama": cakupan} for cakupan in cakupans],
+        )
+        self.to_save.extend(_cakupans)
+        return self
+
+    def detach_cakupans(self, index: int, cakupans: List[str]) -> "LemmaEditor":
+        lookup = {
+            connector.cakupan.nama: connector.cakupan
+            for connector in self.data.konsep[index].cakupan
+        }
+        for cakupan in cakupans:
+            to_remove = lookup[cakupan]
+            record: models.CakupanXKonsep = models.CakupanXKonsep.get(
+                cakupan=to_remove.id, konsep=self.data.konsep[index].id
+            )
+            # TODO Is there any lazy alternative?
+            record.delete_instance(recursive=False)
 
     def save(self) -> None:
         while len(self.to_save) != 0:
             record = self.to_save.pop(0)
             record.update()
             record.save()
+
+
+def get_or_init_record(model: pw.Model, *args, **kwargs) -> pw.Model:
+    """Gets a record or initializes a new one without saving
+
+    Args:
+        model (pw.Model): A model
+
+    Returns:
+        pw.Model: Model instance
+    """
+    if data := model.get_or_none(*args, **kwargs) is None:
+        data = model(*args, **kwargs)
+    return data
 
 
 class NewLemmaBuilder:
@@ -139,26 +176,12 @@ class NewLemmaBuilder:
     """
 
     def __init__(self, konsep: str, lemma: str, golongan: str) -> None:
-        self.lemma = self.get_or_new(models.Lemma, nama=lemma)
+        self.lemma = get_or_init_record(models.Lemma, nama=lemma)
         self.golongan = models.GolonganKata.get(id=golongan)
-        self.konsep = self.get_or_new(
+        self.konsep = get_or_init_record(
             models.Konsep, lemma=self.lemma, golongan=self.golongan, keterangan=konsep
         )
         self.to_save: List[pw.Model] = [self.lemma, self.golongan, self.konsep]
-
-    @staticmethod
-    def get_or_new(model: pw.Model, *args, **kwargs) -> pw.Model:
-        """Gets a record or initializes a new one without saving
-
-        Args:
-            model (pw.Model): A model
-
-        Returns:
-            pw.Model: Model instance
-        """
-        if data := model.get_or_none(*args, **kwargs) is None:
-            data = model(*args, **kwargs)
-        return data
 
     def save(self) -> None:
         """Saves the built record."""
@@ -176,8 +199,8 @@ class NewLemmaBuilder:
         Returns:
             NewLemmaBuilder: Returns self to continue building
         """
-        self.cakupan = self.get_or_new(models.Cakupan, nama=nama)
-        self.cakupan_x_konsep = self.get_or_new(
+        self.cakupan = get_or_init_record(models.Cakupan, nama=nama)
+        self.cakupan_x_konsep = get_or_init_record(
             models.CakupanXKonsep, cakupan=self.cakupan, konsep=self.konsep
         )
         self.to_save.extend([self.cakupan, self.cakupan_x_konsep])
@@ -193,8 +216,8 @@ class NewLemmaBuilder:
         Returns:
             NewLemmaBuilder: Returns self to continue building
         """
-        self.kata_asing = self.get_or_new(models.KataAsing, nama=nama, bahasa=bahasa)
-        self.kata_asing_x_konsep = self.get_or_new(
+        self.kata_asing = get_or_init_record(models.KataAsing, nama=nama, bahasa=bahasa)
+        self.kata_asing_x_konsep = get_or_init_record(
             models.KataAsingXKonsep, kata_asing=self.cakupan, konsep=self.konsep
         )
         self.to_save.extend([self.kata_asing, self.kata_asing_x_konsep])

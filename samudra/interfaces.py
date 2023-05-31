@@ -19,7 +19,7 @@ The module also contains data builders for use by external application
 """
 
 from copy import deepcopy
-from typing import List, Optional, Set
+from typing import Dict, List, Optional, Set
 from peewee import JOIN
 
 import peewee as pw
@@ -109,6 +109,7 @@ class LemmaEditor:
     def __init__(self, data: LemmaData) -> None:
         self.data = data
         self.to_save: List[pw.Model] = []
+        self.to_delete: List[pw.Model] = []
 
     def rename(self, new: str) -> "LemmaEditor":
         _lemma: models.Lemma = models.Lemma.get_by_id(self.data.id)
@@ -142,14 +143,17 @@ class LemmaEditor:
             record: models.CakupanXKonsep = models.CakupanXKonsep.get(
                 cakupan=to_remove.id, konsep=self.data.konsep[index].id
             )
-            # TODO Is there any lazy alternative?
-            record.delete_instance(recursive=False)
+            self.to_delete.append(record)
+        return self
 
     def save(self) -> None:
         while len(self.to_save) != 0:
             record = self.to_save.pop(0)
             record.update()
             record.save()
+
+        while len(self.to_delete) != 0:
+            self.to_delete.pop(0).delete_instance(recursive=False)
 
 
 def get_or_init_record(model: pw.Model, *args, **kwargs) -> pw.Model:

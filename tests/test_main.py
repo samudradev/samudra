@@ -115,7 +115,7 @@ def test_lemma_editor(create_data):
     assert query.konsep[0].cakupan[1].cakupan.nama == "XX"
     assert query.konsep[0].cakupan[2].cakupan.nama == "XY"
     edit = LemmaEditor(query)
-    edit.detach_cakupans(0, ["XX"])
+    edit.detach_cakupans(0, ["XX"]).save()
     query = LemmaQueryBuilder(konsep="keterangan", lemma="baharu").collect()
     assert query.konsep[0].cakupan[0].cakupan.nama == "cakupan"
     assert query.konsep[0].cakupan[1].cakupan.nama == "XY"

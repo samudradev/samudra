@@ -1,0 +1,1747 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://thaza-kun.github.io/samudra/reference/interfaces/">
+      
+      
+        <link rel="prev" href="../conf/">
+      
+      
+        <link rel="next" href="../schemas/">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.6">
+    
+    
+      
+        <title>Interfaces - 📖 Samudra</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ded33207.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.a0c5b2b5.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#samudra.interfaces" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="📖 Samudra" class="md-header__button md-logo" aria-label="📖 Samudra" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            📖 Samudra
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Interfaces
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12c0-2.42-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Thaza-Kun/samudra" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Samudra - Github
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        Penerangan
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../models/" class="md-tabs__link md-tabs__link--active">
+        Kod Sumber
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="📖 Samudra" class="md-nav__button md-logo" aria-label="📖 Samudra" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    📖 Samudra
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Thaza-Kun/samudra" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Samudra - Github
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+          Penerangan
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          Penerangan
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Pengenalan
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../teras/" class="md-nav__link">
+        Teras
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model/" class="md-nav__link">
+        Model
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gui/" class="md-nav__link">
+        Aplikasi
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Kod Sumber
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Kod Sumber
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../models/" class="md-nav__link">
+        Model
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../conf/" class="md-nav__link">
+        Konfig
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Interfaces
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Interfaces
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#samudra.interfaces" class="md-nav__link">
+    samudra.interfaces
+  </a>
+  
+    <nav class="md-nav" aria-label="samudra.interfaces">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#samudra.interfaces--schemas" class="md-nav__link">
+    Schemas
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#samudra.interfaces--builders" class="md-nav__link">
+    Builders
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#samudra.interfaces.LemmaQueryBuilder" class="md-nav__link">
+    LemmaQueryBuilder
+  </a>
+  
+    <nav class="md-nav" aria-label="LemmaQueryBuilder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#samudra.interfaces.LemmaQueryBuilder.collect" class="md-nav__link">
+    collect()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#samudra.interfaces.LemmaQueryBuilder.get_cakupan" class="md-nav__link">
+    get_cakupan()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#samudra.interfaces.LemmaQueryBuilder.get_kata_asing" class="md-nav__link">
+    get_kata_asing()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#samudra.interfaces.NewLemmaBuilder" class="md-nav__link">
+    NewLemmaBuilder
+  </a>
+  
+    <nav class="md-nav" aria-label="NewLemmaBuilder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#samudra.interfaces.NewLemmaBuilder.save" class="md-nav__link">
+    save()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#samudra.interfaces.NewLemmaBuilder.set_cakupan" class="md-nav__link">
+    set_cakupan()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#samudra.interfaces.NewLemmaBuilder.set_kata_asing" class="md-nav__link">
+    set_kata_asing()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#samudra.interfaces.get_or_init_record" class="md-nav__link">
+    get_or_init_record()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../schemas/" class="md-nav__link">
+        Schemas
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SUMMARY/" class="md-nav__link">
+        Ringkasan
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#samudra.interfaces" class="md-nav__link">
+    samudra.interfaces
+  </a>
+  
+    <nav class="md-nav" aria-label="samudra.interfaces">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#samudra.interfaces--schemas" class="md-nav__link">
+    Schemas
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#samudra.interfaces--builders" class="md-nav__link">
+    Builders
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#samudra.interfaces.LemmaQueryBuilder" class="md-nav__link">
+    LemmaQueryBuilder
+  </a>
+  
+    <nav class="md-nav" aria-label="LemmaQueryBuilder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#samudra.interfaces.LemmaQueryBuilder.collect" class="md-nav__link">
+    collect()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#samudra.interfaces.LemmaQueryBuilder.get_cakupan" class="md-nav__link">
+    get_cakupan()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#samudra.interfaces.LemmaQueryBuilder.get_kata_asing" class="md-nav__link">
+    get_kata_asing()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#samudra.interfaces.NewLemmaBuilder" class="md-nav__link">
+    NewLemmaBuilder
+  </a>
+  
+    <nav class="md-nav" aria-label="NewLemmaBuilder">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#samudra.interfaces.NewLemmaBuilder.save" class="md-nav__link">
+    save()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#samudra.interfaces.NewLemmaBuilder.set_cakupan" class="md-nav__link">
+    set_cakupan()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#samudra.interfaces.NewLemmaBuilder.set_kata_asing" class="md-nav__link">
+    set_kata_asing()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#samudra.interfaces.get_or_init_record" class="md-nav__link">
+    get_or_init_record()
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+  <h1>Interfaces</h1>
+
+<div class="doc doc-object doc-module">
+
+
+<a id="samudra.interfaces"></a>
+  <div class="doc doc-contents first">
+  
+      <p>External applications are expected to interact with classes and functions defined here.</p>
+<h3 id="samudra.interfaces--schemas">Schemas</h3>
+<p>The module contains data schemas for use by external application</p>
+<ul>
+<li><a class="autorefs autorefs-internal" href="../schemas/#samudra.schemas.LemmaData">LemmaData</a></li>
+<li><a class="autorefs autorefs-internal" href="../schemas/#samudra.schemas.KonsepData">KonsepData</a></li>
+<li><a class="autorefs autorefs-internal" href="../schemas/#samudra.schemas.CakupanData">CakupanData</a></li>
+<li><a class="autorefs autorefs-internal" href="../schemas/#samudra.schemas.KataAsingData">KataAsingData</a></li>
+<li><a class="autorefs autorefs-internal" href="../schemas/#samudra.schemas.GolonganKataData">GolonganKataData</a></li>
+</ul>
+<h3 id="samudra.interfaces--builders">Builders</h3>
+<p>The module also contains data builders for use by external application</p>
+<ul>
+<li><a class="autorefs autorefs-internal" href="#samudra.interfaces.LemmaQueryBuilder">LemmaQueryBuilder</a></li>
+<li><a class="autorefs autorefs-internal" href="#samudra.interfaces.NewLemmaBuilder">NewLemmaBuilder</a></li>
+</ul>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="samudra.interfaces.LemmaQueryBuilder" class="doc doc-heading">
+        <code>LemmaQueryBuilder</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+  
+      <p>A query builder to fetch lemma data and its relationships.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>If <code>lemma</code> and <code>konsep</code> is both <code>None</code>, it will raise a <code>ValueError</code>.</p>
+</div>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>lemma</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[str]</code>
+          </td>
+          <td><p>The lemma to match to. Defaults to None.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>konsep</code></td>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[str]</code>
+          </td>
+          <td><p>The query contains these words in the konsep. Defaults to None.</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+        <details class="quote">
+          <summary>Source code in <code>samudra/interfaces.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-38"> 38</a></span>
+<span class="normal"><a href="#__codelineno-0-39"> 39</a></span>
+<span class="normal"><a href="#__codelineno-0-40"> 40</a></span>
+<span class="normal"><a href="#__codelineno-0-41"> 41</a></span>
+<span class="normal"><a href="#__codelineno-0-42"> 42</a></span>
+<span class="normal"><a href="#__codelineno-0-43"> 43</a></span>
+<span class="normal"><a href="#__codelineno-0-44"> 44</a></span>
+<span class="normal"><a href="#__codelineno-0-45"> 45</a></span>
+<span class="normal"><a href="#__codelineno-0-46"> 46</a></span>
+<span class="normal"><a href="#__codelineno-0-47"> 47</a></span>
+<span class="normal"><a href="#__codelineno-0-48"> 48</a></span>
+<span class="normal"><a href="#__codelineno-0-49"> 49</a></span>
+<span class="normal"><a href="#__codelineno-0-50"> 50</a></span>
+<span class="normal"><a href="#__codelineno-0-51"> 51</a></span>
+<span class="normal"><a href="#__codelineno-0-52"> 52</a></span>
+<span class="normal"><a href="#__codelineno-0-53"> 53</a></span>
+<span class="normal"><a href="#__codelineno-0-54"> 54</a></span>
+<span class="normal"><a href="#__codelineno-0-55"> 55</a></span>
+<span class="normal"><a href="#__codelineno-0-56"> 56</a></span>
+<span class="normal"><a href="#__codelineno-0-57"> 57</a></span>
+<span class="normal"><a href="#__codelineno-0-58"> 58</a></span>
+<span class="normal"><a href="#__codelineno-0-59"> 59</a></span>
+<span class="normal"><a href="#__codelineno-0-60"> 60</a></span>
+<span class="normal"><a href="#__codelineno-0-61"> 61</a></span>
+<span class="normal"><a href="#__codelineno-0-62"> 62</a></span>
+<span class="normal"><a href="#__codelineno-0-63"> 63</a></span>
+<span class="normal"><a href="#__codelineno-0-64"> 64</a></span>
+<span class="normal"><a href="#__codelineno-0-65"> 65</a></span>
+<span class="normal"><a href="#__codelineno-0-66"> 66</a></span>
+<span class="normal"><a href="#__codelineno-0-67"> 67</a></span>
+<span class="normal"><a href="#__codelineno-0-68"> 68</a></span>
+<span class="normal"><a href="#__codelineno-0-69"> 69</a></span>
+<span class="normal"><a href="#__codelineno-0-70"> 70</a></span>
+<span class="normal"><a href="#__codelineno-0-71"> 71</a></span>
+<span class="normal"><a href="#__codelineno-0-72"> 72</a></span>
+<span class="normal"><a href="#__codelineno-0-73"> 73</a></span>
+<span class="normal"><a href="#__codelineno-0-74"> 74</a></span>
+<span class="normal"><a href="#__codelineno-0-75"> 75</a></span>
+<span class="normal"><a href="#__codelineno-0-76"> 76</a></span>
+<span class="normal"><a href="#__codelineno-0-77"> 77</a></span>
+<span class="normal"><a href="#__codelineno-0-78"> 78</a></span>
+<span class="normal"><a href="#__codelineno-0-79"> 79</a></span>
+<span class="normal"><a href="#__codelineno-0-80"> 80</a></span>
+<span class="normal"><a href="#__codelineno-0-81"> 81</a></span>
+<span class="normal"><a href="#__codelineno-0-82"> 82</a></span>
+<span class="normal"><a href="#__codelineno-0-83"> 83</a></span>
+<span class="normal"><a href="#__codelineno-0-84"> 84</a></span>
+<span class="normal"><a href="#__codelineno-0-85"> 85</a></span>
+<span class="normal"><a href="#__codelineno-0-86"> 86</a></span>
+<span class="normal"><a href="#__codelineno-0-87"> 87</a></span>
+<span class="normal"><a href="#__codelineno-0-88"> 88</a></span>
+<span class="normal"><a href="#__codelineno-0-89"> 89</a></span>
+<span class="normal"><a href="#__codelineno-0-90"> 90</a></span>
+<span class="normal"><a href="#__codelineno-0-91"> 91</a></span>
+<span class="normal"><a href="#__codelineno-0-92"> 92</a></span>
+<span class="normal"><a href="#__codelineno-0-93"> 93</a></span>
+<span class="normal"><a href="#__codelineno-0-94"> 94</a></span>
+<span class="normal"><a href="#__codelineno-0-95"> 95</a></span>
+<span class="normal"><a href="#__codelineno-0-96"> 96</a></span>
+<span class="normal"><a href="#__codelineno-0-97"> 97</a></span>
+<span class="normal"><a href="#__codelineno-0-98"> 98</a></span>
+<span class="normal"><a href="#__codelineno-0-99"> 99</a></span>
+<span class="normal"><a href="#__codelineno-0-100">100</a></span>
+<span class="normal"><a href="#__codelineno-0-101">101</a></span>
+<span class="normal"><a href="#__codelineno-0-102">102</a></span>
+<span class="normal"><a href="#__codelineno-0-103">103</a></span>
+<span class="normal"><a href="#__codelineno-0-104">104</a></span>
+<span class="normal"><a href="#__codelineno-0-105">105</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-38" name="__codelineno-0-38"></a><span class="k">class</span> <span class="nc">LemmaQueryBuilder</span><span class="p">:</span>
+<a id="__codelineno-0-39" name="__codelineno-0-39"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;A query builder to fetch lemma data and its relationships.</span>
+<a id="__codelineno-0-40" name="__codelineno-0-40"></a>
+<a id="__codelineno-0-41" name="__codelineno-0-41"></a><span class="sd">    !!! important</span>
+<a id="__codelineno-0-42" name="__codelineno-0-42"></a><span class="sd">        If `lemma` and `konsep` is both `None`, it will raise a `ValueError`.</span>
+<a id="__codelineno-0-43" name="__codelineno-0-43"></a>
+<a id="__codelineno-0-44" name="__codelineno-0-44"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-45" name="__codelineno-0-45"></a><span class="sd">        lemma (Optional[str], optional): The lemma to match to. Defaults to None.</span>
+<a id="__codelineno-0-46" name="__codelineno-0-46"></a><span class="sd">        konsep (Optional[str], optional): The query contains these words in the konsep. Defaults to None.</span>
+<a id="__codelineno-0-47" name="__codelineno-0-47"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-48" name="__codelineno-0-48"></a>
+<a id="__codelineno-0-49" name="__codelineno-0-49"></a>    <span class="n">_query_stmt</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Lemma</span><span class="o">.</span><span class="n">select</span><span class="p">()</span>
+<a id="__codelineno-0-50" name="__codelineno-0-50"></a>
+<a id="__codelineno-0-51" name="__codelineno-0-51"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<a id="__codelineno-0-52" name="__codelineno-0-52"></a>        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">lemma</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">konsep</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="__codelineno-0-53" name="__codelineno-0-53"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-54" name="__codelineno-0-54"></a>        <span class="k">if</span> <span class="p">(</span><span class="n">lemma</span> <span class="o">==</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">konsep</span> <span class="o">==</span> <span class="kc">None</span><span class="p">):</span>
+<a id="__codelineno-0-55" name="__codelineno-0-55"></a>            <span class="n">whereclause</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="__codelineno-0-56" name="__codelineno-0-56"></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+<a id="__codelineno-0-57" name="__codelineno-0-57"></a>                <span class="sa">f</span><span class="s2">&quot;Please specify query. `lemma` dan `konsep` cannot both be None.&quot;</span>
+<a id="__codelineno-0-58" name="__codelineno-0-58"></a>            <span class="p">)</span>
+<a id="__codelineno-0-59" name="__codelineno-0-59"></a>        <span class="k">elif</span> <span class="n">lemma</span> <span class="ow">and</span> <span class="n">konsep</span><span class="p">:</span>
+<a id="__codelineno-0-60" name="__codelineno-0-60"></a>            <span class="n">whereclause</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Lemma</span><span class="o">.</span><span class="n">nama</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span>
+<a id="__codelineno-0-61" name="__codelineno-0-61"></a>                <span class="n">lemma</span>
+<a id="__codelineno-0-62" name="__codelineno-0-62"></a>            <span class="p">)</span> <span class="ow">or</span> <span class="n">models</span><span class="o">.</span><span class="n">Konsep</span><span class="o">.</span><span class="n">keterangan</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">konsep</span><span class="p">)</span>
+<a id="__codelineno-0-63" name="__codelineno-0-63"></a>        <span class="k">elif</span> <span class="n">lemma</span><span class="p">:</span>
+<a id="__codelineno-0-64" name="__codelineno-0-64"></a>            <span class="n">whereclause</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Lemma</span><span class="o">.</span><span class="n">nama</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">lemma</span><span class="p">)</span>
+<a id="__codelineno-0-65" name="__codelineno-0-65"></a>        <span class="k">elif</span> <span class="n">konsep</span><span class="p">:</span>
+<a id="__codelineno-0-66" name="__codelineno-0-66"></a>            <span class="n">whereclause</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Konsep</span><span class="o">.</span><span class="n">keterangan</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">konsep</span><span class="p">)</span>
+<a id="__codelineno-0-67" name="__codelineno-0-67"></a>
+<a id="__codelineno-0-68" name="__codelineno-0-68"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_query_stmt</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-0-69" name="__codelineno-0-69"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_query_stmt</span><span class="o">.</span><span class="n">join_from</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Lemma</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">Konsep</span><span class="p">,</span> <span class="n">JOIN</span><span class="o">.</span><span class="n">LEFT_OUTER</span><span class="p">)</span>
+<a id="__codelineno-0-70" name="__codelineno-0-70"></a>            <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">whereclause</span><span class="p">)</span>
+<a id="__codelineno-0-71" name="__codelineno-0-71"></a>            <span class="o">.</span><span class="n">join_from</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Konsep</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">GolonganKata</span><span class="p">,</span> <span class="n">JOIN</span><span class="o">.</span><span class="n">LEFT_OUTER</span><span class="p">)</span>
+<a id="__codelineno-0-72" name="__codelineno-0-72"></a>        <span class="p">)</span>
+<a id="__codelineno-0-73" name="__codelineno-0-73"></a>
+<a id="__codelineno-0-74" name="__codelineno-0-74"></a>    <span class="k">def</span> <span class="nf">get_cakupan</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;LemmaQueryBuilder&quot;</span><span class="p">:</span>
+<a id="__codelineno-0-75" name="__codelineno-0-75"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Fetch related `cakupan`.</span>
+<a id="__codelineno-0-76" name="__codelineno-0-76"></a>
+<a id="__codelineno-0-77" name="__codelineno-0-77"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-0-78" name="__codelineno-0-78"></a><span class="sd">            LemmaQueryBuilder: Returns self to continue building the query</span>
+<a id="__codelineno-0-79" name="__codelineno-0-79"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-80" name="__codelineno-0-80"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_query_stmt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_stmt</span><span class="o">.</span><span class="n">join_from</span><span class="p">(</span>
+<a id="__codelineno-0-81" name="__codelineno-0-81"></a>            <span class="n">models</span><span class="o">.</span><span class="n">Konsep</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">CakupanXKonsep</span><span class="p">,</span> <span class="n">JOIN</span><span class="o">.</span><span class="n">LEFT_OUTER</span>
+<a id="__codelineno-0-82" name="__codelineno-0-82"></a>        <span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Cakupan</span><span class="p">,</span> <span class="n">JOIN</span><span class="o">.</span><span class="n">LEFT_OUTER</span><span class="p">)</span>
+<a id="__codelineno-0-83" name="__codelineno-0-83"></a>        <span class="k">return</span> <span class="bp">self</span>
+<a id="__codelineno-0-84" name="__codelineno-0-84"></a>
+<a id="__codelineno-0-85" name="__codelineno-0-85"></a>    <span class="k">def</span> <span class="nf">get_kata_asing</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;LemmaQueryBuilder&quot;</span><span class="p">:</span>
+<a id="__codelineno-0-86" name="__codelineno-0-86"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Fetch related `kata_asing`.</span>
+<a id="__codelineno-0-87" name="__codelineno-0-87"></a>
+<a id="__codelineno-0-88" name="__codelineno-0-88"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-0-89" name="__codelineno-0-89"></a><span class="sd">            LemmaQueryBuilder: Returns self to continue building the query</span>
+<a id="__codelineno-0-90" name="__codelineno-0-90"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-91" name="__codelineno-0-91"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_query_stmt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_stmt</span><span class="o">.</span><span class="n">join_from</span><span class="p">(</span>
+<a id="__codelineno-0-92" name="__codelineno-0-92"></a>            <span class="n">models</span><span class="o">.</span><span class="n">Konsep</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">KataAsingXKonsep</span><span class="p">,</span> <span class="n">JOIN</span><span class="o">.</span><span class="n">LEFT_OUTER</span>
+<a id="__codelineno-0-93" name="__codelineno-0-93"></a>        <span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">KataAsing</span><span class="p">,</span> <span class="n">JOIN</span><span class="o">.</span><span class="n">LEFT_OUTER</span><span class="p">)</span>
+<a id="__codelineno-0-94" name="__codelineno-0-94"></a>        <span class="k">return</span> <span class="bp">self</span>
+<a id="__codelineno-0-95" name="__codelineno-0-95"></a>
+<a id="__codelineno-0-96" name="__codelineno-0-96"></a>    <span class="k">def</span> <span class="nf">collect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">LemmaData</span><span class="p">]:</span>
+<a id="__codelineno-0-97" name="__codelineno-0-97"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Execute the query</span>
+<a id="__codelineno-0-98" name="__codelineno-0-98"></a>
+<a id="__codelineno-0-99" name="__codelineno-0-99"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-0-100" name="__codelineno-0-100"></a><span class="sd">            Optional[LemmaData]: Returns None if data matching query does not exist.</span>
+<a id="__codelineno-0-101" name="__codelineno-0-101"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-102" name="__codelineno-0-102"></a>        <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-0-103" name="__codelineno-0-103"></a>            <span class="k">return</span> <span class="n">LemmaData</span><span class="o">.</span><span class="n">from_orm</span><span class="p">(</span><span class="n">pw</span><span class="o">.</span><span class="n">prefetch</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_query_stmt</span><span class="o">.</span><span class="n">get</span><span class="p">()))</span>
+<a id="__codelineno-0-104" name="__codelineno-0-104"></a>        <span class="k">except</span> <span class="n">pw</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+<a id="__codelineno-0-105" name="__codelineno-0-105"></a>            <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="samudra.interfaces.LemmaQueryBuilder.collect" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">collect</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Execute the query</p>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="samudra.schemas.LemmaData" href="../schemas/#samudra.schemas.LemmaData">LemmaData</a>]</code>
+          </td>
+          <td><p>Optional[LemmaData]: Returns None if data matching query does not exist.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>samudra/interfaces.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-96"> 96</a></span>
+<span class="normal"><a href="#__codelineno-0-97"> 97</a></span>
+<span class="normal"><a href="#__codelineno-0-98"> 98</a></span>
+<span class="normal"><a href="#__codelineno-0-99"> 99</a></span>
+<span class="normal"><a href="#__codelineno-0-100">100</a></span>
+<span class="normal"><a href="#__codelineno-0-101">101</a></span>
+<span class="normal"><a href="#__codelineno-0-102">102</a></span>
+<span class="normal"><a href="#__codelineno-0-103">103</a></span>
+<span class="normal"><a href="#__codelineno-0-104">104</a></span>
+<span class="normal"><a href="#__codelineno-0-105">105</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-96" name="__codelineno-0-96"></a><span class="k">def</span> <span class="nf">collect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">LemmaData</span><span class="p">]:</span>
+<a id="__codelineno-0-97" name="__codelineno-0-97"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Execute the query</span>
+<a id="__codelineno-0-98" name="__codelineno-0-98"></a>
+<a id="__codelineno-0-99" name="__codelineno-0-99"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-100" name="__codelineno-0-100"></a><span class="sd">        Optional[LemmaData]: Returns None if data matching query does not exist.</span>
+<a id="__codelineno-0-101" name="__codelineno-0-101"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-102" name="__codelineno-0-102"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-0-103" name="__codelineno-0-103"></a>        <span class="k">return</span> <span class="n">LemmaData</span><span class="o">.</span><span class="n">from_orm</span><span class="p">(</span><span class="n">pw</span><span class="o">.</span><span class="n">prefetch</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_query_stmt</span><span class="o">.</span><span class="n">get</span><span class="p">()))</span>
+<a id="__codelineno-0-104" name="__codelineno-0-104"></a>    <span class="k">except</span> <span class="n">pw</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+<a id="__codelineno-0-105" name="__codelineno-0-105"></a>        <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="samudra.interfaces.LemmaQueryBuilder.get_cakupan" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_cakupan</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Fetch related <code>cakupan</code>.</p>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>LemmaQueryBuilder</code></td>          <td>
+                <code><a class="autorefs autorefs-internal" title="samudra.interfaces.LemmaQueryBuilder" href="#samudra.interfaces.LemmaQueryBuilder">LemmaQueryBuilder</a></code>
+          </td>
+          <td><p>Returns self to continue building the query</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>samudra/interfaces.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-74">74</a></span>
+<span class="normal"><a href="#__codelineno-0-75">75</a></span>
+<span class="normal"><a href="#__codelineno-0-76">76</a></span>
+<span class="normal"><a href="#__codelineno-0-77">77</a></span>
+<span class="normal"><a href="#__codelineno-0-78">78</a></span>
+<span class="normal"><a href="#__codelineno-0-79">79</a></span>
+<span class="normal"><a href="#__codelineno-0-80">80</a></span>
+<span class="normal"><a href="#__codelineno-0-81">81</a></span>
+<span class="normal"><a href="#__codelineno-0-82">82</a></span>
+<span class="normal"><a href="#__codelineno-0-83">83</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-74" name="__codelineno-0-74"></a><span class="k">def</span> <span class="nf">get_cakupan</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;LemmaQueryBuilder&quot;</span><span class="p">:</span>
+<a id="__codelineno-0-75" name="__codelineno-0-75"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Fetch related `cakupan`.</span>
+<a id="__codelineno-0-76" name="__codelineno-0-76"></a>
+<a id="__codelineno-0-77" name="__codelineno-0-77"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-78" name="__codelineno-0-78"></a><span class="sd">        LemmaQueryBuilder: Returns self to continue building the query</span>
+<a id="__codelineno-0-79" name="__codelineno-0-79"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-80" name="__codelineno-0-80"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_query_stmt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_stmt</span><span class="o">.</span><span class="n">join_from</span><span class="p">(</span>
+<a id="__codelineno-0-81" name="__codelineno-0-81"></a>        <span class="n">models</span><span class="o">.</span><span class="n">Konsep</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">CakupanXKonsep</span><span class="p">,</span> <span class="n">JOIN</span><span class="o">.</span><span class="n">LEFT_OUTER</span>
+<a id="__codelineno-0-82" name="__codelineno-0-82"></a>    <span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Cakupan</span><span class="p">,</span> <span class="n">JOIN</span><span class="o">.</span><span class="n">LEFT_OUTER</span><span class="p">)</span>
+<a id="__codelineno-0-83" name="__codelineno-0-83"></a>    <span class="k">return</span> <span class="bp">self</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="samudra.interfaces.LemmaQueryBuilder.get_kata_asing" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_kata_asing</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Fetch related <code>kata_asing</code>.</p>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>LemmaQueryBuilder</code></td>          <td>
+                <code><a class="autorefs autorefs-internal" title="samudra.interfaces.LemmaQueryBuilder" href="#samudra.interfaces.LemmaQueryBuilder">LemmaQueryBuilder</a></code>
+          </td>
+          <td><p>Returns self to continue building the query</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>samudra/interfaces.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-85">85</a></span>
+<span class="normal"><a href="#__codelineno-0-86">86</a></span>
+<span class="normal"><a href="#__codelineno-0-87">87</a></span>
+<span class="normal"><a href="#__codelineno-0-88">88</a></span>
+<span class="normal"><a href="#__codelineno-0-89">89</a></span>
+<span class="normal"><a href="#__codelineno-0-90">90</a></span>
+<span class="normal"><a href="#__codelineno-0-91">91</a></span>
+<span class="normal"><a href="#__codelineno-0-92">92</a></span>
+<span class="normal"><a href="#__codelineno-0-93">93</a></span>
+<span class="normal"><a href="#__codelineno-0-94">94</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-85" name="__codelineno-0-85"></a><span class="k">def</span> <span class="nf">get_kata_asing</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;LemmaQueryBuilder&quot;</span><span class="p">:</span>
+<a id="__codelineno-0-86" name="__codelineno-0-86"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Fetch related `kata_asing`.</span>
+<a id="__codelineno-0-87" name="__codelineno-0-87"></a>
+<a id="__codelineno-0-88" name="__codelineno-0-88"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-89" name="__codelineno-0-89"></a><span class="sd">        LemmaQueryBuilder: Returns self to continue building the query</span>
+<a id="__codelineno-0-90" name="__codelineno-0-90"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-91" name="__codelineno-0-91"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_query_stmt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query_stmt</span><span class="o">.</span><span class="n">join_from</span><span class="p">(</span>
+<a id="__codelineno-0-92" name="__codelineno-0-92"></a>        <span class="n">models</span><span class="o">.</span><span class="n">Konsep</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">KataAsingXKonsep</span><span class="p">,</span> <span class="n">JOIN</span><span class="o">.</span><span class="n">LEFT_OUTER</span>
+<a id="__codelineno-0-93" name="__codelineno-0-93"></a>    <span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">KataAsing</span><span class="p">,</span> <span class="n">JOIN</span><span class="o">.</span><span class="n">LEFT_OUTER</span><span class="p">)</span>
+<a id="__codelineno-0-94" name="__codelineno-0-94"></a>    <span class="k">return</span> <span class="bp">self</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="samudra.interfaces.NewLemmaBuilder" class="doc doc-heading">
+        <code>NewLemmaBuilder</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+  
+      <p>A builder to insert new lemma and its related data</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>lemma</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>lemma name</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>konsep</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>konsep detail</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>golongan</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>existing <a class="autorefs autorefs-internal" href="../models/core/konsep/#samudra.models.core.konsep.GolonganKata">GolonganKata</a></p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+        <details class="quote">
+          <summary>Source code in <code>samudra/interfaces.py</code></summary>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-173">173</a></span>
+<span class="normal"><a href="#__codelineno-0-174">174</a></span>
+<span class="normal"><a href="#__codelineno-0-175">175</a></span>
+<span class="normal"><a href="#__codelineno-0-176">176</a></span>
+<span class="normal"><a href="#__codelineno-0-177">177</a></span>
+<span class="normal"><a href="#__codelineno-0-178">178</a></span>
+<span class="normal"><a href="#__codelineno-0-179">179</a></span>
+<span class="normal"><a href="#__codelineno-0-180">180</a></span>
+<span class="normal"><a href="#__codelineno-0-181">181</a></span>
+<span class="normal"><a href="#__codelineno-0-182">182</a></span>
+<span class="normal"><a href="#__codelineno-0-183">183</a></span>
+<span class="normal"><a href="#__codelineno-0-184">184</a></span>
+<span class="normal"><a href="#__codelineno-0-185">185</a></span>
+<span class="normal"><a href="#__codelineno-0-186">186</a></span>
+<span class="normal"><a href="#__codelineno-0-187">187</a></span>
+<span class="normal"><a href="#__codelineno-0-188">188</a></span>
+<span class="normal"><a href="#__codelineno-0-189">189</a></span>
+<span class="normal"><a href="#__codelineno-0-190">190</a></span>
+<span class="normal"><a href="#__codelineno-0-191">191</a></span>
+<span class="normal"><a href="#__codelineno-0-192">192</a></span>
+<span class="normal"><a href="#__codelineno-0-193">193</a></span>
+<span class="normal"><a href="#__codelineno-0-194">194</a></span>
+<span class="normal"><a href="#__codelineno-0-195">195</a></span>
+<span class="normal"><a href="#__codelineno-0-196">196</a></span>
+<span class="normal"><a href="#__codelineno-0-197">197</a></span>
+<span class="normal"><a href="#__codelineno-0-198">198</a></span>
+<span class="normal"><a href="#__codelineno-0-199">199</a></span>
+<span class="normal"><a href="#__codelineno-0-200">200</a></span>
+<span class="normal"><a href="#__codelineno-0-201">201</a></span>
+<span class="normal"><a href="#__codelineno-0-202">202</a></span>
+<span class="normal"><a href="#__codelineno-0-203">203</a></span>
+<span class="normal"><a href="#__codelineno-0-204">204</a></span>
+<span class="normal"><a href="#__codelineno-0-205">205</a></span>
+<span class="normal"><a href="#__codelineno-0-206">206</a></span>
+<span class="normal"><a href="#__codelineno-0-207">207</a></span>
+<span class="normal"><a href="#__codelineno-0-208">208</a></span>
+<span class="normal"><a href="#__codelineno-0-209">209</a></span>
+<span class="normal"><a href="#__codelineno-0-210">210</a></span>
+<span class="normal"><a href="#__codelineno-0-211">211</a></span>
+<span class="normal"><a href="#__codelineno-0-212">212</a></span>
+<span class="normal"><a href="#__codelineno-0-213">213</a></span>
+<span class="normal"><a href="#__codelineno-0-214">214</a></span>
+<span class="normal"><a href="#__codelineno-0-215">215</a></span>
+<span class="normal"><a href="#__codelineno-0-216">216</a></span>
+<span class="normal"><a href="#__codelineno-0-217">217</a></span>
+<span class="normal"><a href="#__codelineno-0-218">218</a></span>
+<span class="normal"><a href="#__codelineno-0-219">219</a></span>
+<span class="normal"><a href="#__codelineno-0-220">220</a></span>
+<span class="normal"><a href="#__codelineno-0-221">221</a></span>
+<span class="normal"><a href="#__codelineno-0-222">222</a></span>
+<span class="normal"><a href="#__codelineno-0-223">223</a></span>
+<span class="normal"><a href="#__codelineno-0-224">224</a></span>
+<span class="normal"><a href="#__codelineno-0-225">225</a></span>
+<span class="normal"><a href="#__codelineno-0-226">226</a></span>
+<span class="normal"><a href="#__codelineno-0-227">227</a></span>
+<span class="normal"><a href="#__codelineno-0-228">228</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-173" name="__codelineno-0-173"></a><span class="k">class</span> <span class="nc">NewLemmaBuilder</span><span class="p">:</span>
+<a id="__codelineno-0-174" name="__codelineno-0-174"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;A builder to insert new lemma and its related data</span>
+<a id="__codelineno-0-175" name="__codelineno-0-175"></a>
+<a id="__codelineno-0-176" name="__codelineno-0-176"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-177" name="__codelineno-0-177"></a><span class="sd">        lemma (str): lemma name</span>
+<a id="__codelineno-0-178" name="__codelineno-0-178"></a><span class="sd">        konsep (str): konsep detail</span>
+<a id="__codelineno-0-179" name="__codelineno-0-179"></a><span class="sd">        golongan (str): existing [GolonganKata][samudra.models.core.konsep.GolonganKata]</span>
+<a id="__codelineno-0-180" name="__codelineno-0-180"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-181" name="__codelineno-0-181"></a>
+<a id="__codelineno-0-182" name="__codelineno-0-182"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">konsep</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lemma</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">golongan</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-183" name="__codelineno-0-183"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">lemma</span> <span class="o">=</span> <span class="n">get_or_init_record</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Lemma</span><span class="p">,</span> <span class="n">nama</span><span class="o">=</span><span class="n">lemma</span><span class="p">)</span>
+<a id="__codelineno-0-184" name="__codelineno-0-184"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">golongan</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">GolonganKata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">golongan</span><span class="p">)</span>
+<a id="__codelineno-0-185" name="__codelineno-0-185"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">konsep</span> <span class="o">=</span> <span class="n">get_or_init_record</span><span class="p">(</span>
+<a id="__codelineno-0-186" name="__codelineno-0-186"></a>            <span class="n">models</span><span class="o">.</span><span class="n">Konsep</span><span class="p">,</span> <span class="n">lemma</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lemma</span><span class="p">,</span> <span class="n">golongan</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">golongan</span><span class="p">,</span> <span class="n">keterangan</span><span class="o">=</span><span class="n">konsep</span>
+<a id="__codelineno-0-187" name="__codelineno-0-187"></a>        <span class="p">)</span>
+<a id="__codelineno-0-188" name="__codelineno-0-188"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">to_save</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">pw</span><span class="o">.</span><span class="n">Model</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">lemma</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">golongan</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">konsep</span><span class="p">]</span>
+<a id="__codelineno-0-189" name="__codelineno-0-189"></a>
+<a id="__codelineno-0-190" name="__codelineno-0-190"></a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-191" name="__codelineno-0-191"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Saves the built record.&quot;&quot;&quot;</span>
+<a id="__codelineno-0-192" name="__codelineno-0-192"></a>        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_save</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-0-193" name="__codelineno-0-193"></a>            <span class="n">record</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_save</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-0-194" name="__codelineno-0-194"></a>            <span class="n">record</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>  <span class="c1"># Fill previously NULL values</span>
+<a id="__codelineno-0-195" name="__codelineno-0-195"></a>            <span class="n">record</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+<a id="__codelineno-0-196" name="__codelineno-0-196"></a>
+<a id="__codelineno-0-197" name="__codelineno-0-197"></a>    <span class="k">def</span> <span class="nf">set_cakupan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nama</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;NewLemmaBuilder&quot;</span><span class="p">:</span>
+<a id="__codelineno-0-198" name="__codelineno-0-198"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Attach the cakupan with the following nama</span>
+<a id="__codelineno-0-199" name="__codelineno-0-199"></a>
+<a id="__codelineno-0-200" name="__codelineno-0-200"></a><span class="sd">        Args:</span>
+<a id="__codelineno-0-201" name="__codelineno-0-201"></a><span class="sd">            nama (str): cakupan name</span>
+<a id="__codelineno-0-202" name="__codelineno-0-202"></a>
+<a id="__codelineno-0-203" name="__codelineno-0-203"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-0-204" name="__codelineno-0-204"></a><span class="sd">            NewLemmaBuilder: Returns self to continue building</span>
+<a id="__codelineno-0-205" name="__codelineno-0-205"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-206" name="__codelineno-0-206"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cakupan</span> <span class="o">=</span> <span class="n">get_or_init_record</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Cakupan</span><span class="p">,</span> <span class="n">nama</span><span class="o">=</span><span class="n">nama</span><span class="p">)</span>
+<a id="__codelineno-0-207" name="__codelineno-0-207"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">cakupan_x_konsep</span> <span class="o">=</span> <span class="n">get_or_init_record</span><span class="p">(</span>
+<a id="__codelineno-0-208" name="__codelineno-0-208"></a>            <span class="n">models</span><span class="o">.</span><span class="n">CakupanXKonsep</span><span class="p">,</span> <span class="n">cakupan</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cakupan</span><span class="p">,</span> <span class="n">konsep</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">konsep</span>
+<a id="__codelineno-0-209" name="__codelineno-0-209"></a>        <span class="p">)</span>
+<a id="__codelineno-0-210" name="__codelineno-0-210"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">to_save</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">cakupan</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cakupan_x_konsep</span><span class="p">])</span>
+<a id="__codelineno-0-211" name="__codelineno-0-211"></a>        <span class="k">return</span> <span class="bp">self</span>
+<a id="__codelineno-0-212" name="__codelineno-0-212"></a>
+<a id="__codelineno-0-213" name="__codelineno-0-213"></a>    <span class="k">def</span> <span class="nf">set_kata_asing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nama</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">bahasa</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;NewLemmaBuilder&quot;</span><span class="p">:</span>
+<a id="__codelineno-0-214" name="__codelineno-0-214"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Attach the kata_asing with the following description</span>
+<a id="__codelineno-0-215" name="__codelineno-0-215"></a>
+<a id="__codelineno-0-216" name="__codelineno-0-216"></a><span class="sd">        Args:</span>
+<a id="__codelineno-0-217" name="__codelineno-0-217"></a><span class="sd">            nama (str): foreign word</span>
+<a id="__codelineno-0-218" name="__codelineno-0-218"></a><span class="sd">            bahasa (str): language of the word</span>
+<a id="__codelineno-0-219" name="__codelineno-0-219"></a>
+<a id="__codelineno-0-220" name="__codelineno-0-220"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-0-221" name="__codelineno-0-221"></a><span class="sd">            NewLemmaBuilder: Returns self to continue building</span>
+<a id="__codelineno-0-222" name="__codelineno-0-222"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-0-223" name="__codelineno-0-223"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">kata_asing</span> <span class="o">=</span> <span class="n">get_or_init_record</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">KataAsing</span><span class="p">,</span> <span class="n">nama</span><span class="o">=</span><span class="n">nama</span><span class="p">,</span> <span class="n">bahasa</span><span class="o">=</span><span class="n">bahasa</span><span class="p">)</span>
+<a id="__codelineno-0-224" name="__codelineno-0-224"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">kata_asing_x_konsep</span> <span class="o">=</span> <span class="n">get_or_init_record</span><span class="p">(</span>
+<a id="__codelineno-0-225" name="__codelineno-0-225"></a>            <span class="n">models</span><span class="o">.</span><span class="n">KataAsingXKonsep</span><span class="p">,</span> <span class="n">kata_asing</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cakupan</span><span class="p">,</span> <span class="n">konsep</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">konsep</span>
+<a id="__codelineno-0-226" name="__codelineno-0-226"></a>        <span class="p">)</span>
+<a id="__codelineno-0-227" name="__codelineno-0-227"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">to_save</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">kata_asing</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">kata_asing_x_konsep</span><span class="p">])</span>
+<a id="__codelineno-0-228" name="__codelineno-0-228"></a>        <span class="k">return</span> <span class="bp">self</span>
+</code></pre></div></td></tr></table></div>
+        </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="samudra.interfaces.NewLemmaBuilder.save" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">save</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Saves the built record.</p>
+
+      <details class="quote">
+        <summary>Source code in <code>samudra/interfaces.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-190">190</a></span>
+<span class="normal"><a href="#__codelineno-0-191">191</a></span>
+<span class="normal"><a href="#__codelineno-0-192">192</a></span>
+<span class="normal"><a href="#__codelineno-0-193">193</a></span>
+<span class="normal"><a href="#__codelineno-0-194">194</a></span>
+<span class="normal"><a href="#__codelineno-0-195">195</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-190" name="__codelineno-0-190"></a><span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-191" name="__codelineno-0-191"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Saves the built record.&quot;&quot;&quot;</span>
+<a id="__codelineno-0-192" name="__codelineno-0-192"></a>    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_save</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-0-193" name="__codelineno-0-193"></a>        <span class="n">record</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_save</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-0-194" name="__codelineno-0-194"></a>        <span class="n">record</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>  <span class="c1"># Fill previously NULL values</span>
+<a id="__codelineno-0-195" name="__codelineno-0-195"></a>        <span class="n">record</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="samudra.interfaces.NewLemmaBuilder.set_cakupan" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">set_cakupan</span><span class="p">(</span><span class="n">nama</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Attach the cakupan with the following nama</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>nama</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>cakupan name</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>NewLemmaBuilder</code></td>          <td>
+                <code><a class="autorefs autorefs-internal" title="samudra.interfaces.NewLemmaBuilder" href="#samudra.interfaces.NewLemmaBuilder">NewLemmaBuilder</a></code>
+          </td>
+          <td><p>Returns self to continue building</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>samudra/interfaces.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-197">197</a></span>
+<span class="normal"><a href="#__codelineno-0-198">198</a></span>
+<span class="normal"><a href="#__codelineno-0-199">199</a></span>
+<span class="normal"><a href="#__codelineno-0-200">200</a></span>
+<span class="normal"><a href="#__codelineno-0-201">201</a></span>
+<span class="normal"><a href="#__codelineno-0-202">202</a></span>
+<span class="normal"><a href="#__codelineno-0-203">203</a></span>
+<span class="normal"><a href="#__codelineno-0-204">204</a></span>
+<span class="normal"><a href="#__codelineno-0-205">205</a></span>
+<span class="normal"><a href="#__codelineno-0-206">206</a></span>
+<span class="normal"><a href="#__codelineno-0-207">207</a></span>
+<span class="normal"><a href="#__codelineno-0-208">208</a></span>
+<span class="normal"><a href="#__codelineno-0-209">209</a></span>
+<span class="normal"><a href="#__codelineno-0-210">210</a></span>
+<span class="normal"><a href="#__codelineno-0-211">211</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-197" name="__codelineno-0-197"></a><span class="k">def</span> <span class="nf">set_cakupan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nama</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;NewLemmaBuilder&quot;</span><span class="p">:</span>
+<a id="__codelineno-0-198" name="__codelineno-0-198"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Attach the cakupan with the following nama</span>
+<a id="__codelineno-0-199" name="__codelineno-0-199"></a>
+<a id="__codelineno-0-200" name="__codelineno-0-200"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-201" name="__codelineno-0-201"></a><span class="sd">        nama (str): cakupan name</span>
+<a id="__codelineno-0-202" name="__codelineno-0-202"></a>
+<a id="__codelineno-0-203" name="__codelineno-0-203"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-204" name="__codelineno-0-204"></a><span class="sd">        NewLemmaBuilder: Returns self to continue building</span>
+<a id="__codelineno-0-205" name="__codelineno-0-205"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-206" name="__codelineno-0-206"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">cakupan</span> <span class="o">=</span> <span class="n">get_or_init_record</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Cakupan</span><span class="p">,</span> <span class="n">nama</span><span class="o">=</span><span class="n">nama</span><span class="p">)</span>
+<a id="__codelineno-0-207" name="__codelineno-0-207"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">cakupan_x_konsep</span> <span class="o">=</span> <span class="n">get_or_init_record</span><span class="p">(</span>
+<a id="__codelineno-0-208" name="__codelineno-0-208"></a>        <span class="n">models</span><span class="o">.</span><span class="n">CakupanXKonsep</span><span class="p">,</span> <span class="n">cakupan</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cakupan</span><span class="p">,</span> <span class="n">konsep</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">konsep</span>
+<a id="__codelineno-0-209" name="__codelineno-0-209"></a>    <span class="p">)</span>
+<a id="__codelineno-0-210" name="__codelineno-0-210"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">to_save</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">cakupan</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cakupan_x_konsep</span><span class="p">])</span>
+<a id="__codelineno-0-211" name="__codelineno-0-211"></a>    <span class="k">return</span> <span class="bp">self</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="samudra.interfaces.NewLemmaBuilder.set_kata_asing" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">set_kata_asing</span><span class="p">(</span><span class="n">nama</span><span class="p">,</span> <span class="n">bahasa</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Attach the kata_asing with the following description</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>nama</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>foreign word</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>bahasa</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td><p>language of the word</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>NewLemmaBuilder</code></td>          <td>
+                <code><a class="autorefs autorefs-internal" title="samudra.interfaces.NewLemmaBuilder" href="#samudra.interfaces.NewLemmaBuilder">NewLemmaBuilder</a></code>
+          </td>
+          <td><p>Returns self to continue building</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>samudra/interfaces.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-213">213</a></span>
+<span class="normal"><a href="#__codelineno-0-214">214</a></span>
+<span class="normal"><a href="#__codelineno-0-215">215</a></span>
+<span class="normal"><a href="#__codelineno-0-216">216</a></span>
+<span class="normal"><a href="#__codelineno-0-217">217</a></span>
+<span class="normal"><a href="#__codelineno-0-218">218</a></span>
+<span class="normal"><a href="#__codelineno-0-219">219</a></span>
+<span class="normal"><a href="#__codelineno-0-220">220</a></span>
+<span class="normal"><a href="#__codelineno-0-221">221</a></span>
+<span class="normal"><a href="#__codelineno-0-222">222</a></span>
+<span class="normal"><a href="#__codelineno-0-223">223</a></span>
+<span class="normal"><a href="#__codelineno-0-224">224</a></span>
+<span class="normal"><a href="#__codelineno-0-225">225</a></span>
+<span class="normal"><a href="#__codelineno-0-226">226</a></span>
+<span class="normal"><a href="#__codelineno-0-227">227</a></span>
+<span class="normal"><a href="#__codelineno-0-228">228</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-213" name="__codelineno-0-213"></a><span class="k">def</span> <span class="nf">set_kata_asing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nama</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">bahasa</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;NewLemmaBuilder&quot;</span><span class="p">:</span>
+<a id="__codelineno-0-214" name="__codelineno-0-214"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Attach the kata_asing with the following description</span>
+<a id="__codelineno-0-215" name="__codelineno-0-215"></a>
+<a id="__codelineno-0-216" name="__codelineno-0-216"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-217" name="__codelineno-0-217"></a><span class="sd">        nama (str): foreign word</span>
+<a id="__codelineno-0-218" name="__codelineno-0-218"></a><span class="sd">        bahasa (str): language of the word</span>
+<a id="__codelineno-0-219" name="__codelineno-0-219"></a>
+<a id="__codelineno-0-220" name="__codelineno-0-220"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-221" name="__codelineno-0-221"></a><span class="sd">        NewLemmaBuilder: Returns self to continue building</span>
+<a id="__codelineno-0-222" name="__codelineno-0-222"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-223" name="__codelineno-0-223"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">kata_asing</span> <span class="o">=</span> <span class="n">get_or_init_record</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">KataAsing</span><span class="p">,</span> <span class="n">nama</span><span class="o">=</span><span class="n">nama</span><span class="p">,</span> <span class="n">bahasa</span><span class="o">=</span><span class="n">bahasa</span><span class="p">)</span>
+<a id="__codelineno-0-224" name="__codelineno-0-224"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">kata_asing_x_konsep</span> <span class="o">=</span> <span class="n">get_or_init_record</span><span class="p">(</span>
+<a id="__codelineno-0-225" name="__codelineno-0-225"></a>        <span class="n">models</span><span class="o">.</span><span class="n">KataAsingXKonsep</span><span class="p">,</span> <span class="n">kata_asing</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cakupan</span><span class="p">,</span> <span class="n">konsep</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">konsep</span>
+<a id="__codelineno-0-226" name="__codelineno-0-226"></a>    <span class="p">)</span>
+<a id="__codelineno-0-227" name="__codelineno-0-227"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">to_save</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">kata_asing</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">kata_asing_x_konsep</span><span class="p">])</span>
+<a id="__codelineno-0-228" name="__codelineno-0-228"></a>    <span class="k">return</span> <span class="bp">self</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="samudra.interfaces.get_or_init_record" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_or_init_record</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Gets a record or initializes a new one without saving</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>model</code></td>
+          <td>
+                <code><span title="peewee">pw</span>.<span title="peewee.Model">Model</span></code>
+          </td>
+          <td><p>A model</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="peewee">pw</span>.<span title="peewee.Model">Model</span></code>
+          </td>
+          <td><p>pw.Model: Model instance</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>samudra/interfaces.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-159">159</a></span>
+<span class="normal"><a href="#__codelineno-0-160">160</a></span>
+<span class="normal"><a href="#__codelineno-0-161">161</a></span>
+<span class="normal"><a href="#__codelineno-0-162">162</a></span>
+<span class="normal"><a href="#__codelineno-0-163">163</a></span>
+<span class="normal"><a href="#__codelineno-0-164">164</a></span>
+<span class="normal"><a href="#__codelineno-0-165">165</a></span>
+<span class="normal"><a href="#__codelineno-0-166">166</a></span>
+<span class="normal"><a href="#__codelineno-0-167">167</a></span>
+<span class="normal"><a href="#__codelineno-0-168">168</a></span>
+<span class="normal"><a href="#__codelineno-0-169">169</a></span>
+<span class="normal"><a href="#__codelineno-0-170">170</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-159" name="__codelineno-0-159"></a><span class="k">def</span> <span class="nf">get_or_init_record</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="n">pw</span><span class="o">.</span><span class="n">Model</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pw</span><span class="o">.</span><span class="n">Model</span><span class="p">:</span>
+<a id="__codelineno-0-160" name="__codelineno-0-160"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Gets a record or initializes a new one without saving</span>
+<a id="__codelineno-0-161" name="__codelineno-0-161"></a>
+<a id="__codelineno-0-162" name="__codelineno-0-162"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-163" name="__codelineno-0-163"></a><span class="sd">        model (pw.Model): A model</span>
+<a id="__codelineno-0-164" name="__codelineno-0-164"></a>
+<a id="__codelineno-0-165" name="__codelineno-0-165"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-166" name="__codelineno-0-166"></a><span class="sd">        pw.Model: Model instance</span>
+<a id="__codelineno-0-167" name="__codelineno-0-167"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-168" name="__codelineno-0-168"></a>    <span class="k">if</span> <span class="n">data</span> <span class="o">:=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_or_none</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-0-169" name="__codelineno-0-169"></a>        <span class="n">data</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<a id="__codelineno-0-170" name="__codelineno-0-170"></a>    <span class="k">return</span> <span class="n">data</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.51198bba.min.js"></script>
+      
+    
+  </body>
+</html>

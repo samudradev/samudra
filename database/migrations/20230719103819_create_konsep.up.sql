@@ -1,0 +1,18 @@
+-- Add migration script here
+CREATE TABLE IF NOT EXISTS konsep (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    tarikh_masuk TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    lemma_id INTEGER NOT NULL,
+    golongan_id TEXT,
+    keterangan TEXT,
+    tertib INTEGER,
+    FOREIGN KEY (lemma_id) REFERENCES lemma(id) ON DELETE SET DEFAULT,
+    FOREIGN KEY (golongan_id) REFERENCES golongan_kata(id) ON UPDATE CASCADE ON DELETE SET DEFAULT
+);
+
+CREATE TABLE IF NOT EXISTS golongan_kata (
+    id TEXT NOT NULL PRIMARY KEY,
+    tarikh_masuk TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    nama TEXT NOT NULL,
+    keterangan TEXT NOT NULL
+)

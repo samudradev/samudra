@@ -21,6 +21,10 @@ impl CakupanItem {
     pub fn null() -> Self {
         CakupanItem("".into())
     }
+
+    pub fn to_string(self) -> String {
+        self.0
+    }
 }
 
 impl Item for CakupanItem {

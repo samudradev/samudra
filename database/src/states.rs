@@ -72,7 +72,7 @@ impl Connection<sqlx::Postgres> {
 #[cfg(feature = "sqlite")]
 impl Connection<sqlx::Sqlite> {
     /// Forcefully reconnect to the specified url.
-    pub async fn renew(mut self, url: String) -> Result<Self> {
+    pub async fn renew(&mut self, url: String) -> Result<&Self> {
         self.pool = sqlx::SqlitePool::connect(&url).await?;
         Ok(self)
     }
@@ -86,12 +86,15 @@ impl Connection<sqlx::Sqlite> {
                 // Automatically migrate to current version
                 Self { pool }
             }
-            Err(_) => dbg!(Self::create_and_migrate(url)
-                .await
-                .unwrap()
-                .populate_with_presets()
-                .await
-                .unwrap()),
+            Err(_) => {
+                let _ = Self::create_and_migrate(url.clone())
+                    .await
+                    .unwrap()
+                    .populate_with_presets()
+                    .await
+                    .unwrap();
+                Connection::from(url).await
+            }
         }
     }
 
@@ -143,7 +146,7 @@ impl Connection<sqlx::Sqlite> {
     /// ```sql
     #[doc = include_str!("../presets/golongan_kata_ms-my.sql")]
     /// ```
-    pub async fn populate_with_presets(self) -> Result<Self> {
+    pub async fn populate_with_presets(&self) -> Result<&Self> {
         sqlx::query_file!("presets/golongan_kata_ms-my.sql")
             .execute(&self.pool)
             .await?;

@@ -1,0 +1,15 @@
+{
+  "db_name": "PostgreSQL",
+  "query": " DELETE FROM cakupan_x_konsep AS cxk\n                WHERE (\n                    cxk.cakupan_id = (SELECT id FROM cakupan WHERE cakupan.nama = $1)\n                        AND\n                    cxk.konsep_id = (SELECT id FROM konsep WHERE konsep.keterangan = $2)\n                );",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Text"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "cb0be08d130635f6cdb9cb6745add62007e4c6c6e94f649cb7ce3a7e90bf34bf"
+}

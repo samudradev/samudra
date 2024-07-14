@@ -1,0 +1,16 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO kata_asing_x_konsep (kata_asing_id, konsep_id)\n                VALUES (\n                    (SELECT id FROM kata_asing WHERE kata_asing.nama = $1 AND kata_asing.bahasa = $2),\n                    (SELECT id FROM konsep WHERE konsep.keterangan = $3)\n                ) ON CONFLICT (kata_asing_id, konsep_id) DO NOTHING;",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Text",
+        "Text"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "1115bfc2f45439fa1b1be5e9fbe356c15516bc69b9a21be2d68fc51d6c6b31fd"
+}

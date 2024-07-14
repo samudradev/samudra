@@ -1,0 +1,16 @@
+{
+  "db_name": "PostgreSQL",
+  "query": " INSERT INTO konsep (keterangan, lemma_id, golongan_id)\n                VALUES (\n                    $1,\n                    (SELECT id FROM lemma WHERE lemma.nama = $2),\n                    (SELECT id FROM golongan_kata WHERE golongan_kata.nama = $3)\n                ) ON CONFLICT (id) DO NOTHING\n                ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Text",
+        "Text"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "9f758d0db0713c195ed479b9889c1e6fc2a08a05c3ef2c4d31924b8710f800e0"
+}

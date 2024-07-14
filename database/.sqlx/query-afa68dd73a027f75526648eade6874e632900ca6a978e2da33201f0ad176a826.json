@@ -1,0 +1,44 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT \r\n    COUNT(DISTINCT lemma.id) AS lemmas,\r\n    COUNT(DISTINCT konsep.id) AS konseps,\r\n    COUNT(DISTINCT golongan_kata.id) as golongan_katas,\r\n    COUNT(DISTINCT cakupan.id) as cakupans,\r\n    COUNT(DISTINCT kata_asing.id) as kata_asings\r\nFROM lemma, konsep, golongan_kata, cakupan, kata_asing",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "lemmas",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 1,
+        "name": "konseps",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 2,
+        "name": "golongan_katas",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 3,
+        "name": "cakupans",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 4,
+        "name": "kata_asings",
+        "type_info": "Int8"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  "hash": "afa68dd73a027f75526648eade6874e632900ca6a978e2da33201f0ad176a826"
+}

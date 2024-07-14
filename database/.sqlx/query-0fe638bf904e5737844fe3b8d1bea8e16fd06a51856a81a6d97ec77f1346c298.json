@@ -1,0 +1,14 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO cakupan (nama) VALUES ($1) ON CONFLICT (nama) DO NOTHING;",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Text"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "0fe638bf904e5737844fe3b8d1bea8e16fd06a51856a81a6d97ec77f1346c298"
+}

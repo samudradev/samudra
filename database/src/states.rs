@@ -60,11 +60,19 @@ impl Connection<sqlx::Postgres> {
     #[doc = include_str!("../transactions/postgres/count_items.sql")]
     /// ```
     pub async fn statistics(&self) -> Result<Counts<i64>> {
-        let inter: Counts<Option<i64>> =
-            sqlx::query_file_as!(Counts, "transactions/postgres/count_items.sql")
-                .fetch_one(&self.pool)
-                .await
-                .map_err(BackendError::from)?;
+        let inter: Counts<Option<i64>> = sqlx::query_as!(
+            Counts,
+            r#"SELECT 
+                COUNT(DISTINCT lemma.id) AS lemmas,
+                COUNT(DISTINCT konsep.id) AS konseps,
+                COUNT(DISTINCT golongan_kata.id) as golongan_katas,
+                COUNT(DISTINCT cakupan.id) as cakupans,
+                COUNT(DISTINCT kata_asing.id) as kata_asings
+            FROM lemma, konsep, golongan_kata, cakupan, kata_asing"#
+        )
+        .fetch_one(&self.pool)
+        .await
+        .map_err(BackendError::from)?;
         Ok(inter.unwrap_fields())
     }
 }

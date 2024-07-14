@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "SELECT \r\n    COUNT(DISTINCT lemma.id) AS lemmas,\r\n    COUNT(DISTINCT konsep.id) AS konseps,\r\n    COUNT(DISTINCT golongan_kata.id) as golongan_katas,\r\n    COUNT(DISTINCT cakupan.id) as cakupans,\r\n    COUNT(DISTINCT kata_asing.id) as kata_asings\r\nFROM lemma, konsep, golongan_kata, cakupan, kata_asing",
+  "query": "SELECT \n                COUNT(DISTINCT lemma.id) AS lemmas,\n                COUNT(DISTINCT konsep.id) AS konseps,\n                COUNT(DISTINCT golongan_kata.id) as golongan_katas,\n                COUNT(DISTINCT cakupan.id) as cakupans,\n                COUNT(DISTINCT kata_asing.id) as kata_asings\n            FROM lemma, konsep, golongan_kata, cakupan, kata_asing",
   "describe": {
     "columns": [
       {
@@ -40,5 +40,5 @@
       null
     ]
   },
-  "hash": "afa68dd73a027f75526648eade6874e632900ca6a978e2da33201f0ad176a826"
+  "hash": "0236514903b7f2314b3d06b0c986d9a17bacba9fba1c172ade278db5cd3d6f01"
 }

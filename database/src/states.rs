@@ -59,7 +59,7 @@ impl Connection<sqlx::Postgres> {
     /// ```sql
     #[doc = include_str!("../transactions/postgres/count_items.sql")]
     /// ```
-    pub async fn statistics(self) -> Result<Counts<i64>> {
+    pub async fn statistics(&self) -> Result<Counts<i64>> {
         let inter: Counts<Option<i64>> =
             sqlx::query_file_as!(Counts, "transactions/postgres/count_items.sql")
                 .fetch_one(&self.pool)
@@ -104,7 +104,7 @@ impl Connection<sqlx::Sqlite> {
     /// ```sql
     #[doc = include_str!("../transactions/sqlite/count_items.sql")]
     /// ```
-    pub async fn statistics(self) -> Result<Counts<i32>> {
+    pub async fn statistics(&self) -> Result<Counts<i32>> {
         sqlx::query_file_as!(Counts, "transactions/sqlite/count_items.sql")
             .fetch_one(&self.pool)
             .await

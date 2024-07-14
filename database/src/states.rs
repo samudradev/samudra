@@ -16,12 +16,6 @@ pub struct Connection<DB: sqlx::Database> {
     pub pool: sqlx::Pool<DB>,
 }
 
-// impl<DB> From<sqlx::Pool<DB>> for Connection<DB> {
-//     fn from(value: sqlx::Pool<DB>) -> Self {
-//         Self { pool: value }
-//     }
-// }
-
 /// Counts of selected items.
 #[allow(missing_docs)]
 #[derive(Debug, Clone, Default, serde::Serialize, PartialEq, ts_rs::TS)]
@@ -65,7 +59,7 @@ impl Connection<sqlx::Postgres> {
     /// ```sql
     #[doc = include_str!("../transactions/postgres/count_items.sql")]
     /// ```
-    pub async fn statistics(&self) -> Result<Counts<i64>> {
+    pub async fn statistics(self) -> Result<Counts<i64>> {
         let inter: Counts<Option<i64>> =
             sqlx::query_file_as!(Counts, "transactions/postgres/count_items.sql")
                 .fetch_one(&self.pool)
@@ -110,7 +104,7 @@ impl Connection<sqlx::Sqlite> {
     /// ```sql
     #[doc = include_str!("../transactions/sqlite/count_items.sql")]
     /// ```
-    pub async fn statistics(&self) -> Result<Counts<i32>> {
+    pub async fn statistics(self) -> Result<Counts<i32>> {
         sqlx::query_file_as!(Counts, "transactions/sqlite/count_items.sql")
             .fetch_one(&self.pool)
             .await
@@ -123,7 +117,7 @@ impl Connection<sqlx::Sqlite> {
     /// ```sql
     /// SELECT nama AS item FROM golongan_kata
     /// ```
-    pub async fn get_golongan_kata_enumeration(&self) -> Result<Vec<StringItem>> {
+    pub async fn get_golongan_kata_enumeration(self) -> Result<Vec<StringItem>> {
         sqlx::query_as!(StringItem, "SELECT nama AS item FROM golongan_kata")
             .fetch_all(&self.pool)
             .await

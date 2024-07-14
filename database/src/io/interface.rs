@@ -13,7 +13,7 @@ pub trait View {
 }
 
 /// A trait to convert Vec<[View]> into Vec<[Item]>
-pub trait FromView: Item {
+pub trait FromView: Sized {
     /// The view that is to be converted
     type VIEW;
 
@@ -22,7 +22,7 @@ pub trait FromView: Item {
 }
 
 /// A trait that converts [HashMap] into Vec<[Item]>.
-pub trait FromViewMap: Item {
+pub trait FromViewMap: Sized {
     /// Keys of the input [HashMap], typically the ID but can also be a tuple of identifiers.
     type KEY;
     /// The value of the input [HashMap].
@@ -52,7 +52,7 @@ pub trait IntoViewMap<V>: IntoIterator<Item = V> {
 /// A [View] handles the querying from SQL which contains flat tabular data.
 /// While and [Item] represents the intended data which is often nested.
 /// Traits like [FromView] and [FromViewMap] provides the translation layer between [View] and [Item].
-pub trait Item: Sized {
+pub trait Item {
     /// The Modified version of [Self].
     type IntoMod: ItemMod;
 
@@ -69,7 +69,7 @@ pub trait Item: Sized {
 
 /// A trait which allows item data to be submitted into SQL databases.
 #[async_trait::async_trait]
-pub trait SubmitItem: Item {
+pub trait SubmitItem {
     type Engine: sqlx::Database;
     /// Inserts item with corresponding children.
     async fn submit_full(&self, pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()>;
@@ -103,14 +103,27 @@ pub trait SubmitMod: ItemMod {
 
 /// A trait which allows attachment items to be submitted into SQL database as [ItemMod].
 #[async_trait::async_trait]
-pub trait AttachmentItemMod<P: Item, DB: sqlx::Database>: ItemMod {
+pub trait AttachmentItemMod<P: Item>: ItemMod {
+    type Engine: sqlx::Database;
+
     /// Submit [Self] to parent item.
-    async fn submit_attachment_to(&self, parent: &P, pool: &sqlx::Pool<DB>) -> sqlx::Result<()>;
+    async fn submit_attachment_to(
+        &self,
+        parent: &P,
+        pool: &sqlx::Pool<Self::Engine>,
+    ) -> sqlx::Result<()>;
 
     /// Detaches [Self] to parent item.
-    async fn submit_detachment_from(&self, parent: &P, pool: &sqlx::Pool<DB>) -> sqlx::Result<()>;
+    async fn submit_detachment_from(
+        &self,
+        parent: &P,
+        pool: &sqlx::Pool<Self::Engine>,
+    ) -> sqlx::Result<()>;
 
     /// Modifies [Self].
-    async fn submit_modification_with(&self, parent: &P, pool: &sqlx::Pool<DB>)
-        -> sqlx::Result<()>;
+    async fn submit_modification_with(
+        &self,
+        parent: &P,
+        pool: &sqlx::Pool<Self::Engine>,
+    ) -> sqlx::Result<()>;
 }

@@ -1,5 +1,7 @@
 //! Contains general modification structs and enums.
 
+use std::fmt::Display;
+
 use itertools::Itertools;
 use tracing::instrument;
 
@@ -51,13 +53,13 @@ where
     A: ItemMod,
 {
     #[instrument(skip_all)]
-    pub async fn submit_changes_with<P, DB: sqlx::Database>(
+    pub async fn submit_changes_with<P>(
         &self,
         parent: &P,
-        pool: &sqlx::Pool<DB>,
+        pool: &sqlx::Pool<<A as AttachmentItemMod<P>>::Engine>,
     ) -> sqlx::Result<()>
     where
-        A: ItemMod + AttachmentItemMod<P, DB>,
+        A: ItemMod + AttachmentItemMod<P>,
         P: Item,
     {
         for attached in self.attached.iter() {
@@ -124,29 +126,31 @@ pub trait CompareAttachable<I: PartialEq + Clone + Item<IntoMod = A>, A: ItemMod
     }
 }
 
-impl CompareAttachable<CakupanItem, CakupanItem> for KonsepItem {
+impl<I> CompareAttachable<CakupanItem, CakupanItem> for KonsepItem<I> {
     fn items(&self) -> Vec<CakupanItem> {
         Vec::clone(&self.cakupans)
     }
 }
-impl CompareAttachable<KataAsingItem, KataAsingItem> for KonsepItem {
+impl<I> CompareAttachable<KataAsingItem, KataAsingItem> for KonsepItem<I> {
     fn items(&self) -> Vec<KataAsingItem> {
         Vec::clone(&self.kata_asing)
     }
 }
 
-impl CompareAttachable<KonsepItem, KonsepItemMod> for LemmaItem {
-    fn items(&self) -> Vec<KonsepItem> {
+impl<I: Copy + Clone + PartialEq + PartialOrd + Display>
+    CompareAttachable<KonsepItem<I>, KonsepItemMod<I>> for LemmaItem<I>
+{
+    fn items(&self) -> Vec<KonsepItem<I>> {
         Vec::clone(&self.konseps)
     }
-    fn find_attached(&self, other: &Vec<KonsepItem>) -> Vec<KonsepItemMod> {
+    fn find_attached(&self, other: &Vec<KonsepItem<I>>) -> Vec<KonsepItemMod<I>> {
         Vec::clone(other)
             .into_iter()
             .filter(|item| item.id == AutoGen::Unknown)
             .map(|item| KonsepItemMod::from_item(&item))
             .collect_vec()
     }
-    fn find_detached(&self, other: &Vec<KonsepItem>) -> Vec<KonsepItemMod> {
+    fn find_detached(&self, other: &Vec<KonsepItem<I>>) -> Vec<KonsepItemMod<I>> {
         let other_ids = Vec::clone(other)
             .into_iter()
             .filter(|item| item.id != AutoGen::Unknown)
@@ -158,7 +162,7 @@ impl CompareAttachable<KonsepItem, KonsepItemMod> for LemmaItem {
             .map(|item| KonsepItemMod::from_item(&item))
             .collect_vec()
     }
-    fn find_modified(&self, other: &Vec<KonsepItem>) -> Vec<KonsepItemMod> {
+    fn find_modified(&self, other: &Vec<KonsepItem<I>>) -> Vec<KonsepItemMod<I>> {
         let detached_id = self
             .find_detached(other)
             .iter()

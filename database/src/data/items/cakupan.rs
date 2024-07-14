@@ -1,5 +1,7 @@
 //! Contains the [CakupanItem].
 
+use std::fmt::{Debug, Display};
+
 use crate::io::interface::{AttachmentItemMod, FromView, Item, ItemMod, SubmitItem};
 use crate::prelude::*;
 use tracing::instrument;
@@ -91,12 +93,15 @@ impl From<String> for CakupanItem {
 
 #[cfg(feature = "sqlite")]
 #[async_trait::async_trait]
-impl AttachmentItemMod<KonsepItem, sqlx::Sqlite> for CakupanItem {
+impl<I: Display + Sync + PartialEq + Copy + Clone> AttachmentItemMod<KonsepItem<I>>
+    for CakupanItem
+{
+    type Engine = sqlx::Sqlite;
     #[instrument(skip_all)]
     async fn submit_attachment_to(
         &self,
-        parent: &KonsepItem,
-        pool: &sqlx::Pool<sqlx::Sqlite>,
+        parent: &KonsepItem<I>,
+        pool: &sqlx::Pool<Self::Engine>,
     ) -> sqlx::Result<()> {
         tracing::trace!(
             "Attaching <Cakupan={}> to <{}:{}>",
@@ -123,8 +128,8 @@ impl AttachmentItemMod<KonsepItem, sqlx::Sqlite> for CakupanItem {
     }
     async fn submit_detachment_from(
         &self,
-        parent: &KonsepItem,
-        pool: &sqlx::Pool<sqlx::Sqlite>,
+        parent: &KonsepItem<I>,
+        pool: &sqlx::Pool<Self::Engine>,
     ) -> sqlx::Result<()> {
         tracing::trace!(
             "Detaching <Cakupan={}> from <{}:{}>",
@@ -150,8 +155,90 @@ impl AttachmentItemMod<KonsepItem, sqlx::Sqlite> for CakupanItem {
 
     async fn submit_modification_with(
         &self,
-        parent: &KonsepItem,
-        _pool: &sqlx::Pool<sqlx::Sqlite>,
+        parent: &KonsepItem<I>,
+        _pool: &sqlx::Pool<Self::Engine>,
+    ) -> sqlx::Result<()> {
+        tracing::trace!(
+            "Modifying <Cakupan={}> with <{}:{}>",
+            self.0,
+            parent.id,
+            parent.keterangan
+        );
+        todo!()
+    }
+}
+
+#[cfg(feature = "postgres")]
+#[async_trait::async_trait]
+impl<I: Display + Sync + PartialEq + Copy + Clone> AttachmentItemMod<KonsepItem<I>>
+    for CakupanItem
+{
+    type Engine = sqlx::Postgres;
+    #[instrument(skip_all)]
+    async fn submit_attachment_to(
+        &self,
+        parent: &KonsepItem<I>,
+        pool: &sqlx::Pool<Self::Engine>,
+    ) -> sqlx::Result<()> {
+        tracing::trace!(
+            "Attaching <Cakupan={}> to <{}:{}>",
+            self.0,
+            parent.id,
+            parent.keterangan
+        );
+        sqlx::query! {
+            r#"INSERT INTO cakupan (nama) VALUES ($1) ON CONFLICT (nama) DO NOTHING;"#,
+            self.0
+        }
+        .execute(pool)
+        .await
+        .expect("Error attaching cakupan to konsep");
+
+        sqlx::query! {
+                r#"INSERT INTO cakupan_x_konsep (cakupan_id, konsep_id)
+                    VALUES (
+                        (SELECT id FROM cakupan WHERE cakupan.nama = $1),
+                        (SELECT id FROM konsep WHERE konsep.keterangan = $2)
+                    ) ON CONFLICT (cakupan_id, konsep_id) DO NOTHING;"#,
+            self.0,
+            parent.keterangan
+        }
+        .execute(pool)
+        .await
+        .expect("Error attaching cakupan to konsep");
+        Ok(())
+    }
+    async fn submit_detachment_from(
+        &self,
+        parent: &KonsepItem<I>,
+        pool: &sqlx::Pool<Self::Engine>,
+    ) -> sqlx::Result<()> {
+        tracing::trace!(
+            "Detaching <Cakupan={}> from <{}:{}>",
+            self.0,
+            parent.id,
+            parent.keterangan
+        );
+        sqlx::query! {
+            r#" DELETE FROM cakupan_x_konsep AS cxk
+                WHERE (
+                    cxk.cakupan_id = (SELECT id FROM cakupan WHERE cakupan.nama = $1)
+                        AND
+                    cxk.konsep_id = (SELECT id FROM konsep WHERE konsep.keterangan = $2)
+                );"#,
+            self.0,
+            parent.keterangan
+        }
+        .execute(pool)
+        .await
+        .expect("Error detaching cakupan from konsep");
+        Ok(())
+    }
+
+    async fn submit_modification_with(
+        &self,
+        parent: &KonsepItem<I>,
+        _pool: &sqlx::Pool<Self::Engine>,
     ) -> sqlx::Result<()> {
         tracing::trace!(
             "Modifying <Cakupan={}> with <{}:{}>",

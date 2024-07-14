@@ -10,7 +10,7 @@ use crate::{
 };
 
 use crate::io::interface::SubmitMod;
-use std::collections::HashMap;
+use std::{collections::HashMap, fmt::Display};
 use tracing::instrument;
 
 use super::konsep::KonsepHashMap;
@@ -42,10 +42,10 @@ use super::konsep::KonsepHashMap;
 /// ```
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize, ts_rs::TS)]
 #[ts(export, export_to = "../../src/bindings/")]
-pub struct LemmaItem {
-    pub id: AutoGen<i64>,
+pub struct LemmaItem<I: Copy + Clone + PartialOrd + Display> {
+    pub id: AutoGen<I>,
     pub lemma: String,
-    pub konseps: Vec<KonsepItem>,
+    pub konseps: Vec<KonsepItem<I>>,
 }
 
 /// A modified [LemmaItem].
@@ -131,14 +131,14 @@ pub struct LemmaItem {
 /// assert_eq!(lemma_modded.konseps.detached, vec![]);
 /// ```
 #[derive(Debug, Clone)]
-pub struct LemmaItemMod {
-    pub id: AutoGen<i64>,
+pub struct LemmaItemMod<I: PartialEq + Copy + Clone> {
+    pub id: AutoGen<I>,
     pub lemma: FieldMod<String>,
-    pub konseps: AttachmentMod<KonsepItemMod>,
+    pub konseps: AttachmentMod<KonsepItemMod<I>>,
 }
 
-impl Item for LemmaItem {
-    type IntoMod = LemmaItemMod;
+impl<I: PartialEq + Copy + Clone + PartialOrd + Display> Item for LemmaItem<I> {
+    type IntoMod = LemmaItemMod<I>;
     fn modify_into(&self, other: &Self) -> Result<Self::IntoMod> {
         if self.id != other.id {
             Err(BackendError {
@@ -153,7 +153,7 @@ impl Item for LemmaItem {
         }
     }
 
-    fn partial_from_mod(other: &LemmaItemMod) -> Self {
+    fn partial_from_mod(other: &LemmaItemMod<I>) -> Self {
         LemmaItem {
             id: other.id,
             lemma: other.lemma.value().to_string(),
@@ -162,8 +162,8 @@ impl Item for LemmaItem {
     }
 }
 
-impl ItemMod for LemmaItemMod {
-    type FromItem = LemmaItem;
+impl<I: PartialEq + Copy + Clone + PartialOrd + Display> ItemMod for LemmaItemMod<I> {
+    type FromItem = LemmaItem<I>;
 
     fn from_item(value: &Self::FromItem) -> Self {
         Self {
@@ -176,7 +176,7 @@ impl ItemMod for LemmaItemMod {
 
 #[cfg(feature = "sqlite")]
 #[async_trait::async_trait]
-impl SubmitMod for LemmaItemMod {
+impl SubmitMod for LemmaItemMod<i32> {
     type Engine = sqlx::Sqlite;
     #[instrument(skip_all)]
     async fn submit_mod(&self, pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()> {
@@ -188,7 +188,7 @@ impl SubmitMod for LemmaItemMod {
     }
 }
 
-impl PartialEq for LemmaItem {
+impl<I: PartialEq + Copy + Clone + PartialOrd + Display> PartialEq for LemmaItem<I> {
     fn eq(&self, other: &Self) -> bool {
         let konseps = Vec::from_iter(self.konseps.clone());
         self.lemma == other.lemma
@@ -203,7 +203,7 @@ impl PartialEq for LemmaItem {
 
 #[cfg(feature = "sqlite")]
 #[async_trait::async_trait]
-impl SubmitItem for LemmaItem {
+impl SubmitItem for LemmaItem<i32> {
     type Engine = sqlx::Sqlite;
     async fn submit_full(&self, pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()> {
         let _ = self.submit_partial(pool).await?;
@@ -244,7 +244,7 @@ impl SubmitItem for LemmaItem {
 
 #[cfg(feature = "postgres")]
 #[async_trait::async_trait]
-impl SubmitItem for LemmaItem {
+impl SubmitItem for LemmaItem<i32> {
     type Engine = sqlx::Postgres;
 
     async fn submit_full(&self, pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()> {
@@ -258,10 +258,16 @@ impl SubmitItem for LemmaItem {
     }
 
     async fn submit_partial(&self, pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()> {
-        sqlx::query! {
-            r#"INSERT or IGNORE INTO lemma (id, nama) VALUES (?, ?)"#,
-            self.id,
-            self.lemma
+        match self.id {
+            AutoGen::Known(i) => sqlx::query! {
+                r#"INSERT INTO lemma (id, nama) VALUES ($1, $2) ON CONFLICT (id, nama) DO NOTHING;"#,
+                i,
+                self.lemma
+            },
+            AutoGen::Unknown  => sqlx::query!{
+                r#"INSERT INTO lemma (nama) VALUES ($1);"#,
+                self.lemma
+            }
         }
         .execute(pool)
         .await?;
@@ -273,23 +279,28 @@ impl SubmitItem for LemmaItem {
     }
 
     async fn submit_partial_removal(&self, pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()> {
-        sqlx::query! {
-            r#"DELETE FROM lemma WHERE (lemma.id = ? AND lemma.nama = ?)"#,
-            self.id,
-            self.lemma
-        }
-        .execute(pool)
-        .await?;
+        match self.id {
+            AutoGen::Known(i) => {
+                sqlx::query! {
+                    r#"DELETE FROM lemma WHERE (lemma.id = $1 AND lemma.nama = $2)"#,
+                    i,
+                    self.lemma
+                }
+                .execute(pool)
+                .await?
+            }
+            AutoGen::Unknown => todo!(),
+        };
         Ok(())
     }
 }
 
-impl FromViewMap for LemmaItem {
+impl FromViewMap for LemmaItem<i64> {
     type KEY = (i64, String);
-    type VALUE = KonsepHashMap;
+    type VALUE = KonsepHashMap<i64>;
 
-    fn from_viewmap(value: &HashMap<Self::KEY, Self::VALUE>) -> Vec<LemmaItem> {
-        let mut data = Vec::<LemmaItem>::new();
+    fn from_viewmap(value: &HashMap<Self::KEY, Self::VALUE>) -> Vec<LemmaItem<i64>> {
+        let mut data = Vec::<LemmaItem<i64>>::new();
         for (lemma, konsep_map) in value.iter() {
             data.push(LemmaItem {
                 id: AutoGen::Known(lemma.0),
@@ -300,10 +311,33 @@ impl FromViewMap for LemmaItem {
         data
     }
 }
-impl FromView for LemmaItem {
+impl FromViewMap for LemmaItem<i32> {
+    type KEY = (i32, String);
+    type VALUE = KonsepHashMap<i32>;
+
+    fn from_viewmap(value: &HashMap<Self::KEY, Self::VALUE>) -> Vec<LemmaItem<i32>> {
+        let mut data = Vec::<LemmaItem<i32>>::new();
+        for (lemma, konsep_map) in value.iter() {
+            data.push(LemmaItem {
+                id: AutoGen::Known(lemma.0),
+                lemma: lemma.1.clone(),
+                konseps: KonsepItem::from_viewmap(konsep_map),
+            })
+        }
+        data
+    }
+}
+// impl FromView for LemmaItem<i32> {
+//     type VIEW = LemmaWithKonsepView;
+
+//     fn from_views(views: &Vec<Self::VIEW>) -> Vec<LemmaItem<i32>> {
+//         Self::from_viewmap(&(views.clone().into_viewmap()))
+//     }
+// }
+impl FromView for LemmaItem<i64> {
     type VIEW = LemmaWithKonsepView;
 
-    fn from_views(views: &Vec<Self::VIEW>) -> Vec<LemmaItem> {
+    fn from_views(views: &Vec<Self::VIEW>) -> Vec<LemmaItem<i64>> {
         Self::from_viewmap(&(views.clone().into_viewmap()))
     }
 }

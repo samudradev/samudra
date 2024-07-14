@@ -4,6 +4,7 @@ use crate::changes::{AttachmentMod, CompareAttachable, FieldMod};
 use crate::io::interface::{AttachmentItemMod, FromView, FromViewMap, Item, ItemMod};
 use crate::prelude::*;
 use std::collections::HashMap;
+use std::fmt::{Debug, Display};
 use tracing::instrument;
 
 use crate::data::items::cakupan::CakupanItem;
@@ -19,10 +20,10 @@ use crate::data::items::lemma::LemmaItem;
 /// The following are the tags implemented in this struct:
 /// - [cakupans](KonsepItem#structfield.cakupans): the communication contexts of the definition.
 /// - [kata_asing](KonsepItem#structfield.kata_asing): words with equivalent meaning in other languages.
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize, ts_rs::TS)]
+#[derive(Clone, serde::Serialize, serde::Deserialize, ts_rs::TS)]
 #[ts(export, export_to = "../../src/bindings/")]
-pub struct KonsepItem {
-    pub id: AutoGen<i64>,
+pub struct KonsepItem<I> {
+    pub id: AutoGen<I>,
     pub keterangan: String,
     pub golongan_kata: String,
     #[ts(type = "Array<string>")]
@@ -30,20 +31,44 @@ pub struct KonsepItem {
     pub kata_asing: Vec<KataAsingItem>,
 }
 
+impl<I: Debug> Debug for KonsepItem<I> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("KonsepItem")
+            .field("id", &self.id)
+            .field("keterangan", &self.keterangan)
+            .field("golongan_kata", &self.golongan_kata)
+            .field("cakupans", &self.cakupans)
+            .field("kata_asing", &self.kata_asing)
+            .finish()
+    }
+}
+
 /// A modified [KonsepItem].
 ///
 /// Its usage is similar to [LemmaItemMod](crate::data::LemmaItemMod).
-#[derive(Debug, Clone, PartialEq)]
-pub struct KonsepItemMod {
-    pub id: AutoGen<i64>,
+#[derive(Clone, PartialEq)]
+pub struct KonsepItemMod<I> {
+    pub id: AutoGen<I>,
     pub keterangan: FieldMod<String>,
     pub golongan_kata: FieldMod<String>,
     pub cakupans: AttachmentMod<CakupanItem>,
     pub kata_asing: AttachmentMod<KataAsingItem>,
 }
 
-impl ItemMod for KonsepItemMod {
-    type FromItem = KonsepItem;
+impl<I: Debug> Debug for KonsepItemMod<I> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("KonsepItemMod")
+            .field("id", &self.id)
+            .field("keterangan", &self.keterangan)
+            .field("golongan_kata", &self.golongan_kata)
+            .field("cakupans", &self.cakupans)
+            .field("kata_asing", &self.kata_asing)
+            .finish()
+    }
+}
+
+impl<I: PartialEq + Copy + Clone> ItemMod for KonsepItemMod<I> {
+    type FromItem = KonsepItem<I>;
 
     fn from_item(value: &Self::FromItem) -> Self {
         Self {
@@ -55,10 +80,10 @@ impl ItemMod for KonsepItemMod {
         }
     }
 }
-impl KonsepItem {
+impl<I> KonsepItem<I> {
     pub fn null() -> Self {
         Self {
-            id: AutoGen::Unknown,
+            id: AutoGen::<I>::Unknown,
             keterangan: "".into(),
             golongan_kata: "".into(),
             cakupans: vec![],
@@ -67,7 +92,7 @@ impl KonsepItem {
     }
 }
 
-impl PartialEq for KonsepItem {
+impl<I> PartialEq for KonsepItem<I> {
     fn eq(&self, other: &Self) -> bool {
         self.keterangan == other.keterangan
             && self.golongan_kata == other.golongan_kata
@@ -89,12 +114,14 @@ impl PartialEq for KonsepItem {
 
 #[cfg(feature = "sqlite")]
 #[async_trait::async_trait]
-impl AttachmentItemMod<LemmaItem, sqlx::Sqlite> for KonsepItemMod {
+impl AttachmentItemMod<LemmaItem<i32>> for KonsepItemMod<i32> {
+    type Engine = sqlx::Sqlite;
+
     #[instrument(skip_all)]
     async fn submit_attachment_to(
         &self,
-        parent: &LemmaItem,
-        pool: &sqlx::Pool<sqlx::Sqlite>,
+        parent: &LemmaItem<i32>,
+        pool: &sqlx::Pool<Self::Engine>,
     ) -> sqlx::Result<()> {
         let konsep = KonsepItem::partial_from_mod(self);
         tracing::trace!(
@@ -124,8 +151,8 @@ impl AttachmentItemMod<LemmaItem, sqlx::Sqlite> for KonsepItemMod {
     }
     async fn submit_detachment_from(
         &self,
-        parent: &LemmaItem,
-        pool: &sqlx::Pool<sqlx::Sqlite>,
+        parent: &LemmaItem<i32>,
+        pool: &sqlx::Pool<Self::Engine>,
     ) -> sqlx::Result<()> {
         tracing::trace!(
             "Detaching <{}:{}> from <{}:{}>",
@@ -146,8 +173,8 @@ impl AttachmentItemMod<LemmaItem, sqlx::Sqlite> for KonsepItemMod {
 
     async fn submit_modification_with(
         &self,
-        parent: &LemmaItem,
-        pool: &sqlx::Pool<sqlx::Sqlite>,
+        parent: &LemmaItem<i32>,
+        pool: &sqlx::Pool<Self::Engine>,
     ) -> sqlx::Result<()> {
         let konsep = KonsepItem::partial_from_mod(self);
         tracing::trace!(
@@ -179,16 +206,119 @@ impl AttachmentItemMod<LemmaItem, sqlx::Sqlite> for KonsepItemMod {
     }
 }
 
-type Key = (i64, Option<String>, Option<String>);
-type Value = Vec<LemmaWithKonsepView>;
-pub(crate) type KonsepHashMap = HashMap<Key, Value>;
+#[cfg(feature = "postgres")]
+#[async_trait::async_trait]
+impl AttachmentItemMod<LemmaItem<i32>> for KonsepItemMod<i32> {
+    type Engine = sqlx::Postgres;
 
-impl Item for KonsepItem {
-    type IntoMod = KonsepItemMod;
+    #[instrument(skip_all)]
+    async fn submit_attachment_to(
+        &self,
+        parent: &LemmaItem<i32>,
+        pool: &sqlx::Pool<Self::Engine>,
+    ) -> sqlx::Result<()> {
+        let konsep = KonsepItem::partial_from_mod(self);
+        tracing::trace!(
+            "Attaching <{}:{}> to <{}:{}>",
+            konsep.id,
+            konsep.keterangan,
+            parent.id,
+            parent.lemma
+        );
+        sqlx::query! {
+            r#" INSERT INTO konsep (keterangan, lemma_id, golongan_id)
+                VALUES (
+                    $1,
+                    (SELECT id FROM lemma WHERE lemma.nama = $2),
+                    (SELECT id FROM golongan_kata WHERE golongan_kata.nama = $3)
+                ) ON CONFLICT (id) DO NOTHING
+                "#,
+                konsep.keterangan,
+                parent.lemma,
+                konsep.golongan_kata
+        }
+        .execute(pool)
+        .await?;
+        self.cakupans.submit_changes_with(&konsep, pool).await?;
+        self.kata_asing.submit_changes_with(&konsep, pool).await?;
+        Ok(())
+    }
+    async fn submit_detachment_from(
+        &self,
+        parent: &LemmaItem<i32>,
+        pool: &sqlx::Pool<Self::Engine>,
+    ) -> sqlx::Result<()> {
+        tracing::trace!(
+            "Detaching <{}:{}> from <{}:{}>",
+            self.id,
+            self.keterangan.value(),
+            parent.id,
+            parent.lemma
+        );
+        match (self.id, parent.id) {
+            (AutoGen::Known(i), AutoGen::Known(p)) => {
+                sqlx::query! {
+                    r#" DELETE FROM konsep WHERE (id = $1 AND lemma_id = $2)"#,
+                    i,
+                    p
+                }
+                .execute(pool)
+                .await?
+            }
+            (_, _) => todo!(),
+        };
+        Ok(())
+    }
+
+    async fn submit_modification_with(
+        &self,
+        parent: &LemmaItem<i32>,
+        pool: &sqlx::Pool<Self::Engine>,
+    ) -> sqlx::Result<()> {
+        let konsep = KonsepItem::partial_from_mod(self);
+        tracing::trace!(
+            "Modifying <{}:{}> with <{}:{}>",
+            konsep.id,
+            konsep.keterangan,
+            parent.id,
+            parent.lemma
+        );
+        match (konsep.id, parent.id) {
+            (AutoGen::Known(i), AutoGen::Known(p)) => sqlx::query! {
+                r#" UPDATE konsep
+                    SET keterangan = $1, golongan_id = (SELECT id FROM golongan_kata WHERE golongan_kata.nama = $2)
+                    WHERE (
+                        id = $3
+                        AND
+                        lemma_id = $4
+                    )
+                    "#,
+                    konsep.keterangan,
+                    konsep.golongan_kata,
+                    i,
+                    p,
+            }
+            .execute(pool)
+            .await?,
+            (_,_) => todo!()
+        };
+        self.cakupans.submit_changes_with(&konsep, pool).await?;
+        self.kata_asing.submit_changes_with(&konsep, pool).await?;
+        Ok(())
+    }
+}
+
+type Key<I> = (I, Option<String>, Option<String>);
+type Value = Vec<LemmaWithKonsepView>;
+pub(crate) type KonsepHashMap<I> = HashMap<Key<I>, Value>;
+
+impl<I: PartialEq + Copy + Clone> Item for KonsepItem<I> {
+    type IntoMod = KonsepItemMod<I>;
     fn modify_into(&self, other: &Self) -> Result<Self::IntoMod> {
         if self.id != other.id {
             return Err(BackendError {
-                message: format!("ID Assertion error, {} != {}", self.id, other.id),
+                // message: format!("ID Assertion error, {} != {}", self.id, other.id),
+                message: format!("ID Assertion error"),
             });
         }
         Ok(KonsepItemMod {
@@ -214,10 +344,10 @@ impl Item for KonsepItem {
     }
 }
 
-impl FromViewMap for KonsepItem {
-    type KEY = Key;
+impl<I: Copy> FromViewMap for KonsepItem<I> {
+    type KEY = Key<I>;
     type VALUE = Value;
-    fn from_viewmap(value: &KonsepHashMap) -> Vec<Self> {
+    fn from_viewmap(value: &KonsepHashMap<I>) -> Vec<Self> {
         let mut data = Vec::new();
         for (konsep, views) in value.iter().filter(|((_, kon, _), _)| kon.is_some()) {
             data.push(KonsepItem {

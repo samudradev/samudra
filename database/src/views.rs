@@ -89,7 +89,7 @@ impl LemmaWithKonsepView {
 
 impl IntoViewMap<LemmaWithKonsepView> for Vec<LemmaWithKonsepView> {
     type KEY = (i64, String);
-    type VALUE = KonsepHashMap;
+    type VALUE = KonsepHashMap<i64>;
 
     fn into_viewmap(self) -> HashMap<Self::KEY, Self::VALUE> {
         self.into_iter()

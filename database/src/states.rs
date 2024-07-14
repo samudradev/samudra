@@ -2,13 +2,10 @@
 
 use sqlx::migrate::MigrateDatabase;
 use sqlx::migrate::{Migrate, MigrateError};
+use sqlx::FromRow;
 
 use crate::errors::Result;
 use crate::prelude::BackendError;
-
-pub use sqlx::Pool;
-#[cfg(feature = "sqlite")]
-pub use sqlx::Sqlite;
 
 // TODO: Refactor this module
 
@@ -16,25 +13,60 @@ pub use sqlx::Sqlite;
 #[derive(Debug, Clone)]
 pub struct Connection<DB: sqlx::Database> {
     #[allow(missing_docs)]
-    pub pool: Pool<DB>,
+    pub pool: sqlx::Pool<DB>,
 }
 
 /// Counts of selected items.
 #[allow(missing_docs)]
 #[derive(Debug, Clone, Default, serde::Serialize, PartialEq, ts_rs::TS)]
 #[ts(export, export_to = "../../src/bindings/")]
-pub struct Counts {
-    lemmas: i32,
-    konseps: i32,
-    golongan_katas: i32,
-    cakupans: i32,
-    kata_asings: i32,
+pub struct Counts<I> {
+    lemmas: I,
+    konseps: I,
+    golongan_katas: I,
+    cakupans: I,
+    kata_asings: I,
 }
 
 /// A helper struct for when a single string value is queried.
 pub struct StringItem {
     #[allow(missing_docs)]
     pub item: String,
+}
+
+impl Counts<Option<i64>> {
+    fn unwrap_fields(self) -> Counts<i64> {
+        Counts {
+            lemmas: self.lemmas.unwrap_or(0),
+            konseps: self.konseps.unwrap_or(0),
+            golongan_katas: self.golongan_katas.unwrap_or(0),
+            cakupans: self.cakupans.unwrap_or(0),
+            kata_asings: self.kata_asings.unwrap_or(0),
+        }
+    }
+}
+
+#[cfg(feature = "postgres")]
+impl Connection<sqlx::Postgres> {
+    pub async fn from(url: String) -> Self {
+        Self {
+            pool: sqlx::PgPool::connect(&url).await.unwrap(),
+        }
+    }
+    /// Queries the counts of each items as [Counts].
+    ///
+    /// The function calls the following query:
+    /// ```sql
+    #[doc = include_str!("../transactions/postgres/count_items.sql")]
+    /// ```
+    pub async fn statistics(self) -> Result<Counts<i64>> {
+        let inter: Counts<Option<i64>> =
+            sqlx::query_file_as!(Counts, "transactions/postgres/count_items.sql")
+                .fetch_one(&self.pool)
+                .await
+                .map_err(BackendError::from)?;
+        Ok(inter.unwrap_fields())
+    }
 }
 
 #[cfg(feature = "sqlite")]
@@ -63,6 +95,19 @@ impl Connection<sqlx::Sqlite> {
         }
     }
 
+    /// Queries the counts of each items as [Counts].
+    ///
+    /// The function calls the following query:
+    /// ```sql
+    #[doc = include_str!("../transactions/sqlite/count_items.sql")]
+    /// ```
+    pub async fn statistics(self) -> Result<Counts<i32>> {
+        sqlx::query_file_as!(Counts, "transactions/sqlite/count_items.sql")
+            .fetch_one(&self.pool)
+            .await
+            .map_err(BackendError::from)
+    }
+
     /// Queries all `golongan_kata.nama` and returns Result<Vec<[StringItem]>>
     ///
     /// The function calls the following query:
@@ -76,19 +121,6 @@ impl Connection<sqlx::Sqlite> {
             .map_err(BackendError::from)
     }
 
-    /// Queries the counts of each items as [Counts].
-    ///
-    /// The function calls the following query:
-    /// ```sql
-    #[doc = include_str!("../transactions/count_items.sql")]
-    /// ```
-    pub async fn statistics(self) -> Result<Counts> {
-        sqlx::query_file_as!(Counts, "transactions/count_items.sql")
-            .fetch_one(&self.pool)
-            .await
-            .map_err(BackendError::from)
-    }
-
     /// Creates the Sqlite database in the specified url then apply migrations.
     pub async fn create_and_migrate(url: String) -> Result<Self> {
         sqlx::Sqlite::create_database(&url).await?;
@@ -96,7 +128,7 @@ impl Connection<sqlx::Sqlite> {
         Ok(Self::migrate(pool).await)
     }
 
-    async fn migrate(pool: Pool<Sqlite>) -> Self {
+    async fn migrate(pool: sqlx::Pool<sqlx::Sqlite>) -> Self {
         match sqlx::migrate!("migrations/sqlite").run(&pool).await {
             Ok(_) => Self { pool },
             // Err(MigrateError::VersionMismatch(v)) => {println!("{}", v);  Self{pool}}

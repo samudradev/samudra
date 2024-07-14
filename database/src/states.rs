@@ -16,11 +16,11 @@ pub struct Connection<DB: sqlx::Database> {
     pub pool: sqlx::Pool<DB>,
 }
 
-impl<DB> From<sqlx::Pool<DB>> for Connection<DB> {
-    fn from(value: sqlx::Pool<DB>) -> Self {
-        Self { pool: value }
-    }
-}
+// impl<DB> From<sqlx::Pool<DB>> for Connection<DB> {
+//     fn from(value: sqlx::Pool<DB>) -> Self {
+//         Self { pool: value }
+//     }
+// }
 
 /// Counts of selected items.
 #[allow(missing_docs)]
@@ -68,7 +68,7 @@ impl Connection<sqlx::Postgres> {
     pub async fn statistics(&self) -> Result<Counts<i64>> {
         let inter: Counts<Option<i64>> =
             sqlx::query_file_as!(Counts, "transactions/postgres/count_items.sql")
-                .fetch_one(self.pool)
+                .fetch_one(&self.pool)
                 .await
                 .map_err(BackendError::from)?;
         Ok(inter.unwrap_fields())
@@ -78,7 +78,7 @@ impl Connection<sqlx::Postgres> {
 #[cfg(feature = "sqlite")]
 impl Connection<sqlx::Sqlite> {
     /// Forcefully reconnect to the specified url.
-    pub async fn renew(&mut self, url: String) -> Result<Self> {
+    pub async fn renew(&mut self, url: String) -> Result<&Self> {
         self.pool = sqlx::SqlitePool::connect(&url).await?;
         Ok(self)
     }
@@ -92,12 +92,15 @@ impl Connection<sqlx::Sqlite> {
                 // Automatically migrate to current version
                 Self { pool }
             }
-            Err(_) => dbg!(Self::create_and_migrate(url)
-                .await
-                .unwrap()
-                .populate_with_presets()
-                .await
-                .unwrap()),
+            Err(_) => {
+                let _ = Self::create_and_migrate(url.clone())
+                    .await
+                    .unwrap()
+                    .populate_with_presets()
+                    .await
+                    .unwrap();
+                Connection::from(url).await
+            }
         }
     }
 
@@ -122,7 +125,7 @@ impl Connection<sqlx::Sqlite> {
     /// ```
     pub async fn get_golongan_kata_enumeration(&self) -> Result<Vec<StringItem>> {
         sqlx::query_as!(StringItem, "SELECT nama AS item FROM golongan_kata")
-            .fetch_all(self.pool)
+            .fetch_all(&self.pool)
             .await
             .map_err(BackendError::from)
     }
@@ -149,7 +152,7 @@ impl Connection<sqlx::Sqlite> {
     /// ```sql
     #[doc = include_str!("../presets/golongan_kata_ms-my.sql")]
     /// ```
-    pub async fn populate_with_presets(&self) -> Result<Self> {
+    pub async fn populate_with_presets(&self) -> Result<&Self> {
         sqlx::query_file!("presets/golongan_kata_ms-my.sql")
             .execute(&self.pool)
             .await?;

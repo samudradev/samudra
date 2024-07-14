@@ -8,12 +8,14 @@ use std::collections::HashMap;
 /// - For SQL formats, a view queries a portion of table with predefined joins and selects.
 ///
 /// It is often used in its vector form, as it is converted into nested structs which implements [Item].
-pub trait View {}
+pub trait View {
+    type SOURCE;
+}
 
 /// A trait to convert Vec<[View]> into Vec<[Item]>
 pub trait FromView: Item {
     /// The view that is to be converted
-    type VIEW: View;
+    type VIEW;
 
     /// Converts a vector of [View] into Vec<[Item]> with no [HashMap] intermediary.
     fn from_views(views: &Vec<Self::VIEW>) -> Vec<Self>;
@@ -31,7 +33,7 @@ pub trait FromViewMap: Item {
 }
 
 /// A trait that converts Vec<[View]> into its intermediary form: [HashMap].
-pub trait IntoViewMap<V: View>: IntoIterator<Item = V> {
+pub trait IntoViewMap<V>: IntoIterator<Item = V> {
     /// Keys of the resulting [HashMap], typically the ID.
     type KEY;
     /// The value of the resulting [HashMap].
@@ -67,19 +69,19 @@ pub trait Item: Sized {
 
 /// A trait which allows item data to be submitted into SQL databases.
 #[async_trait::async_trait]
-pub trait SubmitItem<DB: sqlx::Database>: Item {
-
+pub trait SubmitItem: Item {
+    type Engine: sqlx::Database;
     /// Inserts item with corresponding children.
-    async fn submit_full(&self, pool: &sqlx::Pool<DB>) -> sqlx::Result<()>;
+    async fn submit_full(&self, pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()>;
 
     /// Inserts item with no children.
-    async fn submit_partial(&self, pool: &sqlx::Pool<DB>) -> sqlx::Result<()>;
+    async fn submit_partial(&self, pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()>;
 
     /// Deletes item with corresponding children.
-    async fn submit_full_removal(&self, pool: &sqlx::Pool<DB>) -> sqlx::Result<()>;
+    async fn submit_full_removal(&self, pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()>;
 
     /// Deletes item with no children affected.
-    async fn submit_partial_removal(&self, pool: &sqlx::Pool<DB>) -> sqlx::Result<()>;
+    async fn submit_partial_removal(&self, pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()>;
 }
 
 /// Structs implementing [ItemMod] has structure similar to its sibling struct which implements [Item] but contains modified data and modification information.
@@ -93,16 +95,15 @@ pub trait ItemMod {
 
 /// A trait which allows modified item data to be submitted into SQL databases.
 #[async_trait::async_trait]
-pub trait SubmitMod<DB: sqlx::Database>: ItemMod {
-
+pub trait SubmitMod: ItemMod {
+    type Engine: sqlx::Database;
     /// Submits modification.
-    async fn submit_mod(&self, pool: &sqlx::Pool<DB>) -> sqlx::Result<()>;
+    async fn submit_mod(&self, pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()>;
 }
 
 /// A trait which allows attachment items to be submitted into SQL database as [ItemMod].
 #[async_trait::async_trait]
 pub trait AttachmentItemMod<P: Item, DB: sqlx::Database>: ItemMod {
-
     /// Submit [Self] to parent item.
     async fn submit_attachment_to(&self, parent: &P, pool: &sqlx::Pool<DB>) -> sqlx::Result<()>;
 

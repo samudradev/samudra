@@ -51,13 +51,13 @@ where
     A: ItemMod,
 {
     #[instrument(skip_all)]
-    pub async fn submit_changes_with<P>(
+    pub async fn submit_changes_with<P, DB: sqlx::Database>(
         &self,
         parent: &P,
-        pool: &sqlx::Pool<sqlx::Sqlite>,
+        pool: &sqlx::Pool<DB>,
     ) -> sqlx::Result<()>
     where
-        A: ItemMod + AttachmentItemMod<P, sqlx::Sqlite>,
+        A: ItemMod + AttachmentItemMod<P, DB>,
         P: Item,
     {
         for attached in self.attached.iter() {

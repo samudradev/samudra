@@ -7,15 +7,16 @@ use crate::errors::Result;
 use crate::prelude::BackendError;
 
 pub use sqlx::Pool;
+#[cfg(feature = "sqlite")]
 pub use sqlx::Sqlite;
 
 // TODO: Refactor this module
 
 /// Connection to database
 #[derive(Debug, Clone)]
-pub struct Connection {
+pub struct Connection<DB: sqlx::Database> {
     #[allow(missing_docs)]
-    pub pool: Pool<Sqlite>,
+    pub pool: Pool<DB>,
 }
 
 /// Counts of selected items.
@@ -36,7 +37,8 @@ pub struct StringItem {
     pub item: String,
 }
 
-impl Connection {
+#[cfg(feature = "sqlite")]
+impl Connection<sqlx::Sqlite> {
     /// Forcefully reconnect to the specified url.
     pub async fn renew(mut self, url: String) -> Result<Self> {
         self.pool = sqlx::SqlitePool::connect(&url).await?;
@@ -95,7 +97,7 @@ impl Connection {
     }
 
     async fn migrate(pool: Pool<Sqlite>) -> Self {
-        match sqlx::migrate!().run(&pool).await {
+        match sqlx::migrate!("migrations/sqlite").run(&pool).await {
             Ok(_) => Self { pool },
             // Err(MigrateError::VersionMismatch(v)) => {println!("{}", v);  Self{pool}}
             Err(e) => todo!("{}", e),

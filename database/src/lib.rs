@@ -1,4 +1,5 @@
 //! A crate to handle database operations.
+#![allow(unused_imports)]
 
 // TODO: Documentation
 

@@ -3,10 +3,9 @@
 use std::collections::HashMap;
 
 use itertools::Itertools;
-use sqlx::Sqlite;
 
 use crate::data::items::konsep::KonsepHashMap;
-use crate::io::interface::{IntoViewMap, View};
+use crate::io::interface::IntoViewMap;
 
 /// A [View] whose query joins konsep to its tags (cakupan, kata_asing)
 ///
@@ -47,12 +46,24 @@ pub struct LemmaWithKonsepView {
     pub bahasa_asing: Option<String>,
 }
 
-impl View for LemmaWithKonsepView {}
+#[cfg(feature = "sqlite")]
+impl crate::io::interface::View for LemmaWithKonsepView {
+    type SOURCE = sqlx::Sqlite;
+}
 
+#[cfg(feature = "postgres")]
+impl crate::io::interface::View for LemmaWithKonsepView {
+    type SOURCE = sqlx::Postgres;
+}
+
+#[cfg(feature = "sqlite")]
+#[cfg(feature = "postgres")]
 impl LemmaWithKonsepView {
-
     /// Query a single lemma with its associated konseps and attachments.
-    pub async fn query_lemma(lemma: String, pool: &sqlx::Pool<Sqlite>) -> sqlx::Result<Vec<Self>> {
+    pub async fn query_lemma(
+        lemma: String,
+        pool: &sqlx::Pool<Self::SOURCE>,
+    ) -> sqlx::Result<Vec<Self>> {
         sqlx::query_file_as!(
             Self,
             "transactions/select_lemma_with_konsep_view.sql",
@@ -63,7 +74,7 @@ impl LemmaWithKonsepView {
     }
 
     /// Query all lemmas.
-    pub async fn query_all(pool: &sqlx::Pool<Sqlite>) -> sqlx::Result<Vec<Self>> {
+    pub async fn query_all(pool: &sqlx::Pool<Self::SOURCE>) -> sqlx::Result<Vec<Self>> {
         // TODO: Might be a good idea to add limit
         // TODO: And maybe sort by reverse chronology
         sqlx::query_file_as!(
@@ -75,6 +86,7 @@ impl LemmaWithKonsepView {
         .await
     }
 }
+
 impl IntoViewMap<LemmaWithKonsepView> for Vec<LemmaWithKonsepView> {
     type KEY = (i64, String);
     type VALUE = KonsepHashMap;

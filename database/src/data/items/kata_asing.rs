@@ -3,8 +3,6 @@
 use crate::io::interface::{AttachmentItemMod, FromView, Item, ItemMod, SubmitItem};
 use crate::prelude::*;
 
-use crate::states::{Pool, Sqlite};
-
 /// Contains a foreign word with its language of origin.
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize, PartialEq, ts_rs::TS)]
 #[ts(export, export_to = "../../src/bindings/")]
@@ -69,9 +67,11 @@ impl FromView for KataAsingItem {
     }
 }
 
+#[cfg(feature = "sqlite")]
 #[async_trait::async_trait]
-impl SubmitItem<sqlx::Sqlite> for KataAsingItem {
-    async fn submit_full(&self, pool: &sqlx::Pool<sqlx::Sqlite>) -> sqlx::Result<()> {
+impl SubmitItem for KataAsingItem {
+    type Engine = sqlx::Sqlite;
+    async fn submit_full(&self, pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()> {
         sqlx::query! {
             r#"INSERT or IGNORE INTO kata_asing (nama, bahasa) VALUES (?,?)"#,
             self.nama,
@@ -82,19 +82,20 @@ impl SubmitItem<sqlx::Sqlite> for KataAsingItem {
         Ok(())
     }
 
-    async fn submit_partial(&self, pool: &Pool<Sqlite>) -> sqlx::Result<()> {
+    async fn submit_partial(&self, pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()> {
         self.submit_full(pool).await
     }
 
-    async fn submit_full_removal(&self, _pool: &Pool<Sqlite>) -> sqlx::Result<()> {
+    async fn submit_full_removal(&self, _pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()> {
         todo!()
     }
 
-    async fn submit_partial_removal(&self, _pool: &Pool<Sqlite>) -> sqlx::Result<()> {
+    async fn submit_partial_removal(&self, _pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()> {
         todo!()
     }
 }
 
+#[cfg(feature = "sqlite")]
 #[async_trait::async_trait]
 impl AttachmentItemMod<KonsepItem, sqlx::Sqlite> for KataAsingItem {
     async fn submit_attachment_to(
@@ -159,7 +160,7 @@ impl AttachmentItemMod<KonsepItem, sqlx::Sqlite> for KataAsingItem {
     async fn submit_modification_with(
         &self,
         parent: &KonsepItem,
-        _pool: &Pool<Sqlite>,
+        _pool: &sqlx::Pool<sqlx::Sqlite>,
     ) -> sqlx::Result<()> {
         tracing::trace!(
             "Modifying <KataAsing {}:{}> with <{}:{}>",

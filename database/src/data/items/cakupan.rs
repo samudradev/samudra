@@ -2,7 +2,6 @@
 
 use crate::io::interface::{AttachmentItemMod, FromView, Item, ItemMod, SubmitItem};
 use crate::prelude::*;
-use crate::states::{Pool, Sqlite};
 use tracing::instrument;
 
 /// The context in which a word with the corresponding definition is used.
@@ -90,6 +89,7 @@ impl From<String> for CakupanItem {
 //     }
 // }
 
+#[cfg(feature = "sqlite")]
 #[async_trait::async_trait]
 impl AttachmentItemMod<KonsepItem, sqlx::Sqlite> for CakupanItem {
     #[instrument(skip_all)]
@@ -151,7 +151,7 @@ impl AttachmentItemMod<KonsepItem, sqlx::Sqlite> for CakupanItem {
     async fn submit_modification_with(
         &self,
         parent: &KonsepItem,
-        _pool: &Pool<Sqlite>,
+        _pool: &sqlx::Pool<sqlx::Sqlite>,
     ) -> sqlx::Result<()> {
         tracing::trace!(
             "Modifying <Cakupan={}> with <{}:{}>",

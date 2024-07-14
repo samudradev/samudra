@@ -8,7 +8,6 @@ use tracing::instrument;
 
 use crate::data::items::cakupan::CakupanItem;
 use crate::data::items::lemma::LemmaItem;
-use crate::states::{Pool, Sqlite};
 
 /// Represents the definition of a [LemmaItem] with tags.
 ///
@@ -88,6 +87,7 @@ impl PartialEq for KonsepItem {
     }
 }
 
+#[cfg(feature = "sqlite")]
 #[async_trait::async_trait]
 impl AttachmentItemMod<LemmaItem, sqlx::Sqlite> for KonsepItemMod {
     #[instrument(skip_all)]
@@ -147,7 +147,7 @@ impl AttachmentItemMod<LemmaItem, sqlx::Sqlite> for KonsepItemMod {
     async fn submit_modification_with(
         &self,
         parent: &LemmaItem,
-        pool: &Pool<Sqlite>,
+        pool: &sqlx::Pool<sqlx::Sqlite>,
     ) -> sqlx::Result<()> {
         let konsep = KonsepItem::partial_from_mod(self);
         tracing::trace!(

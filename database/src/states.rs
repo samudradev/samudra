@@ -101,7 +101,12 @@ impl Connection<sqlx::Sqlite> {
                     .populate_with_presets()
                     .await
                     .unwrap();
-                Connection::from(url).await
+                // We assume only happy path after this
+                Self {
+                    pool: sqlx::SqlitePool::connect(&url)
+                        .await
+                        .expect("Recursive solution required if this error happened"),
+                }
             }
         }
     }

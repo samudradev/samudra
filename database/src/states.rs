@@ -101,7 +101,12 @@ impl Connection<sqlx::Sqlite> {
                     .populate_with_presets()
                     .await
                     .unwrap();
-                Connection::from(url).await
+                // We assume only happy path after this
+                Self {
+                    pool: sqlx::SqlitePool::connect(&url)
+                        .await
+                        .expect("Recursive solution required if this error happened"),
+                }
             }
         }
     }
@@ -113,7 +118,7 @@ impl Connection<sqlx::Sqlite> {
     #[doc = include_str!("../transactions/sqlite/count_items.sql")]
     /// ```
     pub async fn statistics(self) -> Result<Counts<i32>> {
-        sqlx::query_as!(Counts, "transactions/sqlite/count_items.sql")
+        sqlx::query_file_as!(Counts, "transactions/sqlite/count_items.sql")
             .fetch_one(&self.pool)
             .await
             .map_err(BackendError::from)

@@ -2,7 +2,12 @@
 
 ![test-badge](https://github.com/Thaza-Kun/samudra/actions/workflows/test.yml/badge.svg) ![docs-badge](https://github.com/Thaza-Kun/samudra/actions/workflows/docs.yml/badge.svg) ![black-badge](https://github.com/Thaza-Kun/samudra/actions/workflows/black.yml/badge.svg) ![pages-build-deployment-badge](https://github.com/Thaza-Kun/samudra/actions/workflows/pages/pages-build-deployment/badge.svg)
 
-> *info*
+> [!IMPORTANT]
+> Cabang repositori ini ditanda sebagai `legacy` untuk dijadikan simpanan semata-mata.
+> Projek ini mula ditulis dalam Python tetapi sudah ditulis semula ke dalam Rust dengan hasil yang lebih memberangsangkan.
+> Sila ke cabang utama untuk perkembangan terkini.
+
+> [!NOTE]
 > Repositori ini sudah dikhaskan sebagai sebuah modul teras samudra sejak v0.9.1. 
 > Mod pelayan dan mod terminal sudah dimansuhkan dari repo ini. 
 > Antaramuka bergrafik sedang diusahakan sebagai repo asing di https://github.com/samudradev/samudra-gui. Rujuk https://github.com/samudradev/samudra/releases/tag/v0.9.1

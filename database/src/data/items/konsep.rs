@@ -1,6 +1,7 @@
 //! The data structure of a definition is represented using [KonsepItem].
 
 use crate::changes::{AttachmentMod, CompareAttachable, FieldMod};
+use crate::engine::DbEngine;
 use crate::io::interface::{AttachmentItemMod, FromView, FromViewMap, Item, ItemMod};
 use crate::prelude::*;
 use std::collections::HashMap;
@@ -114,14 +115,12 @@ impl<I> PartialEq for KonsepItem<I> {
 
 #[cfg(feature = "sqlite")]
 #[async_trait::async_trait]
-impl AttachmentItemMod<LemmaItem<i32>> for KonsepItemMod<i32> {
-    type Engine = sqlx::Sqlite;
-
+impl AttachmentItemMod<LemmaItem<i32>, sqlx::SqlitePool> for KonsepItemMod<i32> {
     #[instrument(skip_all)]
     async fn submit_attachment_to(
         &self,
         parent: &LemmaItem<i32>,
-        pool: &sqlx::Pool<Self::Engine>,
+        engine: &DbEngine<sqlx::SqlitePool>,
     ) -> sqlx::Result<()> {
         let konsep = KonsepItem::partial_from_mod(self);
         tracing::trace!(
@@ -143,16 +142,17 @@ impl AttachmentItemMod<LemmaItem<i32>> for KonsepItemMod<i32> {
                 parent.lemma,
                 konsep.golongan_kata
         }
-        .execute(pool)
+        .execute(engine.pool())
         .await?;
-        self.cakupans.submit_changes_with(&konsep, pool).await?;
-        self.kata_asing.submit_changes_with(&konsep, pool).await?;
+        self.cakupans.submit_changes_with(&konsep, engine).await?;
+        self.kata_asing.submit_changes_with(&konsep, engine).await?;
         Ok(())
     }
+
     async fn submit_detachment_from(
         &self,
         parent: &LemmaItem<i32>,
-        pool: &sqlx::Pool<Self::Engine>,
+        engine: &DbEngine<sqlx::SqlitePool>,
     ) -> sqlx::Result<()> {
         tracing::trace!(
             "Detaching <{}:{}> from <{}:{}>",
@@ -166,7 +166,7 @@ impl AttachmentItemMod<LemmaItem<i32>> for KonsepItemMod<i32> {
             self.id,
             parent.id
         }
-        .execute(pool)
+        .execute(engine.pool())
         .await?;
         Ok(())
     }
@@ -174,7 +174,7 @@ impl AttachmentItemMod<LemmaItem<i32>> for KonsepItemMod<i32> {
     async fn submit_modification_with(
         &self,
         parent: &LemmaItem<i32>,
-        pool: &sqlx::Pool<Self::Engine>,
+        engine: &DbEngine<sqlx::SqlitePool>,
     ) -> sqlx::Result<()> {
         let konsep = KonsepItem::partial_from_mod(self);
         tracing::trace!(
@@ -198,24 +198,22 @@ impl AttachmentItemMod<LemmaItem<i32>> for KonsepItemMod<i32> {
                 konsep.id,
                 parent.id,
         }
-        .execute(pool)
+        .execute(engine.pool())
         .await?;
-        self.cakupans.submit_changes_with(&konsep, pool).await?;
-        self.kata_asing.submit_changes_with(&konsep, pool).await?;
+        self.cakupans.submit_changes_with(&konsep, engine).await?;
+        self.kata_asing.submit_changes_with(&konsep, engine).await?;
         Ok(())
     }
 }
 
 #[cfg(feature = "postgres")]
 #[async_trait::async_trait]
-impl AttachmentItemMod<LemmaItem<i32>> for KonsepItemMod<i32> {
-    type Engine = sqlx::Postgres;
-
+impl AttachmentItemMod<LemmaItem<i32>, sqlx::PgPool> for KonsepItemMod<i32> {
     #[instrument(skip_all)]
     async fn submit_attachment_to(
         &self,
         parent: &LemmaItem<i32>,
-        pool: &sqlx::Pool<Self::Engine>,
+        engine: &DbEngine<sqlx::PgPool>,
     ) -> sqlx::Result<()> {
         let konsep = KonsepItem::partial_from_mod(self);
         tracing::trace!(
@@ -237,16 +235,16 @@ impl AttachmentItemMod<LemmaItem<i32>> for KonsepItemMod<i32> {
                 parent.lemma,
                 konsep.golongan_kata
         }
-        .execute(pool)
+        .execute(engine.pool())
         .await?;
-        self.cakupans.submit_changes_with(&konsep, pool).await?;
-        self.kata_asing.submit_changes_with(&konsep, pool).await?;
+        self.cakupans.submit_changes_with(&konsep, engine).await?;
+        self.kata_asing.submit_changes_with(&konsep, engine).await?;
         Ok(())
     }
     async fn submit_detachment_from(
         &self,
         parent: &LemmaItem<i32>,
-        pool: &sqlx::Pool<Self::Engine>,
+        engine: &DbEngine<sqlx::PgPool>,
     ) -> sqlx::Result<()> {
         tracing::trace!(
             "Detaching <{}:{}> from <{}:{}>",
@@ -262,7 +260,7 @@ impl AttachmentItemMod<LemmaItem<i32>> for KonsepItemMod<i32> {
                     i,
                     p
                 }
-                .execute(pool)
+                .execute(engine.pool())
                 .await?
             }
             (_, _) => todo!(),
@@ -273,7 +271,7 @@ impl AttachmentItemMod<LemmaItem<i32>> for KonsepItemMod<i32> {
     async fn submit_modification_with(
         &self,
         parent: &LemmaItem<i32>,
-        pool: &sqlx::Pool<Self::Engine>,
+        engine: &DbEngine<sqlx::PgPool>,
     ) -> sqlx::Result<()> {
         let konsep = KonsepItem::partial_from_mod(self);
         tracing::trace!(
@@ -298,12 +296,12 @@ impl AttachmentItemMod<LemmaItem<i32>> for KonsepItemMod<i32> {
                     i,
                     p,
             }
-            .execute(pool)
+            .execute(engine.pool())
             .await?,
             (_,_) => todo!()
         };
-        self.cakupans.submit_changes_with(&konsep, pool).await?;
-        self.kata_asing.submit_changes_with(&konsep, pool).await?;
+        self.cakupans.submit_changes_with(&konsep, engine).await?;
+        self.kata_asing.submit_changes_with(&konsep, engine).await?;
         Ok(())
     }
 }

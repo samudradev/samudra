@@ -5,6 +5,7 @@ use std::fmt::Display;
 use itertools::Itertools;
 use tracing::instrument;
 
+use crate::engine::{DbEngine, SqlxPool};
 use crate::io::interface::{AttachmentItemMod, Item, ItemMod};
 use crate::{
     data::{CakupanItem, KonsepItemMod, LemmaItem},
@@ -53,23 +54,24 @@ where
     A: ItemMod,
 {
     #[instrument(skip_all)]
-    pub async fn submit_changes_with<P>(
+    pub async fn submit_changes_with<Parent, Pool>(
         &self,
-        parent: &P,
-        pool: &sqlx::Pool<<A as AttachmentItemMod<P>>::Engine>,
+        parent: &Parent,
+        engine: &DbEngine<Pool>,
     ) -> sqlx::Result<()>
     where
-        A: ItemMod + AttachmentItemMod<P>,
-        P: Item,
+        A: ItemMod + AttachmentItemMod<Parent, Pool>,
+        Parent: Item,
+        Pool: SqlxPool,
     {
         for attached in self.attached.iter() {
-            attached.submit_attachment_to(parent, pool).await?;
+            attached.submit_attachment_to(parent, engine).await?;
         }
         for detached in self.detached.iter() {
-            detached.submit_detachment_from(parent, pool).await?;
+            detached.submit_detachment_from(parent, engine).await?;
         }
         for modified in self.modified.iter() {
-            modified.submit_modification_with(parent, pool).await?;
+            modified.submit_modification_with(parent, engine).await?;
         }
         Ok(())
     }

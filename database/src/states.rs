@@ -78,6 +78,7 @@ impl Connection<sqlx::Postgres> {
 }
 
 #[cfg(feature = "sqlite")]
+#[cfg(not(feature = "postgres"))]
 impl Connection<sqlx::Sqlite> {
     /// Forcefully reconnect to the specified url.
     pub async fn renew(&mut self, url: String) -> Result<&Self> {

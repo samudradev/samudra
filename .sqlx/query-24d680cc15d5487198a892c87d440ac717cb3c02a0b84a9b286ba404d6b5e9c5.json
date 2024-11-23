@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "DELETE FROM lemma WHERE (lemma.id = ? AND lemma.nama = ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "24d680cc15d5487198a892c87d440ac717cb3c02a0b84a9b286ba404d6b5e9c5"
+}

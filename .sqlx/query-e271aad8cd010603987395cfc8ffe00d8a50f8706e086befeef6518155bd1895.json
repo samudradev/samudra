@@ -1,0 +1,20 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT nama AS item FROM golongan_kata",
+  "describe": {
+    "columns": [
+      {
+        "name": "item",
+        "ordinal": 0,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "e271aad8cd010603987395cfc8ffe00d8a50f8706e086befeef6518155bd1895"
+}

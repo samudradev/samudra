@@ -1,15 +1,18 @@
 //! A crate to handle database operations.
-#![allow(unused_imports)]
-
-// TODO: Documentation
+#![cfg_attr(
+    debug_assertions,
+    allow(dead_code, missing_docs, unused_imports, unused_variables)
+)]
 
 pub mod changes;
 pub mod data;
+pub mod engine;
 pub mod errors;
 pub mod io;
 #[deprecated]
 #[doc(hidden)]
 pub mod operations;
+#[deprecated]
 pub mod states;
 pub mod types;
 pub mod views;

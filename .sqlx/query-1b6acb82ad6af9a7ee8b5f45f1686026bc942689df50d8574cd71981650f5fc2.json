@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": " DELETE FROM cakupan_x_konsep AS cxk\n                WHERE (\n                    cxk.cakupan_id = (SELECT id FROM cakupan WHERE cakupan.nama = ?)\n                        AND\n                    cxk.konsep_id = (SELECT id FROM konsep WHERE konsep.keterangan = ?)\n                );",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "1b6acb82ad6af9a7ee8b5f45f1686026bc942689df50d8574cd71981650f5fc2"
+}

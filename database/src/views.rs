@@ -3,8 +3,8 @@
 use std::collections::HashMap;
 
 use itertools::Itertools;
-
 use crate::data::items::konsep::KonsepHashMap;
+use crate::engine::{DbEngine, LemmaWithKonsepViewOption, Query, SqlxPool};
 use crate::io::interface::IntoViewMap;
 
 /// A [View](crate::io::interface::View) whose query joins konsep to its tags (cakupan, kata_asing)
@@ -46,47 +46,46 @@ pub struct LemmaWithKonsepView {
     pub bahasa_asing: Option<String>,
 }
 
+impl crate::io::interface::View for LemmaWithKonsepView {
+    type SOURCE = ();
+}
+
 #[cfg(feature = "sqlite")]
-impl crate::io::interface::View for LemmaWithKonsepView {
-    type SOURCE = sqlx::Sqlite;
-}
-
-#[cfg(feature = "postgres")]
-impl crate::io::interface::View for LemmaWithKonsepView {
-    type SOURCE = sqlx::Postgres;
-}
-#[cfg(all(feature = "sqlite", feature = "postgres"))]
-compile_error!("The code as it is currently designed results in conflicting implementations from features `sqlite` and `postgres`. TODO: FIX");
-
-#[cfg(any(feature = "sqlite", feature = "postgres"))]
 impl LemmaWithKonsepView {
     /// Query a single lemma with its associated konseps and attachments.
     pub async fn query_lemma(
         lemma: String,
-        pool: &sqlx::Pool<<Self as crate::io::interface::View>::SOURCE>,
-    ) -> sqlx::Result<Vec<Self>> {
-        sqlx::query_file_as!(
-            Self,
-            "transactions/select_lemma_with_konsep_view.sql",
-            lemma
-        )
-        .fetch_all(pool)
-        .await
+        engine: &DbEngine<sqlx::SqlitePool>
+    ) -> sqlx::Result<Vec<Self>>  {
+        engine.select(LemmaWithKonsepViewOption { lemma: Some(lemma) }).await
     }
 
     /// Query all lemmas.
     pub async fn query_all(
-        pool: &sqlx::Pool<<Self as crate::io::interface::View>::SOURCE>,
+        engine: &DbEngine<sqlx::SqlitePool>
     ) -> sqlx::Result<Vec<Self>> {
         // TODO: Might be a good idea to add limit
         // TODO: And maybe sort by reverse chronology
-        sqlx::query_file_as!(
-            Self,
-            "transactions/select_lemma_with_konsep_view.sql",
-            None::<String>
-        )
-        .fetch_all(pool)
-        .await
+        engine.select(LemmaWithKonsepViewOption {lemma: None}).await
+    }
+}
+#[cfg(feature = "postgres")]
+impl LemmaWithKonsepView {
+    /// Query a single lemma with its associated konseps and attachments.
+    pub async fn query_lemma(
+        lemma: String,
+        engine: &DbEngine<sqlx::PgPool>
+    ) -> sqlx::Result<Vec<Self>>  {
+        engine.select(LemmaWithKonsepViewOption { lemma: Some(lemma) }).await
+    }
+
+    /// Query all lemmas.
+    pub async fn query_all(
+        engine: &DbEngine<sqlx::PgPool>
+    ) -> sqlx::Result<Vec<Self>> {
+        // TODO: Might be a good idea to add limit
+        // TODO: And maybe sort by reverse chronology
+        engine.select(LemmaWithKonsepViewOption {lemma: None}).await
     }
 }
 

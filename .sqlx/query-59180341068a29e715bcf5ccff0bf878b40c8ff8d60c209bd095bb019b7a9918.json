@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT or IGNORE INTO lemma (id, nama) VALUES (?, ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "59180341068a29e715bcf5ccff0bf878b40c8ff8d60c209bd095bb019b7a9918"
+}

@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT or IGNORE INTO kata_asing (nama, bahasa) VALUES (?,?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "2e30d4e058a7e9a13e152808d3dd476f2d1b0fa23c4b431ccbf6e0f950babf15"
+}

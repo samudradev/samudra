@@ -9,11 +9,11 @@ use crate::{
     prelude::*,
 };
 
+use super::konsep::KonsepHashMap;
+use crate::engine::DbEngine;
 use crate::io::interface::SubmitMod;
 use std::{collections::HashMap, fmt::Display};
 use tracing::instrument;
-
-use super::konsep::KonsepHashMap;
 
 /// A lemma is an entry of a dictionary which shows a word form and its corresponding [concepts](KonsepItem).
 ///
@@ -176,14 +176,13 @@ impl<I: PartialEq + Copy + Clone + PartialOrd + Display> ItemMod for LemmaItemMo
 
 #[cfg(feature = "sqlite")]
 #[async_trait::async_trait]
-impl SubmitMod for LemmaItemMod<i32> {
-    type Engine = sqlx::Sqlite;
+impl SubmitMod<sqlx::SqlitePool> for LemmaItemMod<i32> {
     #[instrument(skip_all)]
-    async fn submit_mod(&self, pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()> {
+    async fn submit_mod(&self, engine: &DbEngine<sqlx::SqlitePool>) -> sqlx::Result<()> {
         let item = LemmaItem::partial_from_mod(self);
         tracing::trace!("Submitting <{}:{}>", item.id, item.lemma);
-        item.submit_partial(pool).await?;
-        self.konseps.submit_changes_with(&item, pool).await?;
+        item.submit_partial(engine).await?;
+        self.konseps.submit_changes_with(&item, engine).await?;
         Ok(())
     }
 }
@@ -203,40 +202,42 @@ impl<I: PartialEq + Copy + Clone + PartialOrd + Display> PartialEq for LemmaItem
 
 #[cfg(feature = "sqlite")]
 #[async_trait::async_trait]
-impl SubmitItem for LemmaItem<i32> {
-    type Engine = sqlx::Sqlite;
-    async fn submit_full(&self, pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()> {
-        let _ = self.submit_partial(pool).await?;
+impl SubmitItem<sqlx::SqlitePool> for LemmaItem<i32> {
+    async fn submit_full(&self, engine: &DbEngine<sqlx::SqlitePool>) -> sqlx::Result<()> {
+        let _ = self.submit_partial(engine).await?;
         for konsep in self.konseps.iter() {
             KonsepItemMod::from_item(konsep)
-                .submit_attachment_to(self, pool)
+                .submit_attachment_to(self, engine)
                 .await?;
         }
         Ok(())
     }
 
-    async fn submit_partial(&self, pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()> {
+    async fn submit_partial(&self, engine: &DbEngine<sqlx::SqlitePool>) -> sqlx::Result<()> {
         sqlx::query! {
             r#"INSERT or IGNORE INTO lemma (id, nama) VALUES (?, ?)"#,
             self.id,
             self.lemma
         }
-        .execute(pool)
+        .execute(engine.pool())
         .await?;
         Ok(())
     }
 
-    async fn submit_full_removal(&self, _pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()> {
+    async fn submit_full_removal(&self, _engine: &DbEngine<sqlx::SqlitePool>) -> sqlx::Result<()> {
         todo!()
     }
 
-    async fn submit_partial_removal(&self, pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()> {
+    async fn submit_partial_removal(
+        &self,
+        engine: &DbEngine<sqlx::SqlitePool>,
+    ) -> sqlx::Result<()> {
         sqlx::query! {
             r#"DELETE FROM lemma WHERE (lemma.id = ? AND lemma.nama = ?)"#,
             self.id,
             self.lemma
         }
-        .execute(pool)
+        .execute(engine.pool())
         .await?;
         Ok(())
     }
@@ -244,20 +245,18 @@ impl SubmitItem for LemmaItem<i32> {
 
 #[cfg(feature = "postgres")]
 #[async_trait::async_trait]
-impl SubmitItem for LemmaItem<i32> {
-    type Engine = sqlx::Postgres;
-
-    async fn submit_full(&self, pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()> {
-        let _ = self.submit_partial(pool).await?;
+impl SubmitItem<sqlx::PgPool> for LemmaItem<i32> {
+    async fn submit_full(&self, engine: &DbEngine<sqlx::PgPool>) -> sqlx::Result<()> {
+        let _ = self.submit_partial(engine).await?;
         for konsep in self.konseps.iter() {
             KonsepItemMod::from_item(konsep)
-                .submit_attachment_to(self, pool)
+                .submit_attachment_to(self, engine)
                 .await?;
         }
         Ok(())
     }
 
-    async fn submit_partial(&self, pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()> {
+    async fn submit_partial(&self, engine: &DbEngine<sqlx::PgPool>) -> sqlx::Result<()> {
         match self.id {
             AutoGen::Known(i) => sqlx::query! {
                 r#"INSERT INTO lemma (id, nama) VALUES ($1, $2) ON CONFLICT (id, nama) DO NOTHING;"#,
@@ -269,16 +268,16 @@ impl SubmitItem for LemmaItem<i32> {
                 self.lemma
             }
         }
-        .execute(pool)
+        .execute(engine.pool())
         .await?;
         Ok(())
     }
 
-    async fn submit_full_removal(&self, _pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()> {
+    async fn submit_full_removal(&self, _engine: &DbEngine<sqlx::PgPool>) -> sqlx::Result<()> {
         todo!()
     }
 
-    async fn submit_partial_removal(&self, pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()> {
+    async fn submit_partial_removal(&self, engine: &DbEngine<sqlx::PgPool>) -> sqlx::Result<()> {
         match self.id {
             AutoGen::Known(i) => {
                 sqlx::query! {
@@ -286,7 +285,7 @@ impl SubmitItem for LemmaItem<i32> {
                     i,
                     self.lemma
                 }
-                .execute(pool)
+                .execute(engine.pool())
                 .await?
             }
             AutoGen::Unknown => todo!(),
@@ -327,13 +326,7 @@ impl FromViewMap for LemmaItem<i32> {
         data
     }
 }
-// impl FromView for LemmaItem<i32> {
-//     type VIEW = LemmaWithKonsepView;
 
-//     fn from_views(views: &Vec<Self::VIEW>) -> Vec<LemmaItem<i32>> {
-//         Self::from_viewmap(&(views.clone().into_viewmap()))
-//     }
-// }
 impl FromView for LemmaItem<i64> {
     type VIEW = LemmaWithKonsepView;
 

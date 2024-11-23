@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT or IGNORE INTO kata_asing (nama, bahasa) VALUES (?,?);\n                INSERT or IGNORE INTO kata_asing_x_konsep (kata_asing_id, konsep_id)\n                VALUES (\n                    (SELECT id FROM kata_asing WHERE kata_asing.nama = ? AND kata_asing.bahasa = ?),\n                    (SELECT id FROM konsep WHERE konsep.keterangan = ?)\n                );",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 5
+    },
+    "nullable": []
+  },
+  "hash": "5ebf93b500d8e556c1c17ff9d116f55603ceb88d2eed8bfc0faf6032d5650ad8"
+}

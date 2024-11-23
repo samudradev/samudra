@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": " UPDATE konsep\n                SET keterangan = ?, golongan_id = (SELECT id FROM golongan_kata WHERE golongan_kata.nama = ?)\n                WHERE (\n                    id = ?\n                    AND\n                    lemma_id = ?\n                )\n                ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": []
+  },
+  "hash": "13acbccfb0ceef61222bfbb58908780f4213c9e7a51ac6e285376efe055ea074"
+}

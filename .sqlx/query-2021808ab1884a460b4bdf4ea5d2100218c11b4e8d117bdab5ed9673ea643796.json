@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "INSERT INTO golongan_kata (id, nama, keterangan) \r\n    VALUES  (\"NAMA\", \"kata nama\", \"kata yang merujuk kepada benda\"), \r\n            (\"KERJA\", \"kata kerja\", \"kata yang menerangkan kelakuan benda\"),\r\n            (\"SIFAT\", \"kata sifat\", \"kata yang menerangkan benda\");",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": []
+  },
+  "hash": "2021808ab1884a460b4bdf4ea5d2100218c11b4e8d117bdab5ed9673ea643796"
+}

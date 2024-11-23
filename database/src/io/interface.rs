@@ -1,5 +1,6 @@
 //! A module that defines interfaces
 
+use crate::engine::{DbEngine, SqlxPool};
 use crate::errors::BackendError;
 use std::collections::HashMap;
 
@@ -9,6 +10,7 @@ use std::collections::HashMap;
 ///
 /// It is often used in its vector form, as it is converted into nested structs which implements [Item].
 pub trait View {
+    #[deprecated]
     type SOURCE;
 }
 
@@ -69,19 +71,18 @@ pub trait Item {
 
 /// A trait which allows item data to be submitted into SQL databases.
 #[async_trait::async_trait]
-pub trait SubmitItem {
-    type Engine: sqlx::Database;
+pub trait SubmitItem<P: SqlxPool> {
     /// Inserts item with corresponding children.
-    async fn submit_full(&self, pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()>;
+    async fn submit_full(&self, engine: &DbEngine<P>) -> sqlx::Result<()>;
 
     /// Inserts item with no children.
-    async fn submit_partial(&self, pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()>;
+    async fn submit_partial(&self, engine: &DbEngine<P>) -> sqlx::Result<()>;
 
     /// Deletes item with corresponding children.
-    async fn submit_full_removal(&self, pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()>;
+    async fn submit_full_removal(&self, engine: &DbEngine<P>) -> sqlx::Result<()>;
 
     /// Deletes item with no children affected.
-    async fn submit_partial_removal(&self, pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()>;
+    async fn submit_partial_removal(&self, engine: &DbEngine<P>) -> sqlx::Result<()>;
 }
 
 /// Structs implementing [ItemMod] has structure similar to its sibling struct which implements [Item] but contains modified data and modification information.
@@ -95,35 +96,32 @@ pub trait ItemMod {
 
 /// A trait which allows modified item data to be submitted into SQL databases.
 #[async_trait::async_trait]
-pub trait SubmitMod: ItemMod {
-    type Engine: sqlx::Database;
+pub trait SubmitMod<P: SqlxPool>: ItemMod {
     /// Submits modification.
-    async fn submit_mod(&self, pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()>;
+    async fn submit_mod(&self, engine: &DbEngine<P>) -> sqlx::Result<()>;
 }
 
 /// A trait which allows attachment items to be submitted into SQL database as [ItemMod].
 #[async_trait::async_trait]
-pub trait AttachmentItemMod<P: Item>: ItemMod {
-    type Engine: sqlx::Database;
-
+pub trait AttachmentItemMod<Parent: Item, Pool: SqlxPool>: ItemMod {
     /// Submit [Self] to parent item.
     async fn submit_attachment_to(
         &self,
-        parent: &P,
-        pool: &sqlx::Pool<Self::Engine>,
+        parent: &Parent,
+        engin: &DbEngine<Pool>,
     ) -> sqlx::Result<()>;
 
     /// Detaches [Self] to parent item.
     async fn submit_detachment_from(
         &self,
-        parent: &P,
-        pool: &sqlx::Pool<Self::Engine>,
+        parent: &Parent,
+        engin: &DbEngine<Pool>,
     ) -> sqlx::Result<()>;
 
     /// Modifies [Self].
     async fn submit_modification_with(
         &self,
-        parent: &P,
-        pool: &sqlx::Pool<Self::Engine>,
+        parent: &Parent,
+        engin: &DbEngine<Pool>,
     ) -> sqlx::Result<()>;
 }

@@ -1,0 +1,44 @@
+{
+  "db_name": "SQLite",
+  "query": "SELECT\r\n    *\r\nFROM\r\n    (SELECT COUNT(DISTINCT lemma.id) as lemmas FROM lemma),\r\n    (SELECT COUNT(DISTINCT konsep.id) as konseps FROM konsep),\r\n    (SELECT COUNT(DISTINCT golongan_kata.id) as golongan_katas FROM golongan_kata),\r\n    (SELECT COUNT(DISTINCT cakupan.id) as cakupans FROM cakupan),\r\n    (SELECT COUNT(DISTINCT kata_asing.id) as kata_asings FROM kata_asing)",
+  "describe": {
+    "columns": [
+      {
+        "name": "lemmas",
+        "ordinal": 0,
+        "type_info": "Int"
+      },
+      {
+        "name": "konseps",
+        "ordinal": 1,
+        "type_info": "Int"
+      },
+      {
+        "name": "golongan_katas",
+        "ordinal": 2,
+        "type_info": "Int"
+      },
+      {
+        "name": "cakupans",
+        "ordinal": 3,
+        "type_info": "Int"
+      },
+      {
+        "name": "kata_asings",
+        "ordinal": 4,
+        "type_info": "Int"
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "432f56a83c75bf7c5876e94076726d055f761a2ba343127f09f0dad03833b039"
+}

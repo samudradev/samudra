@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": " DELETE FROM konsep WHERE (id = ? AND lemma_id = ?)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "29e1f591dcf8ce0f88d1a5fd6ff498b703be6f11cba2747ac0a33067294ef0e6"
+}

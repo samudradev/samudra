@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": " INSERT or IGNORE INTO konsep (keterangan, lemma_id, golongan_id)\n                VALUES (\n                    ?,\n                    (SELECT id FROM lemma WHERE lemma.nama = ?),\n                    (SELECT id FROM golongan_kata WHERE golongan_kata.nama = ?)\n                )\n                ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": []
+  },
+  "hash": "6d4c76470584eb9e56d31fd7d0492f5e288b05cb817fb57c52cc503a64aa919c"
+}

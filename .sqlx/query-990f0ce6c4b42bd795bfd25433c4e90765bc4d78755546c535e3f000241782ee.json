@@ -1,0 +1,62 @@
+{
+  "db_name": "SQLite",
+  "query": "WITH params AS (SELECT ? as lemma)\r\n-- THE RESULTING TABLE THAT IS DESERIALIZED INTO STRUCT\r\nSELECT \r\n    lemma.nama AS lemma,\r\n    konsep.keterangan AS konsep, \r\n    golongan_kata.nama AS golongan_kata,\r\n    cakupan.nama AS cakupan,\r\n    kata_asing.nama AS kata_asing,\r\n    kata_asing.bahasa AS bahasa_asing,\r\n    lemma.id AS l_id,\r\n    konsep.id AS k_id\r\nFROM lemma, params\r\n    LEFT JOIN konsep ON konsep.lemma_id = lemma.id\r\n    LEFT JOIN golongan_kata ON konsep.golongan_id = golongan_kata.id\r\n    LEFT JOIN cakupan_x_konsep as cxk ON cxk.konsep_id = konsep.id \r\n    LEFT JOIN cakupan ON cakupan.id = cxk.cakupan_id\r\n    LEFT JOIN kata_asing_x_konsep as kaxk ON kaxk.konsep_id = konsep.id \r\n    LEFT JOIN kata_asing ON kata_asing.id = kaxk.kata_asing_id\r\nWHERE\r\n    (CASE \r\n        WHEN params.lemma IS NOT NULL THEN lemma.nama = params.lemma\r\n        ELSE lemma.nama IS NOT NULL \r\n     END)\r\n",
+  "describe": {
+    "columns": [
+      {
+        "name": "lemma",
+        "ordinal": 0,
+        "type_info": "Text"
+      },
+      {
+        "name": "konsep",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "golongan_kata",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "cakupan",
+        "ordinal": 3,
+        "type_info": "Text"
+      },
+      {
+        "name": "kata_asing",
+        "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "bahasa_asing",
+        "ordinal": 5,
+        "type_info": "Text"
+      },
+      {
+        "name": "l_id",
+        "ordinal": 6,
+        "type_info": "Int64"
+      },
+      {
+        "name": "k_id",
+        "ordinal": 7,
+        "type_info": "Int64"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false,
+      false
+    ]
+  },
+  "hash": "990f0ce6c4b42bd795bfd25433c4e90765bc4d78755546c535e3f000241782ee"
+}

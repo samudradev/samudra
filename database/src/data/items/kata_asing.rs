@@ -1,9 +1,9 @@
 //! Contains struct [KataAsingItem] which map a foreign word with its language of origin.
 
-use std::fmt::Display;
-
+use crate::engine::DbEngine;
 use crate::io::interface::{AttachmentItemMod, FromView, Item, ItemMod, SubmitItem};
 use crate::prelude::*;
+use std::fmt::Display;
 
 /// Contains a foreign word with its language of origin.
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize, PartialEq, ts_rs::TS)]
@@ -71,43 +71,43 @@ impl FromView for KataAsingItem {
 
 #[cfg(feature = "sqlite")]
 #[async_trait::async_trait]
-impl SubmitItem for KataAsingItem {
-    type Engine = sqlx::Sqlite;
-    async fn submit_full(&self, pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()> {
+impl SubmitItem<sqlx::SqlitePool> for KataAsingItem {
+    async fn submit_full(&self, engine: &DbEngine<sqlx::SqlitePool>) -> sqlx::Result<()> {
         sqlx::query! {
             r#"INSERT or IGNORE INTO kata_asing (nama, bahasa) VALUES (?,?)"#,
             self.nama,
             self.bahasa
         }
-        .execute(pool)
+        .execute(engine.pool())
         .await?;
         Ok(())
     }
 
-    async fn submit_partial(&self, pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()> {
-        self.submit_full(pool).await
+    async fn submit_partial(&self, engine: &DbEngine<sqlx::SqlitePool>) -> sqlx::Result<()> {
+        self.submit_full(engine).await
     }
 
-    async fn submit_full_removal(&self, _pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()> {
+    async fn submit_full_removal(&self, _engine: &DbEngine<sqlx::SqlitePool>) -> sqlx::Result<()> {
         todo!()
     }
 
-    async fn submit_partial_removal(&self, _pool: &sqlx::Pool<Self::Engine>) -> sqlx::Result<()> {
+    async fn submit_partial_removal(
+        &self,
+        _engine: &DbEngine<sqlx::SqlitePool>,
+    ) -> sqlx::Result<()> {
         todo!()
     }
 }
 
 #[cfg(feature = "sqlite")]
 #[async_trait::async_trait]
-impl<I: Display + Sync + PartialEq + Copy + Clone> AttachmentItemMod<KonsepItem<I>>
-    for KataAsingItem
+impl<I: Display + Sync + PartialEq + Copy + Clone>
+    AttachmentItemMod<KonsepItem<I>, sqlx::SqlitePool> for KataAsingItem
 {
-    type Engine = sqlx::Sqlite;
-
     async fn submit_attachment_to(
         &self,
         parent: &KonsepItem<I>,
-        pool: &sqlx::Pool<Self::Engine>,
+        engine: &DbEngine<sqlx::SqlitePool>,
     ) -> sqlx::Result<()> {
         tracing::trace!(
             "Attaching <KataAsing {}:{}> to <{}:{}>",
@@ -129,7 +129,7 @@ impl<I: Display + Sync + PartialEq + Copy + Clone> AttachmentItemMod<KonsepItem<
             self.bahasa,
             parent.keterangan
         }
-        .execute(pool)
+        .execute(engine.pool())
         .await
         .expect("Error attaching kata_asing to konsep");
         Ok(())
@@ -137,7 +137,7 @@ impl<I: Display + Sync + PartialEq + Copy + Clone> AttachmentItemMod<KonsepItem<
     async fn submit_detachment_from(
         &self,
         parent: &KonsepItem<I>,
-        pool: &sqlx::Pool<Self::Engine>,
+        engine: &DbEngine<sqlx::SqlitePool>,
     ) -> sqlx::Result<()> {
         tracing::trace!(
             "Detaching <KataAsing {}:{}> from <{}:{}>",
@@ -157,7 +157,7 @@ impl<I: Display + Sync + PartialEq + Copy + Clone> AttachmentItemMod<KonsepItem<
             self.bahasa,
             parent.keterangan
         }
-        .execute(pool)
+        .execute(engine.pool())
         .await
         .expect("Error detaching cakupan from konsep");
         Ok(())
@@ -166,7 +166,7 @@ impl<I: Display + Sync + PartialEq + Copy + Clone> AttachmentItemMod<KonsepItem<
     async fn submit_modification_with(
         &self,
         parent: &KonsepItem<I>,
-        _pool: &sqlx::Pool<Self::Engine>,
+        _engine: &DbEngine<sqlx::SqlitePool>,
     ) -> sqlx::Result<()> {
         tracing::trace!(
             "Modifying <KataAsing {}:{}> with <{}:{}>",
@@ -181,15 +181,13 @@ impl<I: Display + Sync + PartialEq + Copy + Clone> AttachmentItemMod<KonsepItem<
 
 #[cfg(feature = "postgres")]
 #[async_trait::async_trait]
-impl<I: Display + Sync + PartialEq + Copy + Clone> AttachmentItemMod<KonsepItem<I>>
+impl<I: Display + Sync + PartialEq + Copy + Clone> AttachmentItemMod<KonsepItem<I>, sqlx::PgPool>
     for KataAsingItem
 {
-    type Engine = sqlx::Postgres;
-
     async fn submit_attachment_to(
         &self,
         parent: &KonsepItem<I>,
-        pool: &sqlx::Pool<Self::Engine>,
+        engine: &DbEngine<sqlx::PgPool>,
     ) -> sqlx::Result<()> {
         tracing::trace!(
             "Attaching <KataAsing {}:{}> to <{}:{}>",
@@ -200,7 +198,7 @@ impl<I: Display + Sync + PartialEq + Copy + Clone> AttachmentItemMod<KonsepItem<
         );
         sqlx::query! {
             r#"INSERT INTO kata_asing (nama, bahasa) VALUES ($1,$2) ON CONFLICT (nama, bahasa) DO NOTHING;"#, self.nama, self.bahasa
-        }.execute(pool).await.expect("Error attaching kata_asing to konsep");
+        }.execute(engine.pool()).await.expect("Error attaching kata_asing to konsep");
         sqlx::query! {
             r#"INSERT INTO kata_asing_x_konsep (kata_asing_id, konsep_id)
                 VALUES (
@@ -211,7 +209,7 @@ impl<I: Display + Sync + PartialEq + Copy + Clone> AttachmentItemMod<KonsepItem<
             self.bahasa,
             parent.keterangan
         }
-        .execute(pool)
+        .execute(engine.pool())
         .await
         .expect("Error attaching kata_asing to konsep");
         Ok(())
@@ -219,7 +217,7 @@ impl<I: Display + Sync + PartialEq + Copy + Clone> AttachmentItemMod<KonsepItem<
     async fn submit_detachment_from(
         &self,
         parent: &KonsepItem<I>,
-        pool: &sqlx::Pool<Self::Engine>,
+        engine: &DbEngine<sqlx::PgPool>,
     ) -> sqlx::Result<()> {
         tracing::trace!(
             "Detaching <KataAsing {}:{}> from <{}:{}>",
@@ -239,7 +237,7 @@ impl<I: Display + Sync + PartialEq + Copy + Clone> AttachmentItemMod<KonsepItem<
             self.bahasa,
             parent.keterangan
         }
-        .execute(pool)
+        .execute(engine.pool())
         .await
         .expect("Error detaching cakupan from konsep");
         Ok(())
@@ -248,7 +246,7 @@ impl<I: Display + Sync + PartialEq + Copy + Clone> AttachmentItemMod<KonsepItem<
     async fn submit_modification_with(
         &self,
         parent: &KonsepItem<I>,
-        _pool: &sqlx::Pool<Self::Engine>,
+        _engine: &DbEngine<sqlx::PgPool>,
     ) -> sqlx::Result<()> {
         tracing::trace!(
             "Modifying <KataAsing {}:{}> with <{}:{}>",

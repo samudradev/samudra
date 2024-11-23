@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "DELETE FROM kata_asing_x_konsep AS kaxk\n               WHERE (\n                    kaxk.kata_asing_id = (SELECT id FROM kata_asing WHERE kata_asing.nama = ? AND kata_asing.bahasa = ?)\n                        AND\n                    kaxk.konsep_id = (SELECT id FROM konsep WHERE konsep.keterangan = ?)\n                );",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 3
+    },
+    "nullable": []
+  },
+  "hash": "1bea0844783c7d93b18e3f1f8166669b41239739c3d969d884a3a0be5e707cce"
+}

@@ -7,6 +7,7 @@ use itertools::Itertools;
 ///
 /// The structure of a lemma in json is equivalent to the following:
 /// ```
+/// use serde_json::json;
 /// # use schema::items::lemma::Lemma;
 ///
 /// let lemma_in_json = json!({

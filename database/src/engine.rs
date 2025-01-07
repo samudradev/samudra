@@ -8,6 +8,10 @@ pub struct DbEngine<P: SqlxPool> {
 }
 
 impl<P: SqlxPool> DbEngine<P> {
+    #[cfg(test)]
+    pub(crate) fn from_sqlx(pool: P) -> Self {
+        Self { inner: pool }
+    }
     pub(crate) fn pool(&self) -> &P {
         &self.inner
     }

@@ -115,11 +115,11 @@ impl<I: Copy + Clone + PartialEq> CompareAttachable<KataAsing, KataAsing> for Ko
 
 #[cfg(feature = "sqlite")]
 #[async_trait::async_trait]
-impl AttachmentItemMod<Lemma<i32>, sqlx::SqlitePool> for KonsepMod<i32> {
+impl AttachmentItemMod<Lemma<i64>, sqlx::SqlitePool> for KonsepMod<i64> {
     #[instrument(skip_all)]
     async fn submit_attachment_to(
         &self,
-        parent: &Lemma<i32>,
+        parent: &Lemma<i64>,
         engine: &DbEngine<sqlx::SqlitePool>,
     ) -> sqlx::Result<()> {
         let konsep = Konsep::partial_from_mod(self);
@@ -151,7 +151,7 @@ impl AttachmentItemMod<Lemma<i32>, sqlx::SqlitePool> for KonsepMod<i32> {
 
     async fn submit_detachment_from(
         &self,
-        parent: &Lemma<i32>,
+        parent: &Lemma<i64>,
         engine: &DbEngine<sqlx::SqlitePool>,
     ) -> sqlx::Result<()> {
         // tracing::trace!(
@@ -173,7 +173,7 @@ impl AttachmentItemMod<Lemma<i32>, sqlx::SqlitePool> for KonsepMod<i32> {
 
     async fn submit_modification_with(
         &self,
-        parent: &Lemma<i32>,
+        parent: &Lemma<i64>,
         engine: &DbEngine<sqlx::SqlitePool>,
     ) -> sqlx::Result<()> {
         let konsep = Konsep::partial_from_mod(self);
@@ -208,11 +208,11 @@ impl AttachmentItemMod<Lemma<i32>, sqlx::SqlitePool> for KonsepMod<i32> {
 
 #[cfg(feature = "postgres")]
 #[async_trait::async_trait]
-impl AttachmentItemMod<Lemma<i32>, sqlx::PgPool> for KonsepMod<i32> {
+impl AttachmentItemMod<Lemma<i64>, sqlx::PgPool> for KonsepMod<i64> {
     #[instrument(skip_all)]
     async fn submit_attachment_to(
         &self,
-        parent: &Lemma<i32>,
+        parent: &Lemma<i64>,
         engine: &DbEngine<sqlx::PgPool>,
     ) -> sqlx::Result<()> {
         let konsep = Konsep::partial_from_mod(self);
@@ -243,7 +243,7 @@ impl AttachmentItemMod<Lemma<i32>, sqlx::PgPool> for KonsepMod<i32> {
     }
     async fn submit_detachment_from(
         &self,
-        parent: &Lemma<i32>,
+        parent: &Lemma<i64>,
         engine: &DbEngine<sqlx::PgPool>,
     ) -> sqlx::Result<()> {
         // tracing::trace!(
@@ -270,7 +270,7 @@ impl AttachmentItemMod<Lemma<i32>, sqlx::PgPool> for KonsepMod<i32> {
 
     async fn submit_modification_with(
         &self,
-        parent: &Lemma<i32>,
+        parent: &Lemma<i64>,
         engine: &DbEngine<sqlx::PgPool>,
     ) -> sqlx::Result<()> {
         let konsep = Konsep::partial_from_mod(self);

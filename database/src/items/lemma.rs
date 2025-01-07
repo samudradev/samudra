@@ -154,7 +154,7 @@ impl<I: PartialEq + Copy + Clone> ItemMod for LemmaMod<I> {
 
 #[cfg(feature = "sqlite")]
 #[async_trait::async_trait]
-impl SubmitMod<sqlx::SqlitePool> for LemmaMod<i32> {
+impl SubmitMod<sqlx::SqlitePool> for LemmaMod<i64> {
     #[instrument(skip_all)]
     async fn submit_mod(&self, engine: &DbEngine<sqlx::SqlitePool>) -> sqlx::Result<()> {
         let item = Lemma::partial_from_mod(self);
@@ -167,7 +167,7 @@ impl SubmitMod<sqlx::SqlitePool> for LemmaMod<i32> {
 
 #[cfg(feature = "sqlite")]
 #[async_trait::async_trait]
-impl SubmitItem<sqlx::SqlitePool> for Lemma<i32> {
+impl SubmitItem<sqlx::SqlitePool> for Lemma<i64> {
     async fn submit_full(&self, engine: &DbEngine<sqlx::SqlitePool>) -> sqlx::Result<()> {
         let _ = self.submit_partial(engine).await?;
         for konsep in self.konseps.iter() {
@@ -210,7 +210,7 @@ impl SubmitItem<sqlx::SqlitePool> for Lemma<i32> {
 
 #[cfg(feature = "postgres")]
 #[async_trait::async_trait]
-impl SubmitItem<sqlx::PgPool> for Lemma<i32> {
+impl SubmitItem<sqlx::PgPool> for Lemma<i64> {
     async fn submit_full(&self, engine: &DbEngine<sqlx::PgPool>) -> sqlx::Result<()> {
         let _ = self.submit_partial(engine).await?;
         for konsep in self.konseps.iter() {
@@ -275,22 +275,22 @@ impl FromViewMap for Lemma<i64> {
         data
     }
 }
-impl FromViewMap for Lemma<i32> {
-    type KEY = (i32, String);
-    type VALUE = KonsepHashMap<i32>;
+// impl FromViewMap for Lemma<i32> {
+//     type KEY = (i32, String);
+//     type VALUE = KonsepHashMap<i32>;
 
-    fn from_viewmap(value: &HashMap<Self::KEY, Self::VALUE>) -> Vec<Lemma<i32>> {
-        let mut data = Vec::<Lemma<i32>>::new();
-        for (lemma, konsep_map) in value.iter() {
-            data.push(Lemma {
-                id: AutoGen::Known(lemma.0),
-                lemma: lemma.1.clone(),
-                konseps: Konsep::from_viewmap(konsep_map),
-            })
-        }
-        data
-    }
-}
+//     fn from_viewmap(value: &HashMap<Self::KEY, Self::VALUE>) -> Vec<Lemma<i32>> {
+//         let mut data = Vec::<Lemma<i32>>::new();
+//         for (lemma, konsep_map) in value.iter() {
+//             data.push(Lemma {
+//                 id: AutoGen::Known(lemma.0),
+//                 lemma: lemma.1.clone(),
+//                 konseps: Konsep::from_viewmap(konsep_map),
+//             })
+//         }
+//         data
+//     }
+// }
 
 impl FromView for Lemma<i64> {
     type VIEW = LemmaWithKonsepView;
@@ -299,3 +299,11 @@ impl FromView for Lemma<i64> {
         Self::from_viewmap(&(views.clone().into_viewmap()))
     }
 }
+
+// impl FromView for Lemma<i32> {
+//     type VIEW = LemmaWithKonsepView;
+
+//     fn from_views(views: &Vec<Self::VIEW>) -> Vec<Lemma<i32>> {
+//         Self::from_viewmap(&(views.clone().into_viewmap()))
+//     }
+// }

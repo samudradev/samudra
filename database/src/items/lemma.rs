@@ -1,65 +1,44 @@
-//! The main data structure of a dictionary app.
+//! Implements traits for [schema::items::lemma::Lemma]
 
 use crate::{
     changes::{AttachmentMod, CompareAttachable, FieldMod},
-    data::KonsepItemMod,
     io::interface::{
         AttachmentItemMod, FromView, FromViewMap, IntoViewMap, Item, ItemMod, SubmitItem,
     },
     prelude::*,
 };
 
-use super::konsep::KonsepHashMap;
+use std::collections::HashMap;
+
 use crate::engine::DbEngine;
 use crate::io::interface::SubmitMod;
-use std::{collections::HashMap, fmt::Display};
+use crate::items::konsep::{KonsepHashMap, KonsepMod};
+
+use schema::items::konsep::Konsep;
+use schema::items::lemma::Lemma;
+use schema::metatype::AutoGen;
+
 use tracing::instrument;
 
-/// A lemma is an entry of a dictionary which shows a word form and its corresponding [concepts](KonsepItem).
+/// A modified [Lemma].
 ///
-/// The structure of a lemma in json is equivalent to the following:
-/// ```
-/// use serde_json::json;
-/// # use database::data::LemmaItem;
-///
-/// let lemma_in_json = json!({
-///     "id": 1,
-///     "lemma": "aplikasi",
-///     "konseps": [
-///         {
-///             "id": 1,
-///             "keterangan": "program komputer yang direka khusus untuk kegunaan tertentu",
-///             "golongan_kata": "kata nama",
-///             "cakupans": ["teknologi maklumat"],
-///             "kata_asing": [
-///                 {"nama": "application", "bahasa": "en"},
-///             ]
-///         }
-///     ]
-/// });
-///
-/// let lemma: LemmaItem = serde_json::from_value(lemma_in_json).unwrap();
-/// ```
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
-pub struct LemmaItem<I: Copy + Clone + PartialOrd + Display> {
-    pub id: AutoGen<I>,
-    pub lemma: String,
-    pub konseps: Vec<KonsepItem<I>>,
-}
-
-/// A modified [LemmaItem].
-///
-/// Given two [LemmaItems](LemmaItem) that refers to the same lemma,
-/// one applies the function [`old.modify_into(&new)`](LemmaItem::modify_into())
-/// to return [`LemmaItemMod`] that tracks the modifications from `old` to `new`.
+/// Given two [Lemmas](Lemma) that refers to the same lemma,
+/// one applies the function [`old.modify_into(&new)`](Lemma::modify_into())
+/// to return [`LemmaMod`] that tracks the modifications from `old` to `new`.
 ///
 /// ## Example
-/// ```
+/// ```no_run
 /// use serde_json::json;
+///
 /// use database::changes::{AttachmentMod, FieldMod};
-/// use database::data::{CakupanItem, KataAsingItem, KonsepItemMod, LemmaItem, LemmaItemMod};
+/// use database::items::{konsep::KonsepMod, lemma::LemmaMod};
 /// use database::io::interface::Item;
-/// use database::types::AutoGen;
+///
+/// use schema::items::lemma::Lemma;
+/// use schema::items::konsep::Konsep;
+/// use schema::items::kata_asing::KataAsing;
+/// use schema::items::cakupan::Cakupan;
+/// use schema::metatype::AutoGen;
 ///
 /// let old = json!({
 ///     "id": 1,
@@ -103,48 +82,48 @@ pub struct LemmaItem<I: Copy + Clone + PartialOrd + Display> {
 ///     ]
 /// });
 ///
-/// let lemma_old: LemmaItem = serde_json::from_value(old).unwrap();
-/// let lemma_new: LemmaItem = serde_json::from_value(new).unwrap();
-/// let lemma_modded: LemmaItemMod = lemma_old.modify_into(&lemma_new).unwrap();
+/// let lemma_old: Lemma<i64> = serde_json::from_value(old).unwrap();
+/// let lemma_new: Lemma<i64> = serde_json::from_value(new).unwrap();
+/// let lemma_modded: LemmaMod<i64> = lemma_old.modify_into(&lemma_new).unwrap();
 ///
-/// assert_eq!(lemma_modded.lemma, FieldMod::Fixed("aplikasi".to_string()));
-/// assert_eq!(lemma_modded.konseps.attached, vec![
-/// KonsepItemMod {
+/// assert!(lemma_modded.lemma == FieldMod::Fixed("aplikasi".to_string()));
+/// assert!(lemma_modded.konseps.attached == vec![
+/// KonsepMod {
 /// id: AutoGen::Unknown,
 /// keterangan: FieldMod::Fixed("kegunaan yang boleh dipraktikkan".to_string()),
 /// golongan_kata: FieldMod::Fixed("kata nama".to_string()),
 /// cakupans: AttachmentMod {
-/// attached: vec![CakupanItem::from("kemasyarakatan"), CakupanItem::from("teknologi dan inovasi")],detached: vec![],modified: vec![],},
-/// kata_asing: AttachmentMod::from(Vec::<KataAsingItem>::new())
+/// attached: vec![Cakupan::from("kemasyarakatan"), Cakupan::from("teknologi dan inovasi")],detached: vec![],modified: vec![],},
+/// kata_asing: AttachmentMod::from(Vec::<KataAsing>::new())
 /// }]);
-/// assert_eq!(lemma_modded.konseps.modified, vec![
-/// KonsepItemMod {
+/// assert!(lemma_modded.konseps.modified == vec![
+/// KonsepMod {
 /// id: AutoGen::Known(1),
 /// keterangan: FieldMod::Fixed("program komputer yang direka khusus untuk kegunaan tertentu".to_string()),
 /// golongan_kata: FieldMod::Fixed("kata nama".to_string()),
 /// cakupans: AttachmentMod {
 ///  attached: vec![],detached: vec![],modified: vec![],},
 /// kata_asing: AttachmentMod {
-///  attached: vec![KataAsingItem { nama: "アプリ".to_string(),bahasa: "jp".to_string()}],detached: vec![],modified: vec![],},}
+///  attached: vec![KataAsing { nama: "アプリ".to_string(),bahasa: "jp".to_string()}],detached: vec![],modified: vec![],},}
 /// ]);
-/// assert_eq!(lemma_modded.konseps.detached, vec![]);
+/// assert!(lemma_modded.konseps.detached == vec![]);
 /// ```
-#[derive(Debug, Clone)]
-pub struct LemmaItemMod<I: PartialEq + Copy + Clone> {
+#[derive(Clone)]
+pub struct LemmaMod<I: PartialEq + Copy + Clone> {
     pub id: AutoGen<I>,
     pub lemma: FieldMod<String>,
-    pub konseps: AttachmentMod<KonsepItemMod<I>>,
+    pub konseps: AttachmentMod<KonsepMod<I>>,
 }
 
-impl<I: PartialEq + Copy + Clone + PartialOrd + Display> Item for LemmaItem<I> {
-    type IntoMod = LemmaItemMod<I>;
+impl<I: PartialEq + Copy + Clone> Item for Lemma<I> {
+    type IntoMod = LemmaMod<I>;
     fn modify_into(&self, other: &Self) -> Result<Self::IntoMod> {
         if self.id != other.id {
             Err(BackendError {
                 message: String::from("ID Assertion error"),
             })
         } else {
-            Ok(LemmaItemMod {
+            Ok(LemmaMod {
                 id: self.id,
                 lemma: FieldMod::compare(self.lemma.clone(), other.lemma.clone()),
                 konseps: self.compare_attachment(other.konseps.to_owned()),
@@ -152,8 +131,8 @@ impl<I: PartialEq + Copy + Clone + PartialOrd + Display> Item for LemmaItem<I> {
         }
     }
 
-    fn partial_from_mod(other: &LemmaItemMod<I>) -> Self {
-        LemmaItem {
+    fn partial_from_mod(other: &LemmaMod<I>) -> Self {
+        Lemma {
             id: other.id,
             lemma: other.lemma.value().to_string(),
             konseps: vec![],
@@ -161,8 +140,8 @@ impl<I: PartialEq + Copy + Clone + PartialOrd + Display> Item for LemmaItem<I> {
     }
 }
 
-impl<I: PartialEq + Copy + Clone + PartialOrd + Display> ItemMod for LemmaItemMod<I> {
-    type FromItem = LemmaItem<I>;
+impl<I: PartialEq + Copy + Clone> ItemMod for LemmaMod<I> {
+    type FromItem = Lemma<I>;
 
     fn from_item(value: &Self::FromItem) -> Self {
         Self {
@@ -175,37 +154,24 @@ impl<I: PartialEq + Copy + Clone + PartialOrd + Display> ItemMod for LemmaItemMo
 
 #[cfg(feature = "sqlite")]
 #[async_trait::async_trait]
-impl SubmitMod<sqlx::SqlitePool> for LemmaItemMod<i32> {
+impl SubmitMod<sqlx::SqlitePool> for LemmaMod<i32> {
     #[instrument(skip_all)]
     async fn submit_mod(&self, engine: &DbEngine<sqlx::SqlitePool>) -> sqlx::Result<()> {
-        let item = LemmaItem::partial_from_mod(self);
-        tracing::trace!("Submitting <{}:{}>", item.id, item.lemma);
+        let item = Lemma::partial_from_mod(self);
+        // tracing::trace!("Submitting <{}:{}>", item.id, item.lemma);
         item.submit_partial(engine).await?;
         self.konseps.submit_changes_with(&item, engine).await?;
         Ok(())
     }
 }
 
-impl<I: PartialEq + Copy + Clone + PartialOrd + Display> PartialEq for LemmaItem<I> {
-    fn eq(&self, other: &Self) -> bool {
-        let konseps = Vec::from_iter(self.konseps.clone());
-        self.lemma == other.lemma
-            && other
-                .konseps
-                .iter()
-                .filter(|a| !konseps.contains(a))
-                .collect_vec()
-                .is_empty()
-    }
-}
-
 #[cfg(feature = "sqlite")]
 #[async_trait::async_trait]
-impl SubmitItem<sqlx::SqlitePool> for LemmaItem<i32> {
+impl SubmitItem<sqlx::SqlitePool> for Lemma<i32> {
     async fn submit_full(&self, engine: &DbEngine<sqlx::SqlitePool>) -> sqlx::Result<()> {
         let _ = self.submit_partial(engine).await?;
         for konsep in self.konseps.iter() {
-            KonsepItemMod::from_item(konsep)
+            KonsepMod::from_item(konsep)
                 .submit_attachment_to(self, engine)
                 .await?;
         }
@@ -244,11 +210,11 @@ impl SubmitItem<sqlx::SqlitePool> for LemmaItem<i32> {
 
 #[cfg(feature = "postgres")]
 #[async_trait::async_trait]
-impl SubmitItem<sqlx::PgPool> for LemmaItem<i32> {
+impl SubmitItem<sqlx::PgPool> for Lemma<i32> {
     async fn submit_full(&self, engine: &DbEngine<sqlx::PgPool>) -> sqlx::Result<()> {
         let _ = self.submit_partial(engine).await?;
         for konsep in self.konseps.iter() {
-            KonsepItemMod::from_item(konsep)
+            KonsepMod::from_item(konsep)
                 .submit_attachment_to(self, engine)
                 .await?;
         }
@@ -258,14 +224,14 @@ impl SubmitItem<sqlx::PgPool> for LemmaItem<i32> {
     async fn submit_partial(&self, engine: &DbEngine<sqlx::PgPool>) -> sqlx::Result<()> {
         match self.id {
             AutoGen::Known(i) => sqlx::query! {
-                r#"INSERT INTO lemma (id, nama) VALUES ($1, $2) ON CONFLICT (id, nama) DO NOTHING;"#,
+                r#"INSERT INTO lemma (id, nama) VALUES ($1, $2);"#,
                 i,
                 self.lemma
             },
-            AutoGen::Unknown  => sqlx::query!{
+            AutoGen::Unknown => sqlx::query! {
                 r#"INSERT INTO lemma (nama) VALUES ($1);"#,
                 self.lemma
-            }
+            },
         }
         .execute(engine.pool())
         .await?;
@@ -293,43 +259,43 @@ impl SubmitItem<sqlx::PgPool> for LemmaItem<i32> {
     }
 }
 
-impl FromViewMap for LemmaItem<i64> {
+impl FromViewMap for Lemma<i64> {
     type KEY = (i64, String);
     type VALUE = KonsepHashMap<i64>;
 
-    fn from_viewmap(value: &HashMap<Self::KEY, Self::VALUE>) -> Vec<LemmaItem<i64>> {
-        let mut data = Vec::<LemmaItem<i64>>::new();
+    fn from_viewmap(value: &HashMap<Self::KEY, Self::VALUE>) -> Vec<Lemma<i64>> {
+        let mut data = Vec::<Lemma<i64>>::new();
         for (lemma, konsep_map) in value.iter() {
-            data.push(LemmaItem {
+            data.push(Lemma {
                 id: AutoGen::Known(lemma.0),
                 lemma: lemma.1.clone(),
-                konseps: KonsepItem::from_viewmap(konsep_map),
+                konseps: Konsep::from_viewmap(konsep_map),
             })
         }
         data
     }
 }
-impl FromViewMap for LemmaItem<i32> {
+impl FromViewMap for Lemma<i32> {
     type KEY = (i32, String);
     type VALUE = KonsepHashMap<i32>;
 
-    fn from_viewmap(value: &HashMap<Self::KEY, Self::VALUE>) -> Vec<LemmaItem<i32>> {
-        let mut data = Vec::<LemmaItem<i32>>::new();
+    fn from_viewmap(value: &HashMap<Self::KEY, Self::VALUE>) -> Vec<Lemma<i32>> {
+        let mut data = Vec::<Lemma<i32>>::new();
         for (lemma, konsep_map) in value.iter() {
-            data.push(LemmaItem {
+            data.push(Lemma {
                 id: AutoGen::Known(lemma.0),
                 lemma: lemma.1.clone(),
-                konseps: KonsepItem::from_viewmap(konsep_map),
+                konseps: Konsep::from_viewmap(konsep_map),
             })
         }
         data
     }
 }
 
-impl FromView for LemmaItem<i64> {
+impl FromView for Lemma<i64> {
     type VIEW = LemmaWithKonsepView;
 
-    fn from_views(views: &Vec<Self::VIEW>) -> Vec<LemmaItem<i64>> {
+    fn from_views(views: &Vec<Self::VIEW>) -> Vec<Lemma<i64>> {
         Self::from_viewmap(&(views.clone().into_viewmap()))
     }
 }

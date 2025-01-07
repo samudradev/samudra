@@ -15,8 +15,8 @@ impl<T: Copy> Copy for AutoGen<T> {}
 impl<T: PartialEq> PartialEq for AutoGen<T> {
     fn eq(&self, other: &Self) -> bool {
         match (self, other) {
-            // We do not assume different unknowns are the same value
-            (Self::Unknown, Self::Unknown) => false,
+            // We assume different unknowns are the same value
+            (Self::Unknown, Self::Unknown) => true,
             (Self::Known(l0), Self::Known(r0)) => l0 == r0,
             _ => core::mem::discriminant(self) == core::mem::discriminant(other),
         }

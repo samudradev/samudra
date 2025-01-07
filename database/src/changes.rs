@@ -176,12 +176,17 @@ impl<I: Copy + Clone + PartialEq> CompareAttachable<KonsepItem<I>, KonsepMod<I>>
                     .partial_cmp(&b.keterangan)
                     .unwrap_or(std::cmp::Ordering::Equal)
             });
-        dbg!(old.clone().map(|i| i.keterangan).collect_vec());
-        dbg!(new.clone().map(|i| i.keterangan).collect_vec());
-        assert_eq!(
-            old.clone().collect_vec().len(),
-            new.clone().collect_vec().len(),
-            "The length of potentially modified items does not match the length of old items. Perhaps you forgot to supply the ID of the modified KonsepItem."
+        assert!(
+            old.clone().collect_vec().len() == new.clone().collect_vec().len(),
+            "
+            The length of potentially modified items does not match the length of old items.\n\
+            The following lines of code assumes both vectors contain the same entity but with modified content.\n\
+            [compare `konsep.keterangan`]\n\
+            -> Old: {:?}\n\
+            -> New: {:?}\n\
+            ",
+            old.clone().map(|i| i.keterangan).collect_vec(),
+            new.clone().map(|i| i.keterangan).collect_vec(),
         );
         old.zip(new)
             .map(|(o, n)| o.modify_into(&n).expect("Error"))
@@ -190,40 +195,39 @@ impl<I: Copy + Clone + PartialEq> CompareAttachable<KonsepItem<I>, KonsepMod<I>>
 }
 
 #[cfg(test)]
+#[cfg(feature = "sqlite")]
 mod test {
-    // FIX: Assert eq no longer works because we no longer impl Debug
     use super::*;
     use crate::io::interface::{FromView, SubmitMod};
     use crate::items::lemma::LemmaMod;
     use crate::views::LemmaWithKonsepView;
-    use tracing_test::traced_test;
 
-    #[sqlx::test]
-    #[traced_test]
+    #[sqlx::test(migrations = "migrations/sqlite")]
     fn test_new_lemma(pool: sqlx::Pool<sqlx::Sqlite>) -> Result<(), sqlx::Error> {
+        let pool = DbEngine::from_sqlx(pool);
         let new = Lemma {
-            id: AutoGen::Unknown,
+            id: AutoGen::<i64>::Unknown,
             lemma: "cakera tokokan".into(),
             konseps: vec![],
         };
         LemmaMod::from_item(&new).submit_mod(&pool).await?;
         let views = LemmaWithKonsepView::query_lemma("cakera tokokan".into(), &pool).await?;
         let data = Lemma::from_views(&views);
-        assert_eq!(data, vec![new]);
+        assert!(data == vec![new]);
         Ok(())
     }
 
-    #[sqlx::test(fixtures("lemma"))]
-    #[traced_test]
+    #[sqlx::test(fixtures("lemma"), migrations = "migrations/sqlite")]
     fn test_diff_handling(pool: sqlx::Pool<sqlx::Sqlite>) -> Result<(), sqlx::Error> {
+        let pool = DbEngine::from_sqlx(pool);
         let view = LemmaWithKonsepView::query_all(&pool).await?;
         let data = Lemma::from_views(&view);
         let old = data
             .first()
             .expect("Vec<LemmaDataRepr> is zero sized")
             .to_owned();
-        assert_eq!(&old.konseps.len(), &1);
-        let new: Lemma = Lemma {
+        assert!(&old.konseps.len() == &1);
+        let new: Lemma<i64> = Lemma {
             id: AutoGen::Known(1),
             lemma: "cakera tokokan".into(),
             konseps: vec![
@@ -238,7 +242,7 @@ mod test {
                     }],
                 },
                 KonsepItem {
-                    id: AutoGen::Unknown,
+                    id: AutoGen::<i64>::Unknown,
                     keterangan: "konsep baharu yang tiada kena mengena".into(),
                     golongan_kata: "kata nama".into(),
                     cakupans: vec![],
@@ -249,12 +253,11 @@ mod test {
         old.modify_into(&new).unwrap().submit_mod(&pool).await?;
         let view = LemmaWithKonsepView::query_all(&pool).await?;
         let data = Lemma::from_views(&view);
-        assert_eq!(data, vec![new]);
+        assert!(data == vec![new]);
         Ok(())
     }
 
     #[test]
-    #[traced_test]
     fn test_diff_handling_detach_konsep() -> Result<(), Box<dyn std::error::Error>> {
         let lemma_1 = Lemma {
             id: AutoGen::Known(1),
@@ -304,51 +307,51 @@ mod test {
             ],
         };
         let attachment_mod = lemma_1.compare_attachment(lemma_2.konseps);
-        assert_eq!(
-            attachment_mod.detached,
-            vec![KonsepMod {
-                id: AutoGen::Known(2),
-                keterangan: FieldMod::Fixed("cubaan padam".into()),
-                golongan_kata: FieldMod::Fixed("kata nama".into()),
-                cakupans: AttachmentMod::empty(),
-                kata_asing: AttachmentMod::empty()
-            }]
-        );
-        assert_eq!(
-            attachment_mod.modified,
-            vec![
-                KonsepMod {
-                    id: AutoGen::Known(1),
-                    keterangan: FieldMod::Fixed("cubaan simpan 1/2".into()),
+        assert!(
+            attachment_mod.detached
+                == vec![KonsepMod {
+                    id: AutoGen::Known(2),
+                    keterangan: FieldMod::Fixed("cubaan padam".into()),
                     golongan_kata: FieldMod::Fixed("kata nama".into()),
                     cakupans: AttachmentMod::empty(),
-                    kata_asing: AttachmentMod::empty(),
-                },
-                KonsepMod {
-                    id: AutoGen::Known(3),
-                    keterangan: FieldMod::Fixed("cubaan simpan 2/2".into()),
-                    golongan_kata: FieldMod::Fixed("kata nama".into()),
-                    cakupans: AttachmentMod::empty(),
-                    kata_asing: AttachmentMod::empty(),
-                },
-            ]
+                    kata_asing: AttachmentMod::empty()
+                }]
         );
-        assert!(false);
+        assert!(
+            attachment_mod.modified
+                == vec![
+                    KonsepMod {
+                        id: AutoGen::Known(1),
+                        keterangan: FieldMod::Fixed("cubaan simpan 1/2".into()),
+                        golongan_kata: FieldMod::Fixed("kata nama".into()),
+                        cakupans: AttachmentMod::empty(),
+                        kata_asing: AttachmentMod::empty(),
+                    },
+                    KonsepMod {
+                        id: AutoGen::Known(3),
+                        keterangan: FieldMod::Fixed("cubaan simpan 2/2".into()),
+                        golongan_kata: FieldMod::Fixed("kata nama".into()),
+                        cakupans: AttachmentMod::empty(),
+                        kata_asing: AttachmentMod::empty(),
+                    },
+                ]
+        );
         Ok(())
     }
 
-    #[sqlx::test(fixtures("lemma"))]
+    #[sqlx::test(fixtures("lemma"), migrations = "migrations/sqlite")]
     fn test_diff_handling_detach_cakupan(
         pool: sqlx::Pool<sqlx::Sqlite>,
     ) -> Result<(), sqlx::Error> {
+        let pool = DbEngine::from_sqlx(pool);
         let view = LemmaWithKonsepView::query_all(&pool).await?;
         let data = Lemma::from_views(&view);
         let old = data
             .first()
             .expect("Vec<LemmaDataRepr> is zero sized")
             .to_owned();
-        assert_eq!(&old.konseps.len(), &1);
-        let new: Lemma = Lemma {
+        assert!(&old.konseps.len() == &1);
+        let new: Lemma<i64> = Lemma {
             id: AutoGen::Known(1),
             lemma: "cakera tokokan".into(),
             konseps: vec![KonsepItem {
@@ -365,29 +368,31 @@ mod test {
         old.modify_into(&new).unwrap().submit_mod(&pool).await?;
         let view = LemmaWithKonsepView::query_all(&pool).await?;
         let data = Lemma::from_views(&view);
-        assert_eq!(
+        assert!(
             data.first()
                 .expect("Here?")
                 .konseps
                 .first()
                 .expect("Konsep")
-                .cakupans,
-            vec!["Astrofizik".into()]
+                .cakupans
+                == vec!["Astrofizik".into()]
         );
         Ok(())
     }
-    #[sqlx::test(fixtures("lemma"))]
+
+    #[sqlx::test(fixtures("lemma"), migrations = "migrations/sqlite")]
     fn test_diff_handling_detach_kata_asing(
         pool: sqlx::Pool<sqlx::Sqlite>,
     ) -> Result<(), sqlx::Error> {
+        let pool = DbEngine::from_sqlx(pool);
         let view = LemmaWithKonsepView::query_all(&pool).await?;
         let data = Lemma::from_views(&view);
         let old = data
             .first()
             .expect("Vec<LemmaDataRepr> is zero sized")
             .to_owned();
-        assert_eq!(&old.konseps.len(), &1);
-        let new: Lemma = Lemma {
+        assert!(&old.konseps.len() == &1);
+        let new: Lemma<i64> = Lemma {
             id: AutoGen::Known(1),
             lemma: "cakera tokokan".into(),
             konseps: vec![KonsepItem {
@@ -401,21 +406,23 @@ mod test {
         old.modify_into(&new).unwrap().submit_mod(&pool).await?;
         let view = LemmaWithKonsepView::query_all(&pool).await?;
         let data = Lemma::from_views(&view);
-        assert_eq!(data, vec![new]);
+        assert!(data == vec![new]);
         Ok(())
     }
-    #[sqlx::test(fixtures("lemma_w_2_konseps"))]
+
+    #[sqlx::test(fixtures("lemma_w_2_konseps"), migrations = "migrations/sqlite")]
     fn test_diff_handling_attach_cakupan(
         pool: sqlx::Pool<sqlx::Sqlite>,
     ) -> Result<(), sqlx::Error> {
+        let pool = DbEngine::from_sqlx(pool);
         let view = LemmaWithKonsepView::query_all(&pool).await?;
         let data = Lemma::from_views(&view);
         let old = data
             .first()
             .expect("Vec<LemmaDataRepr> is zero sized")
             .to_owned();
-        assert_eq!(&old.konseps.len(), &2);
-        let new: Lemma = Lemma {
+        assert!(&old.konseps.len() == &2);
+        let new: Lemma<i64> = Lemma {
             id: AutoGen::Known(1),
             lemma: "cakera tokokan".into(),
             konseps: vec![
@@ -439,13 +446,14 @@ mod test {
         let view = LemmaWithKonsepView::query_all(&pool).await?;
         let data = Lemma::from_views(&view);
 
-        assert_eq!(data, vec![new]);
+        assert!(data == vec![new]);
         Ok(())
     }
+
     #[test]
     fn test_compare_attachable() {
         let old = KonsepItem {
-            id: AutoGen::Unknown,
+            id: AutoGen::<i64>::Unknown,
             keterangan: String::default(),
             golongan_kata: String::default(),
             cakupans: vec!["a".into(), "b".into(), "c".into()],
@@ -456,25 +464,25 @@ mod test {
         };
         let changes_cakupan: AttachmentMod<CakupanItem> =
             old.compare_attachment(vec!["a".into(), "b".into(), "d".into()]);
-        assert_eq!(
-            changes_cakupan,
-            AttachmentMod {
-                attached: vec!["d".into()],
-                detached: vec!["c".into()],
-                modified: vec![]
-            }
+        assert!(
+            changes_cakupan
+                == AttachmentMod {
+                    attached: vec!["d".into()],
+                    detached: vec!["c".into()],
+                    modified: vec![]
+                }
         );
         let changes_kata_asing: AttachmentMod<KataAsingItem> = old.compare_attachment(vec![]);
-        assert_eq!(
-            changes_kata_asing,
-            AttachmentMod {
-                attached: vec![],
-                detached: vec![KataAsingItem {
-                    nama: "new".into(),
-                    bahasa: "en".into()
-                }],
-                modified: vec![]
-            }
+        assert!(
+            changes_kata_asing
+                == AttachmentMod {
+                    attached: vec![],
+                    detached: vec![KataAsingItem {
+                        nama: "new".into(),
+                        bahasa: "en".into()
+                    }],
+                    modified: vec![]
+                }
         )
     }
 }

@@ -1,36 +1,18 @@
-//! Contains struct [KataAsingItem] which map a foreign word with its language of origin.
+//! Implement traits for [schema::items::kata_asing::KataAsing]
+
+use std::fmt::Display;
 
 use crate::engine::DbEngine;
 use crate::io::interface::{AttachmentItemMod, FromView, Item, ItemMod, SubmitItem};
 use crate::prelude::*;
-use std::fmt::Display;
 
-/// Contains a foreign word with its language of origin.
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize, PartialEq)]
-pub struct KataAsingItem {
-    pub nama: String,
-    pub bahasa: String,
-}
+use schema::items::kata_asing::KataAsing;
+use schema::items::konsep::Konsep;
 
-impl ItemMod for KataAsingItem {
-    type FromItem = KataAsingItem;
+pub(crate) type KataAsingMod = KataAsing;
 
-    fn from_item(value: &Self::FromItem) -> Self {
-        value.clone()
-    }
-}
-
-impl KataAsingItem {
-    pub fn null() -> Self {
-        KataAsingItem {
-            nama: "".into(),
-            bahasa: "".into(),
-        }
-    }
-}
-
-impl Item for KataAsingItem {
-    type IntoMod = KataAsingItem;
+impl Item for KataAsing {
+    type IntoMod = KataAsing;
 
     fn modify_into(&self, other: &Self) -> Result<Self::IntoMod> {
         Ok(other.clone())
@@ -41,7 +23,15 @@ impl Item for KataAsingItem {
     }
 }
 
-impl FromView for KataAsingItem {
+impl ItemMod for KataAsing {
+    type FromItem = KataAsing;
+
+    fn from_item(value: &Self::FromItem) -> Self {
+        value.clone()
+    }
+}
+
+impl FromView for KataAsing {
     type VIEW = LemmaWithKonsepView;
 
     fn from_views(value: &Vec<Self::VIEW>) -> Vec<Self> {
@@ -60,7 +50,7 @@ impl FromView for KataAsingItem {
                 )
             })
             .keys()
-            .map(|(nama, bahasa)| KataAsingItem {
+            .map(|(nama, bahasa)| KataAsing {
                 nama: nama.into(),
                 bahasa: bahasa.into(),
             })
@@ -70,7 +60,7 @@ impl FromView for KataAsingItem {
 
 #[cfg(feature = "sqlite")]
 #[async_trait::async_trait]
-impl SubmitItem<sqlx::SqlitePool> for KataAsingItem {
+impl SubmitItem<sqlx::SqlitePool> for KataAsing {
     async fn submit_full(&self, engine: &DbEngine<sqlx::SqlitePool>) -> sqlx::Result<()> {
         sqlx::query! {
             r#"INSERT or IGNORE INTO kata_asing (nama, bahasa) VALUES (?,?)"#,
@@ -100,21 +90,21 @@ impl SubmitItem<sqlx::SqlitePool> for KataAsingItem {
 
 #[cfg(feature = "sqlite")]
 #[async_trait::async_trait]
-impl<I: Display + Sync + PartialEq + Copy + Clone>
-    AttachmentItemMod<KonsepItem<I>, sqlx::SqlitePool> for KataAsingItem
+impl<I: Display + Sync + PartialEq + Copy + Clone> AttachmentItemMod<Konsep<I>, sqlx::SqlitePool>
+    for KataAsing
 {
     async fn submit_attachment_to(
         &self,
-        parent: &KonsepItem<I>,
+        parent: &Konsep<I>,
         engine: &DbEngine<sqlx::SqlitePool>,
     ) -> sqlx::Result<()> {
-        tracing::trace!(
-            "Attaching <KataAsing {}:{}> to <{}:{}>",
-            self.bahasa,
-            self.nama,
-            parent.id,
-            parent.keterangan
-        );
+        // tracing::trace!(
+        //     "Attaching <KataAsing {}:{}> to <{}:{}>",
+        //     self.bahasa,
+        //     self.nama,
+        //     parent.id,
+        //     parent.keterangan
+        // );
         sqlx::query! {
              r#"INSERT or IGNORE INTO kata_asing (nama, bahasa) VALUES (?,?);
                 INSERT or IGNORE INTO kata_asing_x_konsep (kata_asing_id, konsep_id)
@@ -135,16 +125,16 @@ impl<I: Display + Sync + PartialEq + Copy + Clone>
     }
     async fn submit_detachment_from(
         &self,
-        parent: &KonsepItem<I>,
+        parent: &Konsep<I>,
         engine: &DbEngine<sqlx::SqlitePool>,
     ) -> sqlx::Result<()> {
-        tracing::trace!(
-            "Detaching <KataAsing {}:{}> from <{}:{}>",
-            self.bahasa,
-            self.nama,
-            parent.id,
-            parent.keterangan
-        );
+        // tracing::trace!(
+        //     "Detaching <KataAsing {}:{}> from <{}:{}>",
+        //     self.bahasa,
+        //     self.nama,
+        //     parent.id,
+        //     parent.keterangan
+        // );
         sqlx::query! {
             r#"DELETE FROM kata_asing_x_konsep AS kaxk
                WHERE (
@@ -164,40 +154,43 @@ impl<I: Display + Sync + PartialEq + Copy + Clone>
 
     async fn submit_modification_with(
         &self,
-        parent: &KonsepItem<I>,
+        parent: &Konsep<I>,
         _engine: &DbEngine<sqlx::SqlitePool>,
     ) -> sqlx::Result<()> {
-        tracing::trace!(
-            "Modifying <KataAsing {}:{}> with <{}:{}>",
-            self.bahasa,
-            self.nama,
-            parent.id,
-            parent.keterangan
-        );
+        // tracing::trace!(
+        //     "Modifying <KataAsing {}:{}> with <{}:{}>",
+        //     self.bahasa,
+        //     self.nama,
+        //     parent.id,
+        //     parent.keterangan
+        // );
         todo!()
     }
 }
 
 #[cfg(feature = "postgres")]
 #[async_trait::async_trait]
-impl<I: Display + Sync + PartialEq + Copy + Clone> AttachmentItemMod<KonsepItem<I>, sqlx::PgPool>
-    for KataAsingItem
+impl<I: Display + Sync + PartialEq + Copy + Clone> AttachmentItemMod<Konsep<I>, sqlx::PgPool>
+    for KataAsing
 {
     async fn submit_attachment_to(
         &self,
-        parent: &KonsepItem<I>,
+        parent: &Konsep<I>,
         engine: &DbEngine<sqlx::PgPool>,
     ) -> sqlx::Result<()> {
-        tracing::trace!(
-            "Attaching <KataAsing {}:{}> to <{}:{}>",
-            self.bahasa,
-            self.nama,
-            parent.id,
-            parent.keterangan
-        );
+        // tracing::trace!(
+        //     "Attaching <KataAsing {}:{}> to <{}:{}>",
+        //     self.bahasa,
+        //     self.nama,
+        //     parent.id,
+        //     parent.keterangan
+        // );
         sqlx::query! {
-            r#"INSERT INTO kata_asing (nama, bahasa) VALUES ($1,$2) ON CONFLICT (nama, bahasa) DO NOTHING;"#, self.nama, self.bahasa
-        }.execute(engine.pool()).await.expect("Error attaching kata_asing to konsep");
+            r#"INSERT INTO kata_asing (nama, bahasa) VALUES ($1,$2);"#, self.nama, self.bahasa
+        }
+        .execute(engine.pool())
+        .await
+        .expect("Error attaching kata_asing to konsep");
         sqlx::query! {
             r#"INSERT INTO kata_asing_x_konsep (kata_asing_id, konsep_id)
                 VALUES (
@@ -215,16 +208,16 @@ impl<I: Display + Sync + PartialEq + Copy + Clone> AttachmentItemMod<KonsepItem<
     }
     async fn submit_detachment_from(
         &self,
-        parent: &KonsepItem<I>,
+        parent: &Konsep<I>,
         engine: &DbEngine<sqlx::PgPool>,
     ) -> sqlx::Result<()> {
-        tracing::trace!(
-            "Detaching <KataAsing {}:{}> from <{}:{}>",
-            self.bahasa,
-            self.nama,
-            parent.id,
-            parent.keterangan
-        );
+        // tracing::trace!(
+        //     "Detaching <KataAsing {}:{}> from <{}:{}>",
+        //     self.bahasa,
+        //     self.nama,
+        //     parent.id,
+        //     parent.keterangan
+        // );
         sqlx::query! {
             r#"DELETE FROM kata_asing_x_konsep AS kaxk
                WHERE (
@@ -244,16 +237,16 @@ impl<I: Display + Sync + PartialEq + Copy + Clone> AttachmentItemMod<KonsepItem<
 
     async fn submit_modification_with(
         &self,
-        parent: &KonsepItem<I>,
+        parent: &Konsep<I>,
         _engine: &DbEngine<sqlx::PgPool>,
     ) -> sqlx::Result<()> {
-        tracing::trace!(
-            "Modifying <KataAsing {}:{}> with <{}:{}>",
-            self.bahasa,
-            self.nama,
-            parent.id,
-            parent.keterangan
-        );
+        // tracing::trace!(
+        //     "Modifying <KataAsing {}:{}> with <{}:{}>",
+        //     self.bahasa,
+        //     self.nama,
+        //     parent.id,
+        //     parent.keterangan
+        // );
         todo!()
     }
 }

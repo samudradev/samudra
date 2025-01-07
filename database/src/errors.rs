@@ -45,13 +45,6 @@ impl From<sqlx::Error> for BackendError {
         }
     }
 }
-impl From<csv::Error> for BackendError {
-    fn from(value: csv::Error) -> Self {
-        BackendError {
-            message: value.to_string(),
-        }
-    }
-}
 
 impl From<sqlx::migrate::MigrateError> for BackendError {
     fn from(value: sqlx::migrate::MigrateError) -> Self {

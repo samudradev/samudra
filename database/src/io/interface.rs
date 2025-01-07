@@ -52,7 +52,7 @@ pub trait IntoViewMap<V>: IntoIterator<Item = V> {
 /// This decision choice avoids the Object-Table Impedance Mismatch.
 ///
 /// A [View] handles the querying from SQL which contains flat tabular data.
-/// While and [Item] represents the intended data which is often nested.
+/// While an [Item] represents the intended data which is often nested.
 /// Traits like [FromView] and [FromViewMap] provides the translation layer between [View] and [Item].
 pub trait Item {
     /// The Modified version of [Self].

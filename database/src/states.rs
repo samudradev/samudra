@@ -18,8 +18,7 @@ pub struct Connection<DB: sqlx::Database> {
 
 /// Counts of selected items.
 #[allow(missing_docs)]
-#[derive(Debug, Clone, Default, serde::Serialize, PartialEq, ts_rs::TS)]
-#[ts(export, export_to = "../../src/bindings/")]
+#[derive(Debug, Clone, Default, serde::Serialize, PartialEq)]
 pub struct Counts<I> {
     lemmas: I,
     konseps: I,

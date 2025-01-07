@@ -94,39 +94,3 @@ impl<T: PartialOrd> PartialOrd for AutoGen<T> {
         }
     }
 }
-
-impl<T: ts_rs::TS> From<Option<T>> for AutoGen<T> {
-    fn from(value: Option<T>) -> Self {
-        match value {
-            Some(t) => Self::Known(t),
-            None => Self::Unknown,
-        }
-    }
-}
-
-/// `AutoGen<T>` acts like an option in JS/TS
-impl<T: ts_rs::TS> ts_rs::TS for AutoGen<T> {
-    fn name() -> String {
-        <Option<T> as ts_rs::TS>::name()
-    }
-
-    fn name_with_type_args(args: Vec<String>) -> String {
-        <Option<T> as ts_rs::TS>::name_with_type_args(args)
-    }
-
-    fn inline() -> String {
-        <Option<T> as ts_rs::TS>::inline()
-    }
-
-    fn inline_flattened() -> String {
-        <Option<T> as ts_rs::TS>::inline_flattened()
-    }
-
-    fn dependencies() -> Vec<ts_rs::Dependency> {
-        <Option<T> as ts_rs::TS>::dependencies()
-    }
-
-    fn transparent() -> bool {
-        <Option<T> as ts_rs::TS>::transparent()
-    }
-}

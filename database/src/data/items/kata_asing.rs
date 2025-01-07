@@ -6,8 +6,7 @@ use crate::prelude::*;
 use std::fmt::Display;
 
 /// Contains a foreign word with its language of origin.
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize, PartialEq, ts_rs::TS)]
-#[ts(export, export_to = "../../src/bindings/")]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize, PartialEq)]
 pub struct KataAsingItem {
     pub nama: String,
     pub bahasa: String,

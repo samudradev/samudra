@@ -21,13 +21,11 @@ use crate::data::items::lemma::LemmaItem;
 /// The following are the tags implemented in this struct:
 /// - [cakupans](KonsepItem#structfield.cakupans): the communication contexts of the definition.
 /// - [kata_asing](KonsepItem#structfield.kata_asing): words with equivalent meaning in other languages.
-#[derive(Clone, serde::Serialize, serde::Deserialize, ts_rs::TS)]
-#[ts(export, export_to = "../../src/bindings/")]
+#[derive(Clone, serde::Serialize, serde::Deserialize)]
 pub struct KonsepItem<I> {
     pub id: AutoGen<I>,
     pub keterangan: String,
     pub golongan_kata: String,
-    #[ts(type = "Array<string>")]
     pub cakupans: Vec<CakupanItem>,
     pub kata_asing: Vec<KataAsingItem>,
 }

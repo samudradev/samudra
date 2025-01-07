@@ -40,8 +40,7 @@ use tracing::instrument;
 ///
 /// let lemma: LemmaItem = serde_json::from_value(lemma_in_json).unwrap();
 /// ```
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize, ts_rs::TS)]
-#[ts(export, export_to = "../../src/bindings/")]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct LemmaItem<I: Copy + Clone + PartialOrd + Display> {
     pub id: AutoGen<I>,
     pub lemma: String,
